@@ -94,8 +94,30 @@ public:
 			fPlayerVelX = -6.0f;
 		}
 
-		fPlayerPosX = fPlayerPosX + fPlayerVelX * fElapsedTime;
-		fPlayerPosY = fPlayerPosY + fPlayerVelY * fElapsedTime;
+		float fNewPlayerPosX = fPlayerPosX + fPlayerVelX * fElapsedTime;
+		float fNewPlayerPosY = fPlayerPosY + fPlayerVelY * fElapsedTime;
+
+		if (fPlayerVelX <= 0) // Moving Left
+		{
+			if (GetTile(fNewPlayerPosX + 0.0f, fPlayerPosY + 0.0f) != L'.' || GetTile(fNewPlayerPosX + 0.0f, fPlayerPosY + 0.9f) != L'.')
+			{
+				fNewPlayerPosX = (int)fNewPlayerPosX + 1;
+				fPlayerVelX = 0;
+			}
+		}
+		else // Moving Right
+		{
+			if (GetTile(fNewPlayerPosX + 1.0f, fPlayerPosY + 0.0f) != L'.' || GetTile(fNewPlayerPosX + 1.0f, fPlayerPosY + 0.9f) != L'.')
+			{
+				fNewPlayerPosX = (int)fNewPlayerPosX;
+				fPlayerVelX = 0;
+
+			}
+		}
+
+		// Apply new position
+		fPlayerPosX = fNewPlayerPosX;
+		fPlayerPosY = fNewPlayerPosY;
 
 		fCameraPosX = fPlayerPosX;
 		fCameraPosY = fPlayerPosY;
