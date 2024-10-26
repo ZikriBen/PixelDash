@@ -73,8 +73,8 @@ public:
 
 
 		// Handle Input
-		fPlayerVelX = 0.0f;
-		fPlayerVelY = 0.0f;
+		//fPlayerVelX = 0.0f;
+		//fPlayerVelY = 0.0f;
 
 
 		if (GetKey(olc::UP).bHeld)
@@ -87,15 +87,49 @@ public:
 		}
 		if (GetKey(olc::RIGHT).bHeld)
 		{
-			fPlayerVelX = 6.0f;
+			fPlayerVelX += 6.0f * fElapsedTime;;
 		}
 		if (GetKey(olc::LEFT).bHeld)
 		{
-			fPlayerVelX = -6.0f;
+			fPlayerVelX += -6.0f * fElapsedTime;;
 		}
+		if (GetKey(olc::SPACE).bPressed)
+		{
+			if (fPlayerVelY == 0)
+			{
+				fPlayerVelY = -12.0f;
+				//nDirModX = 1;
+			}
+		}
+
+		// Gravity
+		fPlayerVelY += 20.0f * fElapsedTime;
 
 		float fNewPlayerPosX = fPlayerPosX + fPlayerVelX * fElapsedTime;
 		float fNewPlayerPosY = fPlayerPosY + fPlayerVelY * fElapsedTime;
+
+
+		// Drag
+		//if (bPlayerOnGround)
+		//{
+		//	fPlayerVelX += -3.0f * fPlayerVelX * fElapsedTime;
+		//	if (fabs(fPlayerVelX) < 0.01f)
+		//		fPlayerVelX = 0.0f;
+		//}
+
+		// Clamp velocities
+		if (fPlayerVelX > 10.0f)
+			fPlayerVelX = 10.0f;
+
+		if (fPlayerVelX < -10.0f)
+			fPlayerVelX = -10.0f;
+
+		if (fPlayerVelY > 100.0f)
+			fPlayerVelY = 100.0f;
+
+		if (fPlayerVelY < -100.0f)
+			fPlayerVelY = -100.0f;
+
 
 		if (fPlayerVelX <= 0) // Moving Left
 		{
@@ -112,6 +146,25 @@ public:
 				fNewPlayerPosX = (int)fNewPlayerPosX;
 				fPlayerVelX = 0;
 
+			}
+		}
+		
+		if (fPlayerVelY <= 0) // Moving Up
+		{
+			if (GetTile(fNewPlayerPosX + 0.0f, fNewPlayerPosY) != L'.' || GetTile(fNewPlayerPosX + 0.9f, fNewPlayerPosY) != L'.')
+			{
+				fNewPlayerPosY = (int)fNewPlayerPosY + 1;
+				fPlayerVelY = 0;
+			}
+		}
+		else // Moving Down
+		{
+			if (GetTile(fNewPlayerPosX + 0.0f, fNewPlayerPosY + 1.0f) != L'.' || GetTile(fNewPlayerPosX + 0.9f, fNewPlayerPosY + 1.0f) != L'.')
+			{
+				fNewPlayerPosY = (int)fNewPlayerPosY;
+				fPlayerVelY = 0;
+				//bPlayerOnGround = true; // Player has a solid surface underfoot
+				//nDirModX = 0;
 			}
 		}
 
