@@ -2,6 +2,7 @@
 #define OLC_PGE_APPLICATION
 #include "olcPixelGameEngine.h"
 #include <string>
+#include <unordered_set>
 
 // Override base class with your custom functionality
 class PixelDash : public olc::PixelGameEngine
@@ -17,7 +18,8 @@ private:
 	int nFrameCounter = 0;
 	int nLevelWidth;
 	int nLevelHeight;
-	
+	bool bPlayerOnGround = false;
+
 	float fCameraPosX = 0.0f;
 	float fCameraPosY = 0.0f;
 	
@@ -26,6 +28,8 @@ private:
 	
 	float fPlayerVelX = 0.0f;
 	float fPlayerVelY = 0.0f;
+	std::unordered_set<wchar_t> moveAbleTiles = { L'.' };
+	olc::Sprite* spriteTiles = nullptr;
 
 public:
 	bool OnUserCreate() override
@@ -33,22 +37,47 @@ public:
 		nLevelWidth = 64;
 		nLevelHeight = 16;
 
+		
+		//sLevel += L"................................................................";
+		//sLevel += L"................................................................";
+		//sLevel += L".......#####....................................................";
+		//sLevel += L"........###.....................................................";
+		//sLevel += L".......................########.................................";
+		//sLevel += L".....##########.......###..............#.#......................";
+		//sLevel += L"....................###................#.#......................";
+		//sLevel += L"...................####.........................................";
+		//sLevel += L"####################################.##############.....########";
+		//sLevel += L"...................................#.#...............###........";
+		//sLevel += L"........................############.#............###...........";
+		//sLevel += L"........................#............#.........###..............";
+		//sLevel += L"........................#.############......###.................";
+		//sLevel += L"........................#................###....................";
+		//sLevel += L"........................#################.......................";
+		//sLevel += L"................................................................";
+		
+		
+		
+		sLevel += L"]______________________________________________________________[";
+		sLevel += L"]..............................................................[";
+		sLevel += L"]..............................................................[";
+		sLevel += L"]..............................................................[";
+		sLevel += L"]..............................................................[";
+		sLevel += L"]..............................................................[";
+		sLevel += L"]..............................................................[";
+		sLevel += L"]..............................................................[";
+		sLevel += L"]..............................................................[";
+		sLevel += L"]..............................................................[";
+		sLevel += L"]..............................................................[";
+		sLevel += L"]..............................................................[";
+		sLevel += L"]..............................................................[";
+		sLevel += L"]..............................................................[";
+		sLevel += L"X##############################################################X";
 		sLevel += L"................................................................";
-		sLevel += L"................................................................";
-		sLevel += L".......#####....................................................";
-		sLevel += L"........###.....................................................";
-		sLevel += L".......................########.................................";
-		sLevel += L".....##########.......###..............#.#......................";
-		sLevel += L"....................###................#.#......................";
-		sLevel += L"...................####.........................................";
-		sLevel += L"####################################.##############.....########";
-		sLevel += L"...................................#.#...............###........";
-		sLevel += L"........................############.#............###...........";
-		sLevel += L"........................#............#.........###..............";
-		sLevel += L"........................#.############......###.................";
-		sLevel += L"........................#................###....................";
-		sLevel += L"........................#################.......................";
-		sLevel += L"................................................................";
+
+		spriteTiles = new olc::Sprite("assets/Terrain32x32.png");
+		
+		fPlayerPosX = 5;
+		fPlayerPosY = 12;
 
 		return true;
 	}
@@ -71,12 +100,6 @@ public:
 		};
 
 
-
-		// Handle Input
-		//fPlayerVelX = 0.0f;
-		//fPlayerVelY = 0.0f;
-
-
 		if (GetKey(olc::UP).bHeld)
 		{
 			fPlayerVelY = -6.0f;
@@ -87,11 +110,11 @@ public:
 		}
 		if (GetKey(olc::RIGHT).bHeld)
 		{
-			fPlayerVelX += 6.0f * fElapsedTime;;
+			fPlayerVelX += (bPlayerOnGround ? 25.0f : 15.0f) * fElapsedTime;
 		}
 		if (GetKey(olc::LEFT).bHeld)
 		{
-			fPlayerVelX += -6.0f * fElapsedTime;;
+			fPlayerVelX += (bPlayerOnGround ? -25.0f : -15.0f) * fElapsedTime;
 		}
 		if (GetKey(olc::SPACE).bPressed)
 		{
@@ -110,12 +133,12 @@ public:
 
 
 		// Drag
-		//if (bPlayerOnGround)
-		//{
-		//	fPlayerVelX += -3.0f * fPlayerVelX * fElapsedTime;
-		//	if (fabs(fPlayerVelX) < 0.01f)
-		//		fPlayerVelX = 0.0f;
-		//}
+		if (bPlayerOnGround)
+		{
+			fPlayerVelX += -3.0f * fPlayerVelX * fElapsedTime;
+			if (fabs(fPlayerVelX) < 0.01f)
+				fPlayerVelX = 0.0f;
+		}
 
 		// Clamp velocities
 		if (fPlayerVelX > 10.0f)
@@ -133,7 +156,7 @@ public:
 
 		if (fPlayerVelX <= 0) // Moving Left
 		{
-			if (GetTile(fNewPlayerPosX + 0.0f, fPlayerPosY + 0.0f) != L'.' || GetTile(fNewPlayerPosX + 0.0f, fPlayerPosY + 0.9f) != L'.')
+			if (moveAbleTiles.count(GetTile(fNewPlayerPosX + 0.0f, fPlayerPosY + 0.0f)) == 0 || moveAbleTiles.count(GetTile(fNewPlayerPosX + 0.0f, fPlayerPosY + 0.9f)) == 0)
 			{
 				fNewPlayerPosX = (int)fNewPlayerPosX + 1;
 				fPlayerVelX = 0;
@@ -141,17 +164,19 @@ public:
 		}
 		else // Moving Right
 		{
-			if (GetTile(fNewPlayerPosX + 1.0f, fPlayerPosY + 0.0f) != L'.' || GetTile(fNewPlayerPosX + 1.0f, fPlayerPosY + 0.9f) != L'.')
+			if (moveAbleTiles.count(GetTile(fNewPlayerPosX + 1.0f, fPlayerPosY + 0.0f)) == 0 || moveAbleTiles.count(GetTile(fNewPlayerPosX + 1.0f, fPlayerPosY + 0.9f)) == 0)
 			{
 				fNewPlayerPosX = (int)fNewPlayerPosX;
 				fPlayerVelX = 0;
 
 			}
 		}
-		
+
+		bPlayerOnGround = true;
+
 		if (fPlayerVelY <= 0) // Moving Up
 		{
-			if (GetTile(fNewPlayerPosX + 0.0f, fNewPlayerPosY) != L'.' || GetTile(fNewPlayerPosX + 0.9f, fNewPlayerPosY) != L'.')
+			if (moveAbleTiles.count(GetTile(fNewPlayerPosX + 0.0f, fNewPlayerPosY)) == 0 || moveAbleTiles.count(GetTile(fNewPlayerPosX + 0.9f, fNewPlayerPosY)) == 0)
 			{
 				fNewPlayerPosY = (int)fNewPlayerPosY + 1;
 				fPlayerVelY = 0;
@@ -159,7 +184,7 @@ public:
 		}
 		else // Moving Down
 		{
-			if (GetTile(fNewPlayerPosX + 0.0f, fNewPlayerPosY + 1.0f) != L'.' || GetTile(fNewPlayerPosX + 0.9f, fNewPlayerPosY + 1.0f) != L'.')
+			if (moveAbleTiles.count(GetTile(fNewPlayerPosX + 0.0f, fNewPlayerPosY + 1.0f)) == 0 || moveAbleTiles.count(GetTile(fNewPlayerPosX + 0.9f, fNewPlayerPosY + 1.0f)) == 0)
 			{
 				fNewPlayerPosY = (int)fNewPlayerPosY;
 				fPlayerVelY = 0;
@@ -175,8 +200,8 @@ public:
 		fCameraPosX = fPlayerPosX;
 		fCameraPosY = fPlayerPosY;
 
-		int nTileWidth = 8;
-		int nTileHeight = 8;
+		int nTileWidth = 32;
+		int nTileHeight = 32;
 		int nVisibleTilesX = ScreenWidth() / nTileWidth;
 		int nVisibleTilesY = ScreenHeight() / nTileHeight;
 
@@ -202,11 +227,28 @@ public:
 				wchar_t sTileID = GetTile(x + (int)fOffsetX, y + (int)fOffsetY);
 				if (sTileID == L'#')
 				{
-					FillRect(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, (x + 1) * nTileWidth - fTileOffsetX, (y + 1) * nTileHeight - fTileOffsetY, olc::RED);
+					//FillRect(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, (x + 1) * nTileWidth - fTileOffsetX, (y + 1) * nTileHeight - fTileOffsetY, olc::RED);
+					DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, 64, 32, 32, 32, 1, 0);
 				}
 				else if (sTileID == L'.')
 				{
-					FillRect(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, (x + 1) * nTileWidth - fTileOffsetX, (y + 1) * nTileHeight - fTileOffsetY, olc::CYAN);
+					DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, 64, 64, nTileWidth, nTileHeight, 1, 0);
+				}
+				else if (sTileID == L']')
+				{
+					DrawPartialSprite(x* nTileWidth - fTileOffsetX, y* nTileHeight - fTileOffsetY, spriteTiles, 96, 64, nTileWidth, nTileHeight, 1, 0);
+				}
+				else if (sTileID == L'[')
+				{
+					DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, 32, 64, nTileWidth, nTileHeight, 1, 0);
+				}
+				else if (sTileID == L'_')
+				{
+					DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, 5 * 32, 5 * 32, nTileWidth, nTileHeight, 1, 0);
+				}
+				else if (sTileID == L'X')
+				{
+					DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, 5*32, 5*32, nTileWidth, nTileHeight, 1, 0);
 				}
 			}
 		}
@@ -243,7 +285,7 @@ public:
 int main()
 {
 	PixelDash pd;
-	if (pd.Construct(160, 120, 8, 8))
+	if (pd.Construct(640, 480, 2, 2))
 		pd.Start();
 	return 0;
 }
