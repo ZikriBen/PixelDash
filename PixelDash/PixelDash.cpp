@@ -28,8 +28,10 @@ private:
 	
 	float fPlayerVelX = 0.0f;
 	float fPlayerVelY = 0.0f;
-	std::unordered_set<wchar_t> moveAbleTiles = { L'.' };
+	std::unordered_set<wchar_t> moveAbleTiles = { L'.', L'o', L'}', L'{', L'-', L',', L'v', L't'};
+	std::unordered_map<wchar_t, std::pair<int, int>> tileOffsets;
 	olc::Sprite* spriteTiles = nullptr;
+	olc::Sprite* spriteDoor = nullptr;
 
 public:
 	bool OnUserCreate() override
@@ -57,27 +59,55 @@ public:
 		
 		
 		
-		sLevel += L"]______________________________________________________________[";
-		sLevel += L"]..............................................................[";
-		sLevel += L"]..............................................................[";
-		sLevel += L"]..............................................................[";
-		sLevel += L"]..............................................................[";
-		sLevel += L"]..............................................................[";
-		sLevel += L"]..............................................................[";
-		sLevel += L"]..............................................................[";
-		sLevel += L"]..............................................................[";
-		sLevel += L"]..............................................................[";
-		sLevel += L"]..............................................................[";
-		sLevel += L"]..............................................................[";
-		sLevel += L"]..............................................................[";
-		sLevel += L"]..............................................................[";
-		sLevel += L"X##############################################################X";
+		sLevel += L"................................................................";
+		sLevel += L"................................................................";
+		sLevel += L"........<______________________________________________________>";
+		sLevel += L"........]/----------------------------------------------------u[";
+		sLevel += L"........]}oooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
+		sLevel += L"........]}oooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
+		sLevel += L"<_______i}oooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
+		sLevel += L"]/-------eoooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
+		sLevel += L"]}oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
+		sLevel += L"]}oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
+		sLevel += L"]v,,,,,,,toooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
+		sLevel += L"l#######y}oooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
+		sLevel += L"........]v,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,z[";
+		sLevel += L"........l######################################################r";
+		sLevel += L"................................................................";
 		sLevel += L"................................................................";
 
 		spriteTiles = new olc::Sprite("assets/Terrain32x32.png");
+
+		spriteDoor = new olc::Sprite("assets/IdleDoor.png");
 		
+		tileOffsets = {
+			{L'.', {64, 64}},
+			{L'#', {64, 32}},
+			{L']', {96, 64}},
+			{L'[', {32, 64}},
+			{L'y', {96, 32}},
+			{L't', {256, 224}},
+			{L'e', {256, 256}},
+			{L'i', {96, 96}},
+			{L'}', {32, 256}},
+			{L'{', {96, 256}},
+			{L'-', {64, 224}},
+			{L',', {64, 288}},
+			{L'/', {32, 224}},
+			{L'u', {96, 224}},
+			{L'v', {32, 288}},
+			{L'z', {96, 288}},
+			{L'l', {224, 64}},
+			{L'r', {256, 64}},
+			{L'<', {224, 32}},
+			{L'>', {256, 32}},
+			{L'_', {64, 96}},
+			{L'P', {0, 0}},
+			{L'o', {64, 256}}
+		};
+
 		fPlayerPosX = 5;
-		fPlayerPosY = 12;
+		fPlayerPosY = 8;
 
 		return true;
 	}
@@ -225,31 +255,79 @@ public:
 			for (int y = -1; y < nVisibleTilesY + 1; ++y)
 			{
 				wchar_t sTileID = GetTile(x + (int)fOffsetX, y + (int)fOffsetY);
-				if (sTileID == L'#')
-				{
-					//FillRect(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, (x + 1) * nTileWidth - fTileOffsetX, (y + 1) * nTileHeight - fTileOffsetY, olc::RED);
-					DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, 64, 32, 32, 32, 1, 0);
-				}
-				else if (sTileID == L'.')
-				{
-					DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, 64, 64, nTileWidth, nTileHeight, 1, 0);
-				}
-				else if (sTileID == L']')
-				{
-					DrawPartialSprite(x* nTileWidth - fTileOffsetX, y* nTileHeight - fTileOffsetY, spriteTiles, 96, 64, nTileWidth, nTileHeight, 1, 0);
-				}
-				else if (sTileID == L'[')
-				{
-					DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, 32, 64, nTileWidth, nTileHeight, 1, 0);
-				}
-				else if (sTileID == L'_')
-				{
-					DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, 5 * 32, 5 * 32, nTileWidth, nTileHeight, 1, 0);
-				}
-				else if (sTileID == L'X')
-				{
-					DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, 5*32, 5*32, nTileWidth, nTileHeight, 1, 0);
-				}
+				int sx = tileOffsets[sTileID].first;
+				int sy = tileOffsets[sTileID].second;
+				DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, sx, sy, nTileWidth, nTileHeight, 1, 0);
+
+				//if (sTileID == L'#')
+				//{
+				//	//FillRect(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, (x + 1) * nTileWidth - fTileOffsetX, (y + 1) * nTileHeight - fTileOffsetY, olc::RED);
+				//	DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, 64, 32, 32, 32, 1, 0);
+				//}
+				//else if (sTileID == L'.')
+				//{
+				//	DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, 64, 64, nTileWidth, nTileHeight, 1, 0);
+				//}
+				//else if (sTileID == L']')
+				//{
+				//	DrawPartialSprite(x* nTileWidth - fTileOffsetX, y* nTileHeight - fTileOffsetY, spriteTiles, 96, 64, nTileWidth, nTileHeight, 1, 0);
+				//}
+				//else if (sTileID == L'[')
+				//{
+				//	DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, 32, 64, nTileWidth, nTileHeight, 1, 0);
+				//}
+				//else if (sTileID == L'_')
+				//{
+				//	int sx = tileOffsets[sTileID].first;
+				//	int sy = tileOffsets[sTileID].second;
+				//	DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, sx, sy, nTileWidth, nTileHeight, 1, 0);
+				//}
+				//else if (sTileID == L'X')
+				//{
+				//	DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, 5*32, 5*32, nTileWidth, nTileHeight, 1, 0);
+				//}
+				//else if (sTileID == L'L')
+				//{
+				//	int sx = tileOffsets[sTileID].first;
+				//	int sy = tileOffsets[sTileID].second;
+				//	DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, sx, sy, nTileWidth, nTileHeight, 1, 0);
+				//}
+				//else if (sTileID == L'R')
+				//{
+				//	int sx = tileOffsets[sTileID].first;
+				//	int sy = tileOffsets[sTileID].second;
+				//	DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, sx, sy, nTileWidth, nTileHeight, 1, 0);
+				//}
+				//else if (sTileID == L'<')
+				//{
+				//	int sx = tileOffsets[sTileID].first;
+				//	int sy = tileOffsets[sTileID].second;
+				//	DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, sx, sy, nTileWidth, nTileHeight, 1, 0);
+				//}
+				//else if (sTileID == L'>')
+				//{
+				//	int sx = tileOffsets[sTileID].first;
+				//	int sy = tileOffsets[sTileID].second;
+				//	DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, sx, sy, nTileWidth, nTileHeight, 1, 0);
+				//}
+				//else if (sTileID == L'o')
+				//{
+				//	int sx = tileOffsets[sTileID].first;
+				//	int sy = tileOffsets[sTileID].second;
+				//	DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, sx, sy, nTileWidth, nTileHeight, 1, 0);
+				//}
+				//else if (sTileID == L'}')
+				//{
+				//	int sx = tileOffsets[sTileID].first;
+				//	int sy = tileOffsets[sTileID].second;
+				//	DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, sx, sy, nTileWidth, nTileHeight, 1, 0);
+				//}
+				//else if (sTileID == L'{')
+				//{
+				//	int sx = tileOffsets[sTileID].first;
+				//	int sy = tileOffsets[sTileID].second;
+				//	DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, sx, sy, nTileWidth, nTileHeight, 1, 0);
+				//}
 			}
 		}
 
