@@ -28,35 +28,21 @@ private:
 	
 	float fPlayerVelX = 0.0f;
 	float fPlayerVelY = 0.0f;
-	std::unordered_set<wchar_t> moveAbleTiles = { L'.', L'o', L'}', L'{', L'-', L',', L'v', L't'};
+	std::unordered_set<wchar_t> moveAbleTiles = { L'.', L'o', L'}', L'{', L'-', L',', L'v', L't', L'i', L'/', L'e' };
 	std::unordered_map<wchar_t, std::pair<int, int>> tileOffsets;
 	olc::Sprite* spriteTiles = nullptr;
 	olc::Sprite* spriteDoor = nullptr;
+	olc::Sprite* spritePlayer = nullptr;
+	int iPlayerGraphicCounter = 0;
+	float fGraphicTimer = 0.0f;
+	int iFacing = 0;
+	bool bIsRunning = false;
 
 public:
 	bool OnUserCreate() override
 	{
 		nLevelWidth = 64;
-		nLevelHeight = 16;
-
-		
-		//sLevel += L"................................................................";
-		//sLevel += L"................................................................";
-		//sLevel += L".......#####....................................................";
-		//sLevel += L"........###.....................................................";
-		//sLevel += L".......................########.................................";
-		//sLevel += L".....##########.......###..............#.#......................";
-		//sLevel += L"....................###................#.#......................";
-		//sLevel += L"...................####.........................................";
-		//sLevel += L"####################################.##############.....########";
-		//sLevel += L"...................................#.#...............###........";
-		//sLevel += L"........................############.#............###...........";
-		//sLevel += L"........................#............#.........###..............";
-		//sLevel += L"........................#.############......###.................";
-		//sLevel += L"........................#................###....................";
-		//sLevel += L"........................#################.......................";
-		//sLevel += L"................................................................";
-		
+		nLevelHeight = 16;	
 		
 		
 		sLevel += L"................................................................";
@@ -79,6 +65,7 @@ public:
 		spriteTiles = new olc::Sprite("assets/Terrain32x32.png");
 
 		spriteDoor = new olc::Sprite("assets/IdleDoor.png");
+		spritePlayer = new olc::Sprite("assets/King.png");
 		
 		tileOffsets = {
 			{L'.', {64, 64}},
@@ -141,10 +128,12 @@ public:
 		if (GetKey(olc::RIGHT).bHeld)
 		{
 			fPlayerVelX += (bPlayerOnGround ? 25.0f : 15.0f) * fElapsedTime;
+			iFacing = 0;
 		}
 		if (GetKey(olc::LEFT).bHeld)
 		{
 			fPlayerVelX += (bPlayerOnGround ? -25.0f : -15.0f) * fElapsedTime;
+			iFacing = 1;
 		}
 		if (GetKey(olc::SPACE).bPressed)
 		{
@@ -198,9 +187,10 @@ public:
 			{
 				fNewPlayerPosX = (int)fNewPlayerPosX;
 				fPlayerVelX = 0;
-
 			}
 		}
+		
+		bIsRunning = !(std::abs(fPlayerVelX) >= 0.5f);
 
 		bPlayerOnGround = true;
 
@@ -259,103 +249,33 @@ public:
 				int sy = tileOffsets[sTileID].second;
 				DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, sx, sy, nTileWidth, nTileHeight, 1, 0);
 
-				//if (sTileID == L'#')
-				//{
-				//	//FillRect(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, (x + 1) * nTileWidth - fTileOffsetX, (y + 1) * nTileHeight - fTileOffsetY, olc::RED);
-				//	DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, 64, 32, 32, 32, 1, 0);
-				//}
-				//else if (sTileID == L'.')
-				//{
-				//	DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, 64, 64, nTileWidth, nTileHeight, 1, 0);
-				//}
-				//else if (sTileID == L']')
-				//{
-				//	DrawPartialSprite(x* nTileWidth - fTileOffsetX, y* nTileHeight - fTileOffsetY, spriteTiles, 96, 64, nTileWidth, nTileHeight, 1, 0);
-				//}
-				//else if (sTileID == L'[')
-				//{
-				//	DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, 32, 64, nTileWidth, nTileHeight, 1, 0);
-				//}
-				//else if (sTileID == L'_')
-				//{
-				//	int sx = tileOffsets[sTileID].first;
-				//	int sy = tileOffsets[sTileID].second;
-				//	DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, sx, sy, nTileWidth, nTileHeight, 1, 0);
-				//}
-				//else if (sTileID == L'X')
-				//{
-				//	DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, 5*32, 5*32, nTileWidth, nTileHeight, 1, 0);
-				//}
-				//else if (sTileID == L'L')
-				//{
-				//	int sx = tileOffsets[sTileID].first;
-				//	int sy = tileOffsets[sTileID].second;
-				//	DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, sx, sy, nTileWidth, nTileHeight, 1, 0);
-				//}
-				//else if (sTileID == L'R')
-				//{
-				//	int sx = tileOffsets[sTileID].first;
-				//	int sy = tileOffsets[sTileID].second;
-				//	DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, sx, sy, nTileWidth, nTileHeight, 1, 0);
-				//}
-				//else if (sTileID == L'<')
-				//{
-				//	int sx = tileOffsets[sTileID].first;
-				//	int sy = tileOffsets[sTileID].second;
-				//	DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, sx, sy, nTileWidth, nTileHeight, 1, 0);
-				//}
-				//else if (sTileID == L'>')
-				//{
-				//	int sx = tileOffsets[sTileID].first;
-				//	int sy = tileOffsets[sTileID].second;
-				//	DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, sx, sy, nTileWidth, nTileHeight, 1, 0);
-				//}
-				//else if (sTileID == L'o')
-				//{
-				//	int sx = tileOffsets[sTileID].first;
-				//	int sy = tileOffsets[sTileID].second;
-				//	DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, sx, sy, nTileWidth, nTileHeight, 1, 0);
-				//}
-				//else if (sTileID == L'}')
-				//{
-				//	int sx = tileOffsets[sTileID].first;
-				//	int sy = tileOffsets[sTileID].second;
-				//	DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, sx, sy, nTileWidth, nTileHeight, 1, 0);
-				//}
-				//else if (sTileID == L'{')
-				//{
-				//	int sx = tileOffsets[sTileID].first;
-				//	int sy = tileOffsets[sTileID].second;
-				//	DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, sx, sy, nTileWidth, nTileHeight, 1, 0);
-				//}
 			}
 		}
 
 		// Draw Player with respect to camera position
-		FillRect((fPlayerPosX - fOffsetX) * nTileWidth, (fPlayerPosY - fOffsetY) * nTileHeight, nTileWidth, nTileHeight, olc::GREEN);
+		//FillRect((fPlayerPosX - fOffsetX) * nTileWidth, (fPlayerPosY - fOffsetY) * nTileHeight, nTileWidth, nTileHeight, olc::GREEN);
+		fGraphicTimer += fElapsedTime;
 		
-		if (nFrameCounter % 50 == 0) {
-			std::cout << "===================" << std::endl;
-			std::cout << "nFrameCounter: " << nFrameCounter << std::endl;
-			std::cout << std::endl;
-			std::cout << "ScreenWidth: " << ScreenWidth() << std::endl;
-			std::cout << "nVisibleTilesX: " << nVisibleTilesX << std::endl;
-			std::cout << std::endl;
-			std::cout << "fPlayerPosX: " << fPlayerPosX << std::endl;
-			std::cout << "fOffsetX: " << fOffsetX << std::endl;
-			std::cout << "nTileWidth: " << nTileWidth << std::endl;
-			std::cout << std::endl;
-			std::cout << "Player Drawing PosX: " << (fPlayerPosX - fOffsetX) * nTileWidth << std::endl;
-			//std::cout << "fPlayerPosY: " << fPlayerPosY << std::endl;
-			std::cout << std::endl;
-			//std::cout << "fOffsetY: " << fOffsetY << std::endl;
+		int iNumFrames = 0;
+		int oy = 0;
+		if (bIsRunning) {
+			iNumFrames = 11;
+			oy = 0;
 		}
-
+		else {
+			iNumFrames = 8;
+			oy = 28;
+		}
+		if (fGraphicTimer > 0.1f) {
+			fGraphicTimer -= 0.1f;
+			iPlayerGraphicCounter++;
+			iPlayerGraphicCounter %= iNumFrames;
+		}
 		
-		// Called once per frame, draws random colored pixels
-		/*for (int x = 0; x < ScreenWidth(); x++)
-			for (int y = 0; y < ScreenHeight(); y++)
-				Draw(x, y, olc::Pixel(rand() % 256, rand() % 256, rand() % 256));*/
+		SetPixelMode(olc::Pixel::MASK);
+		DrawPartialSprite((fPlayerPosX - fOffsetX) * nTileWidth, ((fPlayerPosY - fOffsetY) * nTileHeight) + 4, spritePlayer, 37*iPlayerGraphicCounter, oy, 37, 28, 1, iFacing);
+		SetPixelMode(olc::Pixel::NORMAL);
+
 		return true;
 	}
 };
