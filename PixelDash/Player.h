@@ -37,7 +37,7 @@ public:
 
 	enum { RIGHT = 0, LEFT = 1} eFacingDirection;
 	
-	enum class AnimationState { IDLE, RUN, JUMP, FALL, ATTACK, HIT, DOOR_IN, DOOR_OUT};
+	enum class AnimationState { IDLE, RUN, JUMP, FALL, ATTACK, DOOR_IN, DOOR_OUT, HIT};
 	enum { ALIVE, DYING, DEAD } eLifeState;
 	
 

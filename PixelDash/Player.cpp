@@ -21,7 +21,9 @@ Player::Player(olc::PixelGameEngine& pge) : pge(pge), eLifeState(Player::ALIVE),
 		{AnimationState::RUN, {8, 37, 28, 0.1f, 4, 41, 58, 16}},
 		{AnimationState::FALL, {1, 37, 28, 0.1f, 4, 41, 116, 16}},  
 		{AnimationState::JUMP, {1, 37, 28, 0.1f, 4, 41, 174, 16}},
-		{AnimationState::ATTACK, {3, 59, 58, 0.1f, -11, 12, 232, 0}}
+		{AnimationState::ATTACK, {3, 59, 58, 0.1f, -11, 12, 232, 0}},
+		{AnimationState::DOOR_IN,  {8, 39, 42, 0.1f, -11, 41, 290, 0}},
+		{AnimationState::DOOR_OUT,  {8, 41, 42, 0.1f, -11, 35, 348, 0}}
 	};
 }
 
