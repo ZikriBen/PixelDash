@@ -12,34 +12,63 @@ Player::Player(olc::PixelGameEngine& pge) : pge(pge), eLifeState(Player::ALIVE),
 
 	fPlayerVelX = 0.0f;
 	fPlayerVelY = 0.0f;
-	eGraphicState = Player::IDLE;
+	eGraphicState = AnimationState::IDLE;
 	bPlayerOnGround = false;
+	bIsAttacking = false;
 	eFacingDirection = Player::RIGHT;
-	eGraphicState = Player::IDLE;
+	animations = {
+		{AnimationState::IDLE, {11, 37, 28, 0.1f, 4, 41, 0, 16}},
+		{AnimationState::RUN, {8, 37, 28, 0.1f, 4, 41, 58, 16}},
+		{AnimationState::FALL, {1, 37, 28, 0.1f, 4, 41, 116, 16}},  
+		{AnimationState::JUMP, {1, 37, 28, 0.1f, 4, 41, 174, 16}},
+		{AnimationState::ATTACK, {3, 59, 58, 0.1f, -11, 12, 232, 0}}
+	};
 }
 
 void Player::Update(float fElapsedTime) {
+	setGraphicTimer(getGraphicTimer() + fElapsedTime);
+	currentAnimation = animations[eGraphicState];
 
-	fGraphicTimer += fElapsedTime;
-	if (fGraphicTimer > 0.2f) {
-		fGraphicTimer -= 0.2f;
-		iGraphicCounter++;
-		iGraphicCounter %= 2;
+	if (bIsAttacking) {
+
+		// Play attack animation until the last frame, then reset
+		if (getGraphicTimer() > currentAnimation.frameDuration) {
+			setGraphicTimer(getGraphicTimer() - currentAnimation.frameDuration);
+			incGraphicCounter();
+
+			if (getGraphicCounter() >= currentAnimation.iNumFrames) {
+				// Attack animation is complete, reset counter and switch back to idle/run
+				bIsAttacking = false;
+				setGraphicCounter(0); // Reset the counter
+				eGraphicState = (std::abs(getVelX()) >= 0.5f) ? AnimationState::RUN : AnimationState::IDLE;
+				currentAnimation = animations[eGraphicState]; // Force update to new animation
+			}
+		}
 	}
-
+	else {
+		// Regular state logic for idle, run, jump, etc.
+		if (currentAnimation.iNumFrames > 1 && getGraphicTimer() > currentAnimation.frameDuration) {
+			setGraphicTimer(getGraphicTimer() - currentAnimation.frameDuration);
+			incGraphicCounter();
+			setGraphicCounter(getGraphicCounter() % currentAnimation.iNumFrames); // Wrap within valid frame range
+		}
+		else if (currentAnimation.iNumFrames == 1) {
+			setGraphicCounter(0);
+		}
+	}
 }
 
-void Player::Draw(float fOffsetX, float fOffsetY, float oy) {
+void Player::Draw(float fOffsetX, float fOffsetY) {
 	
 	pge.SetPixelMode(olc::Pixel::MASK);
 	pge.DrawPartialSprite(
 		(fPlayerPosX - fOffsetX) * 32,
-		((fPlayerPosY - fOffsetY) * 32) + 4,
+		((fPlayerPosY - fOffsetY) * 32) + currentAnimation.iOffsetPosY, // +4
 		spr,
-		(41.0f + 37.0f) * (float)(iGraphicCounter),
-		16 + oy,
-		37,
-		28,
+		(currentAnimation.iSprOffsetX + currentAnimation.frameWidth) * (float)(iGraphicCounter), // 41 + 37
+		currentAnimation.iSpecialOffsetY + currentAnimation.iSprOffsetY, // 16
+		currentAnimation.frameWidth, // 37
+		currentAnimation.frameHeight, //28
 		1,
 		eFacingDirection
 	);

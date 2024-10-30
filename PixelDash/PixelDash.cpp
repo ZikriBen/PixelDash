@@ -132,6 +132,13 @@ public:
 			}
 		}
 
+		if (GetKey(olc::CTRL).bPressed && !player->getPlayerIsAttacking()) {
+			player->eGraphicState = Player::AnimationState::ATTACK;
+			player->setPlayerIsAttacking(true);
+			player->setGraphicCounter(0);  // Reset counter to start the attack animation from frame 0
+			player->setGraphicTimer(0.0f); // Reset timer for consistent animation speed
+		}
+
 		// Gravity
 		player->setVelY(player->getVelY() + 20.0f * fElapsedTime);
 
@@ -178,22 +185,28 @@ public:
 			}
 		}
 
-		if (player->getVelY() > 0.5f) {
-			player->eGraphicState = Player::JUMP;
+		if (!player->getPlayerIsAttacking()) {
+			if (!player->getPlayerOnGround()) {
+				if (player->getVelY() < -0.5f) {
+					player->eGraphicState = Player::AnimationState::JUMP;
+				}
+				else if (player->getVelY() > 0.5f) {
+					player->eGraphicState = Player::AnimationState::FALL;
+				}
+			}
+			else {
+				if (std::abs(player->getVelX()) >= 0.5f) {
+					player->eGraphicState = Player::AnimationState::RUN;
+				}
+				else {
+					player->eGraphicState = Player::AnimationState::IDLE;
+				}
+			}
 		}
-		else if (player->getVelY() < -0.5f) {
-			player->eGraphicState = Player::FALL;
-		}
-		else if (std::abs(player->getVelX()) >= 0.5f) {
-			player->eGraphicState = Player::IDLE;
-		}
-		else {
-			player->eGraphicState = Player::RUN;
-		}
+
 		
 
-		//player->setPlayerOnGround(true);
-
+		
 
 		if (player->getVelY() <= 0) // Moving Up
 		{
@@ -254,41 +267,9 @@ public:
 			}
 		}
 
-		// Draw Player with respect to camera position
-		//FillRect((fPlayerPosX - fOffsetX) * nTileWidth, (fPlayerPosY - fOffsetY) * nTileHeight, nTileWidth, nTileHeight, olc::GREEN);
-		player->setGraphicTimer(player->getGraphicTimer() + fElapsedTime);
+		player->Update(fElapsedTime);
 		
-		int iNumFrames = 0;
-		int oy = 0;
-		iNumFrames = 8;
-		oy = 0;
-		if (player->eGraphicState == Player::RUN) {
-			iNumFrames = 11;
-			oy = 0;
-		}
-		else if (player->eGraphicState == Player::IDLE) {
-			iNumFrames = 8;
-			oy = 58;
-		}
-		else if (player->eGraphicState == Player::FALL) {
-			iNumFrames = 1;
-			oy = 116;
-		}
-		else if (player->eGraphicState == Player::JUMP) {
-			iNumFrames = 1;
-			oy = 174;
-		}
-		if (iNumFrames > 1 && player->getGraphicTimer() > 0.1f) {
-			player->setGraphicTimer(player->getGraphicTimer() - 0.1f);
-			player->incGraphicCounter();
-			player->setGraphicCounter(player->getGraphicCounter() % iNumFrames);
-		}
-		else if (iNumFrames == 1) {
-			// Reset to the first frame if there is only one frame in the animation
-			player->setGraphicCounter(0);
-		}
-		
-		player->Draw(fOffsetX, fOffsetY, oy);
+		player->Draw(fOffsetX, fOffsetY);
 
 		return true;
 	}
