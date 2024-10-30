@@ -17,17 +17,19 @@ public:
 
 private:
 	std::wstring sLevel;
+	std::wstring sDecoration;
 	int nLevelWidth;
 	int nLevelHeight;
 
 	float fCameraPosX = 0.0f;
 	float fCameraPosY = 0.0f;
 	
-	std::unordered_set<wchar_t> moveAbleTiles = { L'.', L'o', L'}', L'{', L'-', L',', L'v', L't', L'i', L'/', L'e' };
+	std::unordered_set<wchar_t> moveAbleTiles = { L'.', L'o', L'}', L'{', L'-', L',', L'v', L't', L'i', L'/', L'e', L'u', L'z' };
 	std::unordered_map<wchar_t, std::pair<int, int>> tileOffsets;
 	olc::Sprite* spriteTiles = nullptr;
 	olc::Sprite* spriteDoor = nullptr;
 	std::unique_ptr<Player> player;
+	std::unordered_map<wchar_t, std::vector<std::pair<int, int>>> decorPos;
 
 
 public:
@@ -53,6 +55,35 @@ public:
 		sLevel += L"........l######################################################r";
 		sLevel += L"................................................................";
 		sLevel += L"................................................................";
+
+		sDecoration += L"................................................................";
+		sDecoration += L"................................................................";
+		sDecoration += L"................................................................";
+		sDecoration += L"................................................................";
+		sDecoration += L"................................................................";
+		sDecoration += L"................................................................";
+		sDecoration += L"................................................................";
+		sDecoration += L"................................................................";
+		sDecoration += L"................................................................";
+		sDecoration += L"................................................................";
+		sDecoration += L"................................................................";
+		sDecoration += L"................................................................";
+		sDecoration += L"...........................D....................................";
+		sDecoration += L"................................................................";
+		sDecoration += L"................................................................";
+		sDecoration += L"................................................................";
+
+		// create decoration array
+		for (int x = 0; x < nLevelWidth; ++x)
+		{
+			for (int y = 0; y < nLevelHeight; ++y)
+			{
+				wchar_t cDecorID = sDecoration[y * nLevelWidth + x];
+				if (cDecorID != '.') {
+					decorPos[cDecorID].push_back({ x, y });
+				}
+			}
+		}
 
 		spriteTiles = new olc::Sprite("assets/Terrain32x32.png");
 
@@ -95,6 +126,14 @@ public:
 		{
 			if (x >= 0 && x < nLevelWidth && y >= 0 && y < nLevelHeight)
 				return sLevel[y * nLevelWidth + x];
+			else
+				return L' ';
+		};
+
+		auto GetTile2 = [&](int x, int y)
+		{
+			if (x >= 0 && x < nLevelWidth && y >= 0 && y < nLevelHeight)
+				return sDecoration[y * nLevelWidth + x];
 			else
 				return L' ';
 		};
@@ -260,10 +299,32 @@ public:
 			for (int y = -1; y < nVisibleTilesY + 1; ++y)
 			{
 				wchar_t sTileID = GetTile(x + (int)fOffsetX, y + (int)fOffsetY);
+				
 				int sx = tileOffsets[sTileID].first;
 				int sy = tileOffsets[sTileID].second;
 				DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, sx, sy, nTileWidth, nTileHeight, 1, 0);
+			}
+		}
 
+		int startX = static_cast<int>(fOffsetX);  // Leftmost visible tile in the level
+		int startY = static_cast<int>(fOffsetY);  // Topmost visible tile in the level
+
+		for (const auto& entry : decorPos) {
+			wchar_t decorID = entry.first;
+
+			for (const auto& pos : entry.second) {
+				int levelX = pos.first; 
+				int levelY = pos.second; 
+
+				if (levelX >= startX && levelX < startX + nVisibleTilesX &&
+					levelY >= startY && levelY < startY + nVisibleTilesY) {
+
+					int screenX = (levelX - startX) * nTileWidth - fTileOffsetX;
+					int screenY = (levelY - startY) * nTileHeight - fTileOffsetY - 24;
+					SetPixelMode(olc::Pixel::MASK);
+					DrawSprite(screenX, screenY, spriteDoor, 1, 0);
+					SetPixelMode(olc::Pixel::NORMAL);
+				}
 			}
 		}
 
