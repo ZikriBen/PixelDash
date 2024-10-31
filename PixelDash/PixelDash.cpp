@@ -2,6 +2,7 @@
 #define OLC_PGE_APPLICATION
 #include "olcPixelGameEngine.h"
 #include "Player.h"
+#include "PlayerMovement.h"
 #include <memory>
 #include <string>
 #include <unordered_set>
@@ -20,10 +21,14 @@ private:
 	std::wstring sDecoration;
 	int nLevelWidth;
 	int nLevelHeight;
+	int nTileWidth;
+	int nTileHeight;
+	int nVisibleTilesX;
+	int nVisibleTilesY;
 
 	float fCameraPosX = 0.0f;
 	float fCameraPosY = 0.0f;
-	
+	std::unique_ptr<PlayerMovement> pm;
 	std::unordered_set<wchar_t> moveAbleTiles = { L'.', L'o', L'}', L'{', L'-', L',', L'v', L't', L'i', L'/', L'e', L'u', L'z' };
 	std::unordered_map<wchar_t, std::pair<int, int>> tileOffsets;
 	olc::Sprite* spriteTiles = nullptr;
@@ -32,13 +37,20 @@ private:
 	std::unordered_map<wchar_t, std::vector<std::pair<int, int>>> decorPos;
 
 
+
 public:
 	bool OnUserCreate() override
 	{
 		nLevelWidth = 64;
 		nLevelHeight = 16;	
+		nTileWidth = 32;
+		nTileHeight = 32;
+		nVisibleTilesX = ScreenWidth() / nTileWidth;
+		nVisibleTilesY = ScreenHeight() / nTileHeight;
+
 		player = std::make_unique<Player>(*this);
-		
+		pm = std::make_unique<PlayerMovement>(*this, *player);
+
 		sLevel += L"................................................................";
 		sLevel += L"................................................................";
 		sLevel += L"........<______________________________________________________>";
@@ -90,7 +102,6 @@ public:
 		spriteDoor = new olc::Sprite("assets/IdleDoor.png");
 		
 
-
 		tileOffsets = {
 			{L'.', {64, 64}},
 			{L'#', {64, 32}},
@@ -130,13 +141,6 @@ public:
 				return L' ';
 		};
 
-		auto GetTile2 = [&](int x, int y)
-		{
-			if (x >= 0 && x < nLevelWidth && y >= 0 && y < nLevelHeight)
-				return sDecoration[y * nLevelWidth + x];
-			else
-				return L' ';
-		};
 
 		auto SetTile = [&](int x, int y, wchar_t c)
 		{
@@ -145,38 +149,8 @@ public:
 		};
 
 
-		if (GetKey(olc::UP).bHeld)
-		{
-			player->setVelY(-6.0f);
-		}
-		if (GetKey(olc::DOWN).bHeld)
-		{
-			player->setVelY(6.0f);
-		}
-		if (GetKey(olc::RIGHT).bHeld)
-		{
-			player->setVelX(player->getVelX() + (player->getPlayerOnGround() ? 25.0f : 15.0f) * fElapsedTime);
-			player->eFacingDirection = Player::RIGHT;
-		}
-		if (GetKey(olc::LEFT).bHeld)
-		{
-			player->setVelX(player->getVelX() + (player->getPlayerOnGround() ? -25.0f : -15.0f) * fElapsedTime);
-			player->eFacingDirection = Player::LEFT;
-		}
-		if (GetKey(olc::SPACE).bPressed)
-		{
-			if (player->getVelY() == 0)
-			{
-				player->setVelY(-12.0f);
-			}
-		}
 
-		if (GetKey(olc::CTRL).bPressed && !player->getPlayerIsAttacking()) {
-			player->eGraphicState = Player::AnimationState::ATTACK;
-			player->setPlayerIsAttacking(true);
-			player->setGraphicCounter(0);  // Reset counter to start the attack animation from frame 0
-			player->setGraphicTimer(0.0f); // Reset timer for consistent animation speed
-		}
+		pm->Update(fElapsedTime);
 
 		// Gravity
 		player->setVelY(player->getVelY() + 20.0f * fElapsedTime);
@@ -224,27 +198,6 @@ public:
 			}
 		}
 
-		if (!player->getPlayerIsAttacking()) {
-			if (!player->getPlayerOnGround()) {
-				if (player->getVelY() < -0.5f) {
-					player->eGraphicState = Player::AnimationState::JUMP;
-				}
-				else if (player->getVelY() > 0.5f) {
-					player->eGraphicState = Player::AnimationState::FALL;
-				}
-			}
-			else {
-				if (std::abs(player->getVelX()) >= 0.5f) {
-					player->eGraphicState = Player::AnimationState::RUN;
-				}
-				else {
-					player->eGraphicState = Player::AnimationState::IDLE;
-				}
-			}
-		}
-
-		
-
 		
 
 		if (player->getVelY() <= 0) // Moving Up
@@ -266,18 +219,32 @@ public:
 			}
 		}
 
+
 		// Apply new position
 		player->setPosX(fNewPlayerPosX);
 		player->setPosY(fNewPlayerPosY);
 
+		if (!player->getPlayerIsAttacking()) {
+			if (!player->getPlayerOnGround()) {
+				if (player->getVelY() < -0.5f) {
+					player->eGraphicState = Player::AnimationState::JUMP;
+				}
+				else if (player->getVelY() > 0.5f) {
+					player->eGraphicState = Player::AnimationState::FALL;
+				}
+			}
+			else {
+				if (std::abs(player->getVelX()) >= 0.5f) {
+					player->eGraphicState = Player::AnimationState::RUN;
+				}
+				else {
+					player->eGraphicState = Player::AnimationState::IDLE;
+				}
+			}
+		}
 
 		fCameraPosX = player->getPosX();
 		fCameraPosY = player->getPosY();
-
-		int nTileWidth = 32;
-		int nTileHeight = 32;
-		int nVisibleTilesX = ScreenWidth() / nTileWidth;
-		int nVisibleTilesY = ScreenHeight() / nTileHeight;
 
 		// Calculate Top-Leftmost visible tile
 		float fOffsetX = fCameraPosX - (float)nVisibleTilesX / 2.0f;
@@ -316,7 +283,7 @@ public:
 				int levelX = pos.first; 
 				int levelY = pos.second; 
 
-				if (levelX >= startX && levelX < startX + nVisibleTilesX &&
+				if (levelX >= startX && levelX < startX + nVisibleTilesX +1 &&
 					levelY >= startY && levelY < startY + nVisibleTilesY) {
 
 					int screenX = (levelX - startX) * nTileWidth - fTileOffsetX;
