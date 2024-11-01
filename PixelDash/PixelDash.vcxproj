@@ -20,12 +20,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="D:\Personal\PixelDash1\olcPixelGameEngine.h" />
+    <ClInclude Include="Level.h" />
     <ClInclude Include="miniaudio.h" />
     <ClInclude Include="olcPGEX_MiniAudio.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerMovement.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Level.cpp" />
     <ClCompile Include="PixelDash.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerMovement.cpp" />

@@ -1,6 +1,3 @@
-#pragma once
-#include "Player.h"
-#include "olcPixelGameEngine.h"
 #ifndef PLAYER_MOVEMENT_H
 #define PLAYER_MOVEMENT_H
 #include "Player.h"
