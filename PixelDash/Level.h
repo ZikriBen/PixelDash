@@ -18,7 +18,7 @@ private:
 	std::wstring sDecoration;
 	std::unordered_set<wchar_t> moveAbleTiles;
 	std::unordered_map<wchar_t, std::pair<int, int>> tileOffsets;
-	std::unordered_map<wchar_t, std::vector<std::pair<int, int>>> decorPos;
+	std::unordered_map<wchar_t, std::vector<std::pair<float, float>>> decorPos;
 	olc::PixelGameEngine& pge;
 	olc::Sprite* spriteTiles = nullptr;
 	olc::Sprite* spriteDoor = nullptr;
@@ -33,6 +33,8 @@ public:
 
 	const std::unordered_set<wchar_t> getMoveable() { return moveAbleTiles; }
 	bool isMoveable(int x, int y);
+
+	bool isDoor(float x, float y);
 };
 #endif // LEVEL_H
 

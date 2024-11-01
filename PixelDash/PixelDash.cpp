@@ -45,9 +45,9 @@ public:
 		nVisibleTilesX = ScreenWidth() / nTileWidth;
 		nVisibleTilesY = ScreenHeight() / nTileHeight;
 
-		player = std::make_unique<Player>(*this);
-		pm = std::make_unique<PlayerMovement>(*this, *player);
 		lb = std::make_unique<Level>(*this, nLevelWidth, nLevelHeight, nTileWidth, nTileHeight);
+		player = std::make_unique<Player>(*this, *lb);
+		pm = std::make_unique<PlayerMovement>(*this, *player);
 		lb->Build();
 
 		return true;
@@ -123,11 +123,6 @@ public:
 			}
 		}
 
-
-		// Apply new position
-		player->setPosX(fNewPlayerPosX);
-		player->setPosY(fNewPlayerPosY);
-
 		if (!player->getPlayerIsAttacking()) {
 			if (!player->getPlayerOnGround()) {
 				if (player->getVelY() < -0.5f) {
@@ -147,6 +142,10 @@ public:
 			}
 		}
 
+		// Apply new position
+		player->setPosX(fNewPlayerPosX);
+		player->setPosY(fNewPlayerPosY);
+
 		fCameraPosX = player->getPosX();
 		fCameraPosY = player->getPosY();
 
@@ -163,6 +162,7 @@ public:
 		// Get tile offsets for smooth scrolling
 		float fTileOffsetX = (fOffsetX - (int)fOffsetX) * nTileWidth;
 		float fTileOffsetY = (fOffsetY - (int)fOffsetY) * nTileHeight;
+		
 		lb->Draw(nVisibleTilesX, nVisibleTilesY, fOffsetX, fOffsetY, fTileOffsetX, fTileOffsetY);
 		player->Update(fElapsedTime);
 		

@@ -143,3 +143,20 @@ bool Level::isMoveable(int x, int y)
 {
 	return moveAbleTiles.count(GetTile(x, y)) == 0;
 }
+
+bool Level::isDoor(float x, float y) {
+	for (const auto& decor : decorPos) 
+		if (decor.first == 'D') 
+			for (const auto& door : decor.second) 
+			{
+				std::cout << "PlayerPosX: " << x << std::endl;
+				std::cout << "PlayerPosY: " << y << std::endl;
+				std::cout << "DoorPosX: " << door.first << std::endl;
+				std::cout << "DoorPosY: " << door.second << std::endl;
+				if(std::abs(x - door.first) < 0.5 && std::abs(y - door.second) < 0.5)
+					return true;
+			}
+
+	return false;
+}
+			

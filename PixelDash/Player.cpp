@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player(olc::PixelGameEngine& pge) : pge(pge), eLifeState(Player::ALIVE), bSoundOn(true) {
+Player::Player(olc::PixelGameEngine& pge, Level& lvl) : pge(pge), lvl(lvl), eLifeState(Player::ALIVE), bSoundOn(true) {
 	spr = new olc::Sprite("assets/IdleRun.png");
 	fWidth = 37.0f;
 	fHeight = 28.0f;
@@ -15,6 +15,7 @@ Player::Player(olc::PixelGameEngine& pge) : pge(pge), eLifeState(Player::ALIVE),
 	eGraphicState = AnimationState::IDLE;
 	bPlayerOnGround = false;
 	bIsAttacking = false;
+	bForceAnimation = false;
 	eFacingDirection = Player::RIGHT;
 	animations = {
 		{AnimationState::IDLE, {11, 37, 28, 0.1f, 4, 41, 0, 16}},
@@ -31,7 +32,7 @@ void Player::Update(float fElapsedTime) {
 	setGraphicTimer(getGraphicTimer() + fElapsedTime);
 	currentAnimation = animations[eGraphicState];
 
-	if (bIsAttacking) {
+	if (bForceAnimation) {
 
 		// Play attack animation until the last frame, then reset
 		if (getGraphicTimer() > currentAnimation.frameDuration) {
@@ -40,10 +41,12 @@ void Player::Update(float fElapsedTime) {
 
 			if (getGraphicCounter() >= currentAnimation.iNumFrames) {
 				// Attack animation is complete, reset counter and switch back to idle/run
-				bIsAttacking = false;
 				setGraphicCounter(0); // Reset the counter
 				eGraphicState = (std::abs(getVelX()) >= 0.5f) ? AnimationState::RUN : AnimationState::IDLE;
 				currentAnimation = animations[eGraphicState]; // Force update to new animation
+				
+				if (bIsAttacking)
+					bIsAttacking = false;
 			}
 		}
 	}
@@ -75,4 +78,8 @@ void Player::Draw(float fOffsetX, float fOffsetY) {
 		eFacingDirection
 	);
 	pge.SetPixelMode(olc::Pixel::NORMAL);
+}
+
+bool Player::IsDoor() {
+	return lvl.isDoor(fPlayerPosX, fPlayerPosY);
 }

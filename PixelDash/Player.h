@@ -1,12 +1,13 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include "olcPixelGameEngine.h"
+#include "Level.h";
 
 #pragma once
 class Player
 {
 public:
-	Player(olc::PixelGameEngine& pge);
+	Player(olc::PixelGameEngine& pge, Level &lvl);
 	
 	void Update(float);
 	void Draw(float fOffsetX, float fOffsetY);
@@ -29,11 +30,16 @@ public:
 	bool getPlayerIsAttacking() { return bIsAttacking; }
 	void setPlayerIsAttacking(bool newBool) { bIsAttacking = newBool; }
 
+	bool getForceAnimation() { return bForceAnimation; }
+	void setForceAnimation(bool newBool) { bForceAnimation = newBool;}
+
 	float getGraphicTimer() { return fGraphicTimer; }
 	void setGraphicTimer(float newTimer) { fGraphicTimer = newTimer; }
 	void incGraphicCounter() { iGraphicCounter++; }
 	void setGraphicCounter(float newCounter) { iGraphicCounter = newCounter; }
 	int getGraphicCounter() { return iGraphicCounter; }
+	const std::pair<float, float> getPlayerPos() { return std::pair<float, float>(fPlayerPosX, fPlayerPosY); };
+	bool IsDoor();
 
 	enum { RIGHT = 0, LEFT = 1} eFacingDirection;
 	
@@ -44,6 +50,7 @@ public:
 
 private:
 	olc::PixelGameEngine& pge;
+	Level& lvl;
 	olc::Sprite* spr;
 	bool bSoundOn;
 	float fWidth;
@@ -57,6 +64,7 @@ private:
 	float fPlayerVelY;
 	bool bPlayerOnGround;
 	bool bIsAttacking;
+	bool bForceAnimation;
 	
 	
 	
