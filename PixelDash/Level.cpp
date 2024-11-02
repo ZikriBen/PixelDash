@@ -159,10 +159,6 @@ bool Level::isDoor(float x, float y) {
 		if (decor.first == 'D') 
 			for (const auto& door : decor.second) 
 			{
-				std::cout << "PlayerPosX: " << x << std::endl;
-				std::cout << "PlayerPosY: " << y << std::endl;
-				std::cout << "DoorPosX: " << door.first << std::endl;
-				std::cout << "DoorPosY: " << door.second << std::endl;
 				if(std::abs(x - door.first) < 0.5 && std::abs(y - door.second) < 0.5)
 					return true;
 			}

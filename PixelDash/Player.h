@@ -66,6 +66,7 @@ private:
 	bool bPlayerOnGround;
 	bool bIsAttacking;
 	bool bForceAnimation;
+	float fAttackOffsetCorrection;
 	
 	
 	

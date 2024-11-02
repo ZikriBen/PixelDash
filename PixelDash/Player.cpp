@@ -16,6 +16,7 @@ Player::Player(olc::PixelGameEngine& pge, Level& lvl) : pge(pge), lvl(lvl), eLif
 	bPlayerOnGround = false;
 	bIsAttacking = false;
 	bForceAnimation = false;
+	
 	eFacingDirection = Player::RIGHT;
 	animations = {
 		{AnimationState::IDLE, {11, 37, 28, 0.1f, 4, 41, 0, 16}},
@@ -26,13 +27,15 @@ Player::Player(olc::PixelGameEngine& pge, Level& lvl) : pge(pge), lvl(lvl), eLif
 		{AnimationState::DOOR_IN,  {8, 39, 42, 0.1f, -11, 41, 290, 0}},
 		{AnimationState::DOOR_OUT,  {8, 41, 42, 0.1f, -11, 35, 348, 0}}
 	};
+
+	fAttackOffsetCorrection = animations[AnimationState::ATTACK].frameWidth - fWidth;
 }
 
 void Player::Update(float fElapsedTime) {
 	setGraphicTimer(getGraphicTimer() + fElapsedTime);
 	currentAnimation = animations[eGraphicState];
 
-	if (bForceAnimation) {
+	if (bIsAttacking) {
 
 		// Play attack animation until the last frame, then reset
 		if (getGraphicTimer() > currentAnimation.frameDuration) {
@@ -64,20 +67,32 @@ void Player::Update(float fElapsedTime) {
 }
 
 void Player::Draw(float fOffsetX, float fOffsetY) {
-	
+	int offsetCorrection = 0;
+	float hitboxX = ((fPlayerPosX - fOffsetX) * 32) + fWidth;;
+
+	if (eFacingDirection == LEFT) {
+		offsetCorrection = currentAnimation.frameWidth - fWidth;
+		hitboxX = ((fPlayerPosX - fOffsetX) * 32) - offsetCorrection;
+	}
+
 	pge.SetPixelMode(olc::Pixel::MASK);
+
 	pge.DrawPartialSprite(
-		(fPlayerPosX - fOffsetX) * 32,
-		((fPlayerPosY - fOffsetY) * 32) + currentAnimation.iOffsetPosY, // +4
+		((fPlayerPosX - fOffsetX) * 32) - offsetCorrection,
+		((fPlayerPosY - fOffsetY) * 32) + currentAnimation.iOffsetPosY,
 		spr,
-		(currentAnimation.iSprOffsetX + currentAnimation.frameWidth) * (float)(iGraphicCounter), // 41 + 37
-		currentAnimation.iSpecialOffsetY + currentAnimation.iSprOffsetY, // 16
-		currentAnimation.frameWidth, // 37
-		currentAnimation.frameHeight, //28
+		((currentAnimation.iSprOffsetX + currentAnimation.frameWidth) * (float)(iGraphicCounter)), 
+		currentAnimation.iSpecialOffsetY + currentAnimation.iSprOffsetY,
+		currentAnimation.frameWidth,
+		currentAnimation.frameHeight,
 		1,
 		eFacingDirection
 	);
 	pge.SetPixelMode(olc::Pixel::NORMAL);
+	
+	pge.DrawRect((fPlayerPosX - fOffsetX) * 32, ((fPlayerPosY - fOffsetY) * 32) + currentAnimation.iOffsetPosY, currentAnimation.frameWidth, currentAnimation.frameHeight);
+	pge.DrawRect(hitboxX, (fPlayerPosY - fOffsetY) * 32, 22, 30, olc::RED);
+
 }
 
 bool Player::IsDoor() {
