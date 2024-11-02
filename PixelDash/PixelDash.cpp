@@ -163,6 +163,7 @@ public:
 		float fTileOffsetX = (fOffsetX - (int)fOffsetX) * nTileWidth;
 		float fTileOffsetY = (fOffsetY - (int)fOffsetY) * nTileHeight;
 		
+		lb->Update(fElapsedTime);
 		lb->Draw(nVisibleTilesX, nVisibleTilesY, fOffsetX, fOffsetY, fTileOffsetX, fTileOffsetY);
 		player->Update(fElapsedTime);
 		

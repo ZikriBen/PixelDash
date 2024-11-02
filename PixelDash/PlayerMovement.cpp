@@ -18,9 +18,9 @@ void PlayerMovement::Update(float fElapsedTime)
 			player.eGraphicState = Player::AnimationState::DOOR_IN;
 			player.setForceAnimation(true);
 			player.setPlayerIsAttacking(true);
-			player.setGraphicCounter(0);  // Reset counter to start the attack animation from frame 0
-			player.setGraphicTimer(0.0f); // Reset timer for consistent animation speed
-			
+			player.setGraphicCounter(0);  
+			player.setGraphicTimer(0.0f);
+			player.openDoor();
 		}
 		else {
 			if (player.getVelY() == 0)

@@ -83,3 +83,8 @@ void Player::Draw(float fOffsetX, float fOffsetY) {
 bool Player::IsDoor() {
 	return lvl.isDoor(fPlayerPosX, fPlayerPosY);
 }
+
+void Player::openDoor()
+{
+	lvl.openDoor();
+}

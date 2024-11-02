@@ -8,11 +8,13 @@ Level::Level(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int til
 	nLevelHeight(levelHeight) 
 {}
 
+
 void Level::Build()
 {
 	moveAbleTiles = { L'.', L'o', L'}', L'{', L'-', L',', L'v', L't', L'/', L'e', L'u', L'z' };
 	spriteTiles = new olc::Sprite("assets/Terrain32x32.png");
 	spriteDoor = new olc::Sprite("assets/IdleDoor.png");
+	sDoorOpen = new PixelSprite(pge, "assets/DoorOpening.png", 4, 0.2, 46, 56, 0, 0);
 
 	sLevel += L"................................................................";
 	sLevel += L"................................................................";
@@ -101,6 +103,11 @@ void Level::SetTile(int x, int y, wchar_t c)
 		sLevel[y * nLevelWidth + x] = c;
 }
 
+void Level::Update(float fElapsedTime)
+{
+	sDoorOpen->Update(fElapsedTime);
+}
+
 void Level::Draw(int nVisibleTilesX, int nVisibleTilesY, float fOffsetX, float fOffsetY, float fTileOffsetX, float fTileOffsetY)
 {
 	// Draw Level with camera offset
@@ -131,9 +138,12 @@ void Level::Draw(int nVisibleTilesX, int nVisibleTilesY, float fOffsetX, float f
 
 				int screenX = (levelX - startX) * nTileWidth - fTileOffsetX;
 				int screenY = (levelY - startY) * nTileHeight - fTileOffsetY - 24;
-				pge.SetPixelMode(olc::Pixel::MASK);
-				pge.DrawSprite(screenX, screenY, spriteDoor, 1, 0);
-				pge.SetPixelMode(olc::Pixel::NORMAL);
+				sDoorOpen->setPosX(screenX);
+				sDoorOpen->setPosY(screenY);
+				sDoorOpen->Draw();
+				//pge.SetPixelMode(olc::Pixel::MASK);
+				//pge.DrawSprite(screenX, screenY, spriteDoor, 1, 0);
+				//pge.SetPixelMode(olc::Pixel::NORMAL);
 			}
 		}
 	}
@@ -158,5 +168,9 @@ bool Level::isDoor(float x, float y) {
 			}
 
 	return false;
+}
+
+void Level::openDoor() {
+	sDoorOpen->setAnimation(true);
 }
 			

@@ -4,7 +4,7 @@
 #include "Level.h";
 
 #pragma once
-class Player
+class Player 
 {
 public:
 	Player(olc::PixelGameEngine& pge, Level &lvl);
@@ -40,6 +40,7 @@ public:
 	int getGraphicCounter() { return iGraphicCounter; }
 	const std::pair<float, float> getPlayerPos() { return std::pair<float, float>(fPlayerPosX, fPlayerPosY); };
 	bool IsDoor();
+	void openDoor();
 
 	enum { RIGHT = 0, LEFT = 1} eFacingDirection;
 	

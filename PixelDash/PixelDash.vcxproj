@@ -23,12 +23,14 @@
     <ClInclude Include="Level.h" />
     <ClInclude Include="miniaudio.h" />
     <ClInclude Include="olcPGEX_MiniAudio.h" />
+    <ClInclude Include="PixelSprite.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerMovement.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="PixelDash.cpp" />
+    <ClCompile Include="PixelSprite.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerMovement.cpp" />
   </ItemGroup>
