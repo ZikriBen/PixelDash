@@ -166,8 +166,8 @@ public:
 		lb->Update(fElapsedTime);
 		lb->Draw(nVisibleTilesX, nVisibleTilesY, fOffsetX, fOffsetY, fTileOffsetX, fTileOffsetY);
 		player->Update(fElapsedTime);
-		
-		player->Draw(fOffsetX, fOffsetY);
+		player->setOffsets(fOffsetX, fOffsetY);
+		player->Draw();
 
 		return true;
 	}

@@ -1,4 +1,5 @@
 #include "Level.h"
+#include "Box.h"
 
 Level::Level(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int tileWidth, int tileHeight) : 
 	pge(pge), 
@@ -45,8 +46,8 @@ void Level::Build()
 	sDecoration += L"................................................................";
 	sDecoration += L"................................................................";
 	sDecoration += L"................................................................";
-	sDecoration += L"................B..........D....................................";
-	sDecoration += L"...................................B....BBBB....................";
+	sDecoration += L"...........................D....................................";
+	sDecoration += L"...................................B............................";
 	sDecoration += L"................................................................";
 	sDecoration += L"................................................................";
 
@@ -64,7 +65,7 @@ void Level::Build()
 			}
 			else if (cDecorID == 'B') {
 				pixelSprites[cDecorID].emplace_back(
-					new PixelSprite(pge, "assets/Box.png", 0, 0, 1, 0.2, 22, 16, 0, 0, 0, 8),
+					new Box(pge, "assets/Box.png", 0, 0, 1, 0.2, 22, 16, 0, 0, 0, 8),
 					std::make_pair(x, y)
 				);
 				/*decorPos[cDecorID].push_back({ x, y });
@@ -184,4 +185,26 @@ bool Level::isDoor(float x, float y) {
 void Level::openDoor() {
 	sDoorOpen->setAnimation(true);
 }
-			
+
+Box *Level::checkCollisionWithDecorations(const Rect& playerHitbox) {
+	// Loop through the pixelSprites decoration map
+	for (const auto& entry : pixelSprites) {
+		// For each decoration type, we might have multiple positions
+		for (const auto& spritePos : entry.second) {
+			PixelSprite* sprite = spritePos.first;
+			auto [levelX, levelY] = spritePos.second;
+
+			// If it's a Box or other interactive object, we can check for collisions
+			Box* box = dynamic_cast<Box*>(sprite);
+			if (box) {
+				Rect boxHitbox = box->getHitbox();
+
+				// Check if player and box hitboxes intersect
+				if (playerHitbox.intersects(boxHitbox)) {
+					return box;
+				}
+			}
+		}
+	}
+	return nullptr;
+}

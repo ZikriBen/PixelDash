@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Box.h" />
     <ClInclude Include="D:\Personal\PixelDash1\olcPixelGameEngine.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="miniaudio.h" />
@@ -28,6 +29,7 @@
     <ClInclude Include="PlayerMovement.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Box.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="PixelDash.cpp" />
     <ClCompile Include="PixelSprite.cpp" />

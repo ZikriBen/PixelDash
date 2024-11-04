@@ -10,7 +10,7 @@ public:
 	Player(olc::PixelGameEngine& pge, Level &lvl);
 	
 	void Update(float);
-	void Draw(float fOffsetX, float fOffsetY);
+	void Draw();
 	float getWidth() { return fWidth; };
 	float getHeight() { return fHeight; };
 	float getCurrentHealth() { return fCurrentHealth; }
@@ -38,9 +38,13 @@ public:
 	void incGraphicCounter() { iGraphicCounter++; }
 	void setGraphicCounter(float newCounter) { iGraphicCounter = newCounter; }
 	int getGraphicCounter() { return iGraphicCounter; }
+	void setOffsets(float offsetX, float offsetY) { fOffsetX = offsetX; fOffsetY = offsetY; };
+	float getOffsetX() { return fOffsetX; }
+	float getOffsetY() { return fOffsetY; }
 	const std::pair<float, float> getPlayerPos() { return std::pair<float, float>(fPlayerPosX, fPlayerPosY); };
 	bool IsDoor();
 	void openDoor();
+	Rect GetAttackHitbox();
 
 	enum { RIGHT = 0, LEFT = 1} eFacingDirection;
 	
@@ -67,7 +71,12 @@ private:
 	bool bIsAttacking;
 	bool bForceAnimation;
 	float fAttackOffsetCorrection;
-	
+	int hitBoxWidth = 22;
+	int hitBoxHeight = 30;
+	int nOffsetCorrection = 0;
+	float fOffsetX;
+	float fOffsetY;
+	float totalTime = 0.0f;
 	
 	
 	struct Animation {

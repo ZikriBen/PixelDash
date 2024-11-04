@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Box.h"
 
 Player::Player(olc::PixelGameEngine& pge, Level& lvl) : pge(pge), lvl(lvl), eLifeState(Player::ALIVE), bSoundOn(true) {
 	spr = new olc::Sprite("assets/IdleRun.png");
@@ -32,6 +33,7 @@ Player::Player(olc::PixelGameEngine& pge, Level& lvl) : pge(pge), lvl(lvl), eLif
 }
 
 void Player::Update(float fElapsedTime) {
+	totalTime += fElapsedTime;
 	setGraphicTimer(getGraphicTimer() + fElapsedTime);
 	currentAnimation = animations[eGraphicState];
 
@@ -52,6 +54,10 @@ void Player::Update(float fElapsedTime) {
 					bIsAttacking = false;
 			}
 		}
+
+		Box *b = lvl.checkCollisionWithDecorations(GetAttackHitbox());
+		if (b)
+			b->hit(totalTime);
 	}
 	else {
 		// Regular state logic for idle, run, jump, etc.
@@ -66,19 +72,19 @@ void Player::Update(float fElapsedTime) {
 	}
 }
 
-void Player::Draw(float fOffsetX, float fOffsetY) {
-	int offsetCorrection = 0;
+void Player::Draw() {
+	nOffsetCorrection = 0;
 	float hitboxX = ((fPlayerPosX - fOffsetX) * 32) + fWidth;;
 
 	if (eFacingDirection == LEFT) {
-		offsetCorrection = currentAnimation.frameWidth - fWidth;
-		hitboxX = ((fPlayerPosX - fOffsetX) * 32) - offsetCorrection;
+		nOffsetCorrection = currentAnimation.frameWidth - fWidth;
+		hitboxX = ((fPlayerPosX - fOffsetX) * 32) - nOffsetCorrection;
 	}
 
 	pge.SetPixelMode(olc::Pixel::MASK);
 
 	pge.DrawPartialSprite(
-		((fPlayerPosX - fOffsetX) * 32) - offsetCorrection,
+		((fPlayerPosX - fOffsetX) * 32) - nOffsetCorrection,
 		((fPlayerPosY - fOffsetY) * 32) + currentAnimation.iOffsetPosY,
 		spr,
 		((currentAnimation.iSprOffsetX + currentAnimation.frameWidth) * (float)(iGraphicCounter)), 
@@ -91,7 +97,7 @@ void Player::Draw(float fOffsetX, float fOffsetY) {
 	pge.SetPixelMode(olc::Pixel::NORMAL);
 	
 	pge.DrawRect((fPlayerPosX - fOffsetX) * 32, ((fPlayerPosY - fOffsetY) * 32) + currentAnimation.iOffsetPosY, currentAnimation.frameWidth, currentAnimation.frameHeight);
-	pge.DrawRect(hitboxX, (fPlayerPosY - fOffsetY) * 32, 22, 30, olc::RED);
+	pge.DrawRect(GetAttackHitbox().x, GetAttackHitbox().y, hitBoxWidth, hitBoxHeight, olc::RED);
 }
 
 bool Player::IsDoor() {
@@ -101,4 +107,16 @@ bool Player::IsDoor() {
 void Player::openDoor()
 {
 	lvl.openDoor();
+}
+
+Rect Player::GetAttackHitbox() {
+	nOffsetCorrection = 0;
+	float hitboxX = ((fPlayerPosX - fOffsetX) * 32) + fWidth;;
+
+	if (eFacingDirection == LEFT) {
+		nOffsetCorrection = currentAnimation.frameWidth - fWidth;
+		hitboxX = ((fPlayerPosX - fOffsetX) * 32) - nOffsetCorrection;
+	}
+	
+	return Rect(hitboxX, (fPlayerPosY - fOffsetY) * 32, hitBoxWidth, hitBoxHeight);
 }
