@@ -7,6 +7,7 @@ class PixelSprite
 {
 public:
 	PixelSprite(olc::PixelGameEngine& pge, std::string sprPath, int numFrames, float frameDuration, int width, int height, int ox, int oy);
+	PixelSprite(olc::PixelGameEngine& pge, std::string sprPath, float posx, float posy, int numFrames, float frameDuration, int width, int height, int ox, int oy, float offsetPosX, float offsetPosY);
 	virtual ~PixelSprite();
 	virtual void Update(float);
 	virtual void Draw();
@@ -23,6 +24,10 @@ public:
 	int getGraphicCounter() { return iGraphicCounter; }
 	void setAnimation(bool animate) { bIsAnimate = animate; };
 	void setLoop(bool loop) { bIsLoop = loop; };
+	float getOffsetPosX() { return fPosOffsetX; };
+	float getOffsetPosY() { return fPosOffsetY; };
+	void setOffsetPosX(float offsetX) { fPosOffsetX = offsetX; };
+	void setOffsetPosY(float offsetY) { fPosOffsetY = offsetY; };
 
 private:
 	olc::PixelGameEngine& pge;
@@ -35,6 +40,8 @@ private:
 	float fPosY;
 	float fOffsetX;
 	float fOffsetY;
+	float fPosOffsetX;
+	float fPosOffsetY;
 	float fWidth;
 	float fHeight;
 	int iScale;

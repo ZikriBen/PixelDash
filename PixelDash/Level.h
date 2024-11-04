@@ -24,6 +24,8 @@ private:
 	olc::Sprite* spriteTiles = nullptr;
 	olc::Sprite* spriteDoor = nullptr;
 	PixelSprite* sDoorOpen = nullptr;
+	//std::unordered_map<wchar_t, std::pair<PixelSprite*, std::pair<float, float>>> pixelSprites;
+	std::unordered_map<wchar_t, std::vector<std::pair<PixelSprite*, std::pair<float, float>>>> pixelSprites;
 
 public:
 	Level(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int tileWidth, int tileHeight);

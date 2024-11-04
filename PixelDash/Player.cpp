@@ -92,7 +92,6 @@ void Player::Draw(float fOffsetX, float fOffsetY) {
 	
 	pge.DrawRect((fPlayerPosX - fOffsetX) * 32, ((fPlayerPosY - fOffsetY) * 32) + currentAnimation.iOffsetPosY, currentAnimation.frameWidth, currentAnimation.frameHeight);
 	pge.DrawRect(hitboxX, (fPlayerPosY - fOffsetY) * 32, 22, 30, olc::RED);
-
 }
 
 bool Player::IsDoor() {

@@ -45,8 +45,8 @@ void Level::Build()
 	sDecoration += L"................................................................";
 	sDecoration += L"................................................................";
 	sDecoration += L"................................................................";
-	sDecoration += L"...........................D....................................";
-	sDecoration += L"................................................................";
+	sDecoration += L"................B..........D....................................";
+	sDecoration += L"...................................B....BBBB....................";
 	sDecoration += L"................................................................";
 	sDecoration += L"................................................................";
 
@@ -56,8 +56,19 @@ void Level::Build()
 		for (int y = 0; y < nLevelHeight; ++y)
 		{
 			wchar_t cDecorID = sDecoration[y * nLevelWidth + x];
-			if (cDecorID != '.') {
-				decorPos[cDecorID].push_back({ x, y });
+			if (cDecorID == 'D') {
+				pixelSprites[cDecorID].emplace_back(
+					new PixelSprite(pge, "assets/DoorOpening.png", 4, 0.2, 46, 56, 0, 0),
+					std::make_pair(x, y)
+				);
+			}
+			else if (cDecorID == 'B') {
+				pixelSprites[cDecorID].emplace_back(
+					new PixelSprite(pge, "assets/Box.png", 0, 0, 1, 0.2, 22, 16, 0, 0, 0, 8),
+					std::make_pair(x, y)
+				);
+				/*decorPos[cDecorID].push_back({ x, y });
+				pixelSprites[cDecorID] = { new PixelSprite(pge, "assets/Box.png", 0, 0, 1, 0.2, 22, 16, 0, 0, 0, 8), { x, y } };*/
 			}
 		}
 	}
@@ -105,7 +116,15 @@ void Level::SetTile(int x, int y, wchar_t c)
 
 void Level::Update(float fElapsedTime)
 {
-	sDoorOpen->Update(fElapsedTime);
+	for (const auto& entry : pixelSprites) {
+		for (const auto& spritePos : entry.second) {
+			PixelSprite* sprite = spritePos.first;
+			if (spritePos.first) {
+				spritePos.first->Update(fElapsedTime);
+			}
+		}
+	}
+	//sDoorOpen->Update(fElapsedTime);
 }
 
 void Level::Draw(int nVisibleTilesX, int nVisibleTilesY, float fOffsetX, float fOffsetY, float fTileOffsetX, float fTileOffsetY)
@@ -126,24 +145,20 @@ void Level::Draw(int nVisibleTilesX, int nVisibleTilesY, float fOffsetX, float f
 	int startX = static_cast<int>(fOffsetX);  // Leftmost visible tile in the level
 	int startY = static_cast<int>(fOffsetY);  // Topmost visible tile in the level
 
-	for (const auto& entry : decorPos) {
-		wchar_t decorID = entry.first;
+	for (const auto& entry : pixelSprites) {
+		for (const auto& spritePos : entry.second) {
+			PixelSprite* sprite = spritePos.first;
+			auto [levelX, levelY] = spritePos.second;
 
-		for (const auto& pos : entry.second) {
-			int levelX = pos.first;
-			int levelY = pos.second;
-
-			if (levelX >= startX && levelX < startX + nVisibleTilesX + 1 &&
-				levelY >= startY && levelY < startY + nVisibleTilesY) {
-
-				int screenX = (levelX - startX) * nTileWidth - fTileOffsetX;
-				int screenY = (levelY - startY) * nTileHeight - fTileOffsetY - 24;
-				sDoorOpen->setPosX(screenX);
-				sDoorOpen->setPosY(screenY);
-				sDoorOpen->Draw();
-				//pge.SetPixelMode(olc::Pixel::MASK);
-				//pge.DrawSprite(screenX, screenY, spriteDoor, 1, 0);
-				//pge.SetPixelMode(olc::Pixel::NORMAL);
+			if (sprite) {
+				if (levelX >= startX && levelX < startX + nVisibleTilesX + 1 &&
+					levelY >= startY && levelY < startY + nVisibleTilesY) {
+					int screenX = (levelX - startX) * nTileWidth - fTileOffsetX;
+					int screenY = (levelY - startY) * nTileHeight - fTileOffsetY - 24;
+					sprite->setPosX(screenX);
+					sprite->setPosY(screenY);
+					sprite->Draw();
+				}
 			}
 		}
 	}
