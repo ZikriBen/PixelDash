@@ -2,9 +2,6 @@
 #define BOX_H
 
 #include "PixelSprite.h"
-#include "Level.h"
-
-class Rect;
 
 class Box : public PixelSprite {
 public:
@@ -16,7 +13,6 @@ public:
     Box(olc::PixelGameEngine& pge, std::string sprPath, float posx, float posy, int numFrames, float frameDuration, int width, int height, int ox, int oy, float offsetPosX, float offsetPosY)
         : PixelSprite(pge, sprPath, posx, posy, numFrames, frameDuration, width, height, ox, oy, offsetPosX, offsetPosY) {}
 
-    Rect getHitbox();
     void hit(float);
 private:
     float lastHitTime = -1.0;      // Tracks the last time this box was hit

@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "Box.h"
+#include "Coin.h"
 
 Player::Player(olc::PixelGameEngine& pge, Level& lvl) : pge(pge), lvl(lvl), eLifeState(Player::ALIVE), bSoundOn(true) {
 	spr = new olc::Sprite("assets/IdleRun.png");
@@ -37,6 +38,15 @@ void Player::Update(float fElapsedTime) {
 	setGraphicTimer(getGraphicTimer() + fElapsedTime);
 	currentAnimation = animations[eGraphicState];
 
+	if (PixelSprite* ps = lvl.checkCollisionWithDecorations(getPlayerRect())) {
+		if (Coin* c = dynamic_cast<Coin*>(ps)) {
+			if (!c->isCollected()) {
+				c->collect();
+				lvl.removeDecoration(c);
+			}
+		}
+	}
+
 	if (bIsAttacking) {
 
 		// Play attack animation until the last frame, then reset
@@ -55,12 +65,13 @@ void Player::Update(float fElapsedTime) {
 			}
 		}
 
-		Box *b = lvl.checkCollisionWithDecorations(GetAttackHitbox());
-		if (b)
-			b->hit(totalTime);
+		if (PixelSprite* ps = lvl.checkCollisionWithDecorations(GetAttackHitbox())) {
+			if (Box* b = dynamic_cast<Box*>(ps)) {
+				b->hit(totalTime);
+			}
+		}
 	}
 	else {
-		// Regular state logic for idle, run, jump, etc.
 		if (currentAnimation.iNumFrames > 1 && getGraphicTimer() > currentAnimation.frameDuration) {
 			setGraphicTimer(getGraphicTimer() - currentAnimation.frameDuration);
 			incGraphicCounter();
@@ -96,7 +107,7 @@ void Player::Draw() {
 	);
 	pge.SetPixelMode(olc::Pixel::NORMAL);
 	
-	pge.DrawRect((fPlayerPosX - fOffsetX) * 32, ((fPlayerPosY - fOffsetY) * 32) + currentAnimation.iOffsetPosY, currentAnimation.frameWidth, currentAnimation.frameHeight);
+	pge.DrawRect(getPlayerRect().x, getPlayerRect().y, currentAnimation.frameWidth, currentAnimation.frameHeight);
 	pge.DrawRect(GetAttackHitbox().x, GetAttackHitbox().y, hitBoxWidth, hitBoxHeight, olc::RED);
 }
 
@@ -107,6 +118,15 @@ bool Player::IsDoor() {
 void Player::openDoor()
 {
 	lvl.openDoor();
+}
+
+Rect Player::getPlayerRect() {
+	return Rect(
+		((fPlayerPosX - fOffsetX) * 32) - nOffsetCorrection,
+		((fPlayerPosY - fOffsetY) * 32) + currentAnimation.iOffsetPosY,
+		(float)currentAnimation.frameWidth,
+		(float)currentAnimation.frameHeight
+	);
 }
 
 Rect Player::GetAttackHitbox() {

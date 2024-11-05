@@ -71,7 +71,11 @@ void PixelSprite::Draw()
 		fOffsetY,
 		fWidth,
 		fHeight,
-        1,
+        iScale,
         0);
 	pge.SetPixelMode(olc::Pixel::NORMAL);
+}
+
+Rect PixelSprite::getRect() {
+    return Rect(getPosX(), getPosY(), getWidth(), getHeight());
 }

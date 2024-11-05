@@ -2,6 +2,10 @@
 #define PIXEL_SPRITE_H
 
 #include "olcPixelGameEngine.h"
+#include "Level.h"
+
+struct Rect;
+
 #pragma once
 class PixelSprite 
 {
@@ -24,10 +28,12 @@ public:
 	int getGraphicCounter() { return iGraphicCounter; }
 	void setAnimation(bool animate) { bIsAnimate = animate; };
 	void setLoop(bool loop) { bIsLoop = loop; };
+	void setScale(int scale) { iScale = scale; };
 	float getOffsetPosX() { return fPosOffsetX; };
 	float getOffsetPosY() { return fPosOffsetY; };
 	void setOffsetPosX(float offsetX) { fPosOffsetX = offsetX; };
 	void setOffsetPosY(float offsetY) { fPosOffsetY = offsetY; };
+	Rect getRect();
 
 private:
 	olc::PixelGameEngine& pge;

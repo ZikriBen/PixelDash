@@ -1,5 +1,6 @@
 #include "Level.h"
 #include "Box.h"
+#include "Coin.h"
 
 Level::Level(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int tileWidth, int tileHeight) : 
 	pge(pge), 
@@ -43,10 +44,10 @@ void Level::Build()
 	sDecoration += L"................................................................";
 	sDecoration += L"................................................................";
 	sDecoration += L"................................................................";
+	sDecoration += L".....OOOO.......................................................";
 	sDecoration += L"................................................................";
-	sDecoration += L"................................................................";
-	sDecoration += L"................................................................";
-	sDecoration += L"...........................D....................................";
+	sDecoration += L".......................................OOOO.....................";
+	sDecoration += L"...........................D...........OOOO.....................";
 	sDecoration += L"...................................B............................";
 	sDecoration += L"................................................................";
 	sDecoration += L"................................................................";
@@ -70,6 +71,15 @@ void Level::Build()
 				);
 				/*decorPos[cDecorID].push_back({ x, y });
 				pixelSprites[cDecorID] = { new PixelSprite(pge, "assets/Box.png", 0, 0, 1, 0.2, 22, 16, 0, 0, 0, 8), { x, y } };*/
+			}
+			else if (cDecorID == 'O') {
+				Coin* c = new Coin(pge, "assets/BigDiamond.png", 0, 0, 9, 0.1, 18, 14, 2, 0, 0, 8);
+				c->setAnimation(true);
+				c->setLoop(true);
+				pixelSprites[cDecorID].emplace_back(
+					c,
+					std::make_pair(x, y)
+				);
 			}
 		}
 	}
@@ -171,22 +181,30 @@ bool Level::isMoveable(int x, int y)
 }
 
 bool Level::isDoor(float x, float y) {
-	for (const auto& decor : decorPos) 
-		if (decor.first == 'D') 
-			for (const auto& door : decor.second) 
-			{
-				if(std::abs(x - door.first) < 0.5 && std::abs(y - door.second) < 0.5)
-					return true;
-			}
+	auto it = pixelSprites.find('D');
+	if (it == pixelSprites.end()) {
+		return false; 
+	}
 
-	return false;
+	// Iterate through each door's position in the vector
+	for (const auto& entry : it->second) {
+		PixelSprite* sprite = entry.first; // Get the PixelSprite pointer (door sprite)
+		auto [doorX, doorY] = entry.second; // Get the door position
+
+		// Check if the player is within 0.5 units of the door position
+		if (std::abs(x - doorX) < 0.5 && std::abs(y - doorY) < 0.5) {
+			return true; // Player is at the door
+		}
+	}
+
+	return false; 
 }
 
 void Level::openDoor() {
 	sDoorOpen->setAnimation(true);
 }
 
-Box *Level::checkCollisionWithDecorations(const Rect& playerHitbox) {
+PixelSprite*Level::checkCollisionWithDecorations(const Rect& playerRect) {
 	// Loop through the pixelSprites decoration map
 	for (const auto& entry : pixelSprites) {
 		// For each decoration type, we might have multiple positions
@@ -195,16 +213,25 @@ Box *Level::checkCollisionWithDecorations(const Rect& playerHitbox) {
 			auto [levelX, levelY] = spritePos.second;
 
 			// If it's a Box or other interactive object, we can check for collisions
-			Box* box = dynamic_cast<Box*>(sprite);
-			if (box) {
-				Rect boxHitbox = box->getHitbox();
 
-				// Check if player and box hitboxes intersect
-				if (playerHitbox.intersects(boxHitbox)) {
-					return box;
-				}
+			Rect hitbox = sprite->getRect();
+
+			// Check if player and box hitboxes intersect
+			if (playerRect.intersects(hitbox)) {
+				return sprite;
 			}
 		}
 	}
 	return nullptr;
+}
+
+void Level::removeDecoration(PixelSprite* decoration) {
+	for (auto& entry : pixelSprites) {
+		auto& vec = entry.second;
+		vec.erase(std::remove_if(vec.begin(), vec.end(),
+			[decoration](const std::pair<PixelSprite*, std::pair<float, float>>& item) {
+				return item.first == decoration;
+			}), vec.end());
+	}
+	delete decoration;  // Free memory if the decoration was dynamically allocated
 }

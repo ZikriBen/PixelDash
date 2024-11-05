@@ -45,6 +45,7 @@ public:
 	bool IsDoor();
 	void openDoor();
 	Rect GetAttackHitbox();
+	Rect getPlayerRect();
 
 	enum { RIGHT = 0, LEFT = 1} eFacingDirection;
 	

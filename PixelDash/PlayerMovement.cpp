@@ -25,7 +25,7 @@ void PlayerMovement::Update(float fElapsedTime)
 		else {
 			if (player.getVelY() == 0)
 			{
-				player.setVelY(-8.0f);
+				player.setVelY(-9.5f);
 			}
 		}
 		

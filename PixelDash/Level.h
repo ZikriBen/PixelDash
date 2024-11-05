@@ -5,7 +5,6 @@
 #include "olcPixelGameEngine.h"
 #include "PixelSprite.h"
 #include <unordered_set>
-#include "Box.h"
 
 #pragma once
 
@@ -21,8 +20,7 @@ struct Rect {
 	}
 };
 
-class Box;
-
+class PixelSprite;
 class Level
 {
 
@@ -35,13 +33,12 @@ private:
 	std::wstring sDecoration;
 	std::unordered_set<wchar_t> moveAbleTiles;
 	std::unordered_map<wchar_t, std::pair<int, int>> tileOffsets;
-	std::unordered_map<wchar_t, std::vector<std::pair<float, float>>> decorPos;
 	olc::PixelGameEngine& pge;
 	olc::Sprite* spriteTiles = nullptr;
 	olc::Sprite* spriteDoor = nullptr;
 	PixelSprite* sDoorOpen = nullptr;
-	//std::unordered_map<wchar_t, std::pair<PixelSprite*, std::pair<float, float>>> pixelSprites;
 	std::unordered_map<wchar_t, std::vector<std::pair<PixelSprite*, std::pair<float, float>>>> pixelSprites;
+	
 
 public:
 	Level(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int tileWidth, int tileHeight);
@@ -57,7 +54,8 @@ public:
 
 	bool isDoor(float x, float y);
 	void openDoor();
-	Box* checkCollisionWithDecorations(const Rect& playerHitbox);
+	PixelSprite* checkCollisionWithDecorations(const Rect& playerHitbox);
+	void removeDecoration(PixelSprite* decoration);
 };
 #endif // LEVEL_H
 

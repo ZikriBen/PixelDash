@@ -9,6 +9,4 @@ void Box::hit(float currentTime) {
     }
 }
 
-Rect Box::getHitbox() {
-    return Rect(getPosX(), getPosY(), getWidth(), getHeight());
-}
+
