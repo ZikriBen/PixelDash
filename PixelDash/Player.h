@@ -2,6 +2,8 @@
 #define PLAYER_H
 #include "olcPixelGameEngine.h"
 #include "Level.h";
+#include "Box.h"
+#include "Coin.h"
 
 #pragma once
 class Player 
@@ -44,6 +46,7 @@ public:
 	const std::pair<float, float> getPlayerPos() { return std::pair<float, float>(fPlayerPosX, fPlayerPosY); };
 	bool IsDoor();
 	void openDoor();
+	void attack();
 	Rect GetAttackHitbox();
 	Rect getPlayerRect();
 
@@ -79,6 +82,8 @@ private:
 	float fOffsetY;
 	float totalTime = 0.0f;
 	
+	void handleForceAnimation();
+	void handleContinousAnimation();
 	
 	struct Animation {
 		int iNumFrames;    // Number of frames in the animation

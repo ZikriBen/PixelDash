@@ -1,6 +1,4 @@
 #include "Player.h"
-#include "Box.h"
-#include "Coin.h"
 
 Player::Player(olc::PixelGameEngine& pge, Level& lvl) : pge(pge), lvl(lvl), eLifeState(Player::ALIVE), bSoundOn(true) {
 	spr = new olc::Sprite("assets/IdleRun.png");
@@ -38,6 +36,12 @@ void Player::Update(float fElapsedTime) {
 	setGraphicTimer(getGraphicTimer() + fElapsedTime);
 	currentAnimation = animations[eGraphicState];
 
+	nOffsetCorrection = 0;
+
+	if (eFacingDirection == LEFT) {
+		nOffsetCorrection = currentAnimation.frameWidth - fWidth;
+	}
+
 	if (PixelSprite* ps = lvl.checkCollisionWithDecorations(getPlayerRect())) {
 		if (Coin* c = dynamic_cast<Coin*>(ps)) {
 			if (!c->isCollected()) {
@@ -48,53 +52,14 @@ void Player::Update(float fElapsedTime) {
 	}
 
 	if (bForceAnimation) {
-
-		// Play animation until the last frame, then reset
-		if (getGraphicTimer() > currentAnimation.frameDuration) {
-			setGraphicTimer(getGraphicTimer() - currentAnimation.frameDuration);
-			incGraphicCounter();
-
-			if (getGraphicCounter() >= currentAnimation.iNumFrames) {
-				// Attack animation is complete, reset counter and switch back to idle/run
-				setGraphicCounter(0); // Reset the counter
-				eGraphicState = (std::abs(getVelX()) >= 0.5f) ? AnimationState::RUN : AnimationState::IDLE;
-				currentAnimation = animations[eGraphicState]; // Force update to new animation
-				bForceAnimation = false;
-
-				if (bIsAttacking) {
-					if (PixelSprite* ps = lvl.checkCollisionWithDecorations(GetAttackHitbox())) {
-						if (Box* b = dynamic_cast<Box*>(ps)) {
-							b->hit(totalTime);
-						}
-					}
-					bIsAttacking = false;
-				}
-			}
-		}
-
-		
+		handleForceAnimation();
 	}
 	else {
-		if (currentAnimation.iNumFrames > 1 && getGraphicTimer() > currentAnimation.frameDuration) {
-			setGraphicTimer(getGraphicTimer() - currentAnimation.frameDuration);
-			incGraphicCounter();
-			setGraphicCounter(getGraphicCounter() % currentAnimation.iNumFrames); // Wrap within valid frame range
-		}
-		else if (currentAnimation.iNumFrames == 1) {
-			setGraphicCounter(0);
-		}
+		handleContinousAnimation();
 	}
 }
 
 void Player::Draw() {
-	nOffsetCorrection = 0;
-	float hitboxX = ((fPlayerPosX - fOffsetX) * 32) + fWidth;;
-
-	if (eFacingDirection == LEFT) {
-		nOffsetCorrection = currentAnimation.frameWidth - fWidth;
-		hitboxX = ((fPlayerPosX - fOffsetX) * 32) - nOffsetCorrection;
-	}
-
 	pge.SetPixelMode(olc::Pixel::MASK);
 
 	pge.DrawPartialSprite(
@@ -136,6 +101,14 @@ Rect Player::getPlayerRect() {
 	);
 }
 
+void Player::attack() {
+	eGraphicState = Player::AnimationState::ATTACK;
+	setPlayerIsAttacking(true);
+	setForceAnimation(true);
+	setGraphicCounter(0);  // Reset counter to start the attack animation from frame 0
+	setGraphicTimer(0.0f); // Reset timer for consistent animation speed
+}
+
 Rect Player::GetAttackHitbox() {
 	nOffsetCorrection = 0;
 	float hitboxX = ((fPlayerPosX - fOffsetX) * 32) + fWidth;;
@@ -146,4 +119,41 @@ Rect Player::GetAttackHitbox() {
 	}
 	
 	return Rect(hitboxX, (fPlayerPosY - fOffsetY) * 32, hitBoxWidth, hitBoxHeight);
+}
+
+void Player::handleForceAnimation() {
+	// Play animation until the last frame, then reset
+	if (getGraphicTimer() > currentAnimation.frameDuration) {
+		setGraphicTimer(getGraphicTimer() - currentAnimation.frameDuration);
+		incGraphicCounter();
+
+		if (getGraphicCounter() >= currentAnimation.iNumFrames) {
+			// Attack animation is complete, reset counter and switch back to idle/run
+			setGraphicCounter(0); // Reset the counter
+			eGraphicState = (std::abs(getVelX()) >= 0.5f) ? AnimationState::RUN : AnimationState::IDLE;
+			currentAnimation = animations[eGraphicState]; // Force update to new animation
+			bForceAnimation = false;
+
+			if (bIsAttacking) {
+				if (PixelSprite* ps = lvl.checkCollisionWithDecorations(GetAttackHitbox())) {
+					if (Box* b = dynamic_cast<Box*>(ps)) {
+						b->hit(totalTime);
+					}
+				}
+				
+				bIsAttacking = false;
+			}
+		}
+	}
+}
+
+void Player::handleContinousAnimation() {
+	if (currentAnimation.iNumFrames > 1 && getGraphicTimer() > currentAnimation.frameDuration) {
+		setGraphicTimer(getGraphicTimer() - currentAnimation.frameDuration);
+		incGraphicCounter();
+		setGraphicCounter(getGraphicCounter() % currentAnimation.iNumFrames); // Wrap within valid frame range
+	}
+	else if (currentAnimation.iNumFrames == 1) {
+		setGraphicCounter(0);
+	}
 }

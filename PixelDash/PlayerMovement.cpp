@@ -1,8 +1,5 @@
 #include "PlayerMovement.h"
 
-void PlayerMovement::ManageSpaceKey(float fElapsedTime)
-{
-}
 
 PlayerMovement::PlayerMovement(olc::PixelGameEngine& pge, Player& player) : pge(pge), player(player) {}
 
@@ -47,11 +44,7 @@ void PlayerMovement::Update(float fElapsedTime)
 
 	if (pge.GetKey(olc::Key::SPACE).bPressed && !player.getPlayerIsAttacking())
 	{
-		player.eGraphicState = Player::AnimationState::ATTACK;
-		player.setPlayerIsAttacking(true);
-		player.setForceAnimation(true);
-		player.setGraphicCounter(0);  // Reset counter to start the attack animation from frame 0
-		player.setGraphicTimer(0.0f); // Reset timer for consistent animation speed
+		player.attack();
 	}
 
 	if (pge.GetKey(olc::Key::E).bPressed)

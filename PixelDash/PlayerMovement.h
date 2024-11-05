@@ -11,8 +11,6 @@ class PlayerMovement
 
 private:
 	bool bEnable = true;
-	void ManageSpaceKey(float fElapsedTime);
-
 
 public:
 	PlayerMovement(olc::PixelGameEngine& pge, Player& player);
