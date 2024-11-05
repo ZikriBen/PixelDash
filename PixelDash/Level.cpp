@@ -16,7 +16,8 @@ void Level::Build()
 	moveAbleTiles = { L'.', L'o', L'}', L'{', L'-', L',', L'v', L't', L'/', L'e', L'u', L'z' };
 	spriteTiles = new olc::Sprite("assets/Terrain32x32.png");
 	spriteDoor = new olc::Sprite("assets/IdleDoor.png");
-	sDoorOpen = new PixelSprite(pge, "assets/DoorOpening.png", 4, 0.2, 46, 56, 0, 0);
+	liveBar = new olc::Sprite("assets/LiveBar.png");
+	smallHeart = new olc::Sprite("assets/SmallHeart.png"); 
 
 	sLevel += L"................................................................";
 	sLevel += L"................................................................";
@@ -135,11 +136,11 @@ void Level::Update(float fElapsedTime)
 			}
 		}
 	}
-	//sDoorOpen->Update(fElapsedTime);
 }
 
 void Level::Draw(int nVisibleTilesX, int nVisibleTilesY, float fOffsetX, float fOffsetY, float fTileOffsetX, float fTileOffsetY)
 {
+	
 	// Draw Level with camera offset
 	for (int x = -1; x < nVisibleTilesX + 1; ++x)
 	{
@@ -173,6 +174,16 @@ void Level::Draw(int nVisibleTilesX, int nVisibleTilesY, float fOffsetX, float f
 			}
 		}
 	}
+	DrawHUD();
+}
+
+void Level::DrawHUD() {
+	pge.SetPixelMode(olc::Pixel::MASK);
+	pge.DrawSprite(0, 1, liveBar, 1, 0);
+	pge.DrawPartialSprite(11, 11, smallHeart, 0, 0, 18, 14, 1, 0);
+	pge.DrawPartialSprite(22, 11, smallHeart, 0, 0, 18, 14, 1, 0);
+	pge.DrawPartialSprite(33, 11, smallHeart, 0, 0, 18, 14, 1, 0);
+	pge.SetPixelMode(olc::Pixel::NORMAL);
 }
 
 bool Level::isMoveable(int x, int y)

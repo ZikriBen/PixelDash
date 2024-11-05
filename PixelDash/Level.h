@@ -37,7 +37,11 @@ private:
 	olc::Sprite* spriteTiles = nullptr;
 	olc::Sprite* spriteDoor = nullptr;
 	PixelSprite* sDoorOpen = nullptr;
+	olc::Sprite* liveBar = nullptr;
+	olc::Sprite* smallHeart = nullptr;
 	std::unordered_map<wchar_t, std::vector<std::pair<PixelSprite*, std::pair<float, float>>>> pixelSprites;
+	
+	void DrawHUD();
 	
 
 public:

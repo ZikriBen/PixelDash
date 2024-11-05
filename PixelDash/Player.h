@@ -81,6 +81,7 @@ private:
 	float fOffsetX;
 	float fOffsetY;
 	float totalTime = 0.0f;
+	int nScore = 0;
 	
 	void handleForceAnimation();
 	void handleContinousAnimation();
