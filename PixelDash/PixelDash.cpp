@@ -123,7 +123,7 @@ public:
 			}
 		}
 
-		if (!player->getPlayerIsAttacking()) {
+		if (!player->getForceAnimation()) {
 			if (!player->getPlayerOnGround()) {
 				if (player->getVelY() < -0.5f) {
 					player->eGraphicState = Player::AnimationState::JUMP;

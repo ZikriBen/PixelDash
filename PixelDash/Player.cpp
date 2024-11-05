@@ -47,9 +47,9 @@ void Player::Update(float fElapsedTime) {
 		}
 	}
 
-	if (bIsAttacking) {
+	if (bForceAnimation) {
 
-		// Play attack animation until the last frame, then reset
+		// Play animation until the last frame, then reset
 		if (getGraphicTimer() > currentAnimation.frameDuration) {
 			setGraphicTimer(getGraphicTimer() - currentAnimation.frameDuration);
 			incGraphicCounter();
@@ -59,17 +59,20 @@ void Player::Update(float fElapsedTime) {
 				setGraphicCounter(0); // Reset the counter
 				eGraphicState = (std::abs(getVelX()) >= 0.5f) ? AnimationState::RUN : AnimationState::IDLE;
 				currentAnimation = animations[eGraphicState]; // Force update to new animation
-				
-				if (bIsAttacking)
+				bForceAnimation = false;
+
+				if (bIsAttacking) {
+					if (PixelSprite* ps = lvl.checkCollisionWithDecorations(GetAttackHitbox())) {
+						if (Box* b = dynamic_cast<Box*>(ps)) {
+							b->hit(totalTime);
+						}
+					}
 					bIsAttacking = false;
+				}
 			}
 		}
 
-		if (PixelSprite* ps = lvl.checkCollisionWithDecorations(GetAttackHitbox())) {
-			if (Box* b = dynamic_cast<Box*>(ps)) {
-				b->hit(totalTime);
-			}
-		}
+		
 	}
 	else {
 		if (currentAnimation.iNumFrames > 1 && getGraphicTimer() > currentAnimation.frameDuration) {
@@ -117,6 +120,10 @@ bool Player::IsDoor() {
 
 void Player::openDoor()
 {
+	eGraphicState = Player::AnimationState::DOOR_IN;
+	bForceAnimation = true;
+	iGraphicCounter = 0;
+	fGraphicTimer = 0.0f;
 	lvl.openDoor();
 }
 

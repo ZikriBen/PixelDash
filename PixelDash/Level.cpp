@@ -59,8 +59,9 @@ void Level::Build()
 		{
 			wchar_t cDecorID = sDecoration[y * nLevelWidth + x];
 			if (cDecorID == 'D') {
+				sDoorOpen = new PixelSprite(pge, "assets/DoorOpening.png", 4, 0.2, 46, 56, 0, 0);
 				pixelSprites[cDecorID].emplace_back(
-					new PixelSprite(pge, "assets/DoorOpening.png", 4, 0.2, 46, 56, 0, 0),
+					sDoorOpen,
 					std::make_pair(x, y)
 				);
 			}
@@ -69,8 +70,7 @@ void Level::Build()
 					new Box(pge, "assets/Box.png", 0, 0, 1, 0.2, 22, 16, 0, 0, 0, 8),
 					std::make_pair(x, y)
 				);
-				/*decorPos[cDecorID].push_back({ x, y });
-				pixelSprites[cDecorID] = { new PixelSprite(pge, "assets/Box.png", 0, 0, 1, 0.2, 22, 16, 0, 0, 0, 8), { x, y } };*/
+				
 			}
 			else if (cDecorID == 'O') {
 				Coin* c = new Coin(pge, "assets/BigDiamond.png", 0, 0, 9, 0.1, 18, 14, 2, 0, 0, 8);

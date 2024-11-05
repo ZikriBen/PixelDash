@@ -15,11 +15,6 @@ void PlayerMovement::Update(float fElapsedTime)
 	if (pge.GetKey(olc::Key::W).bHeld || pge.GetKey(olc::Key::UP).bHeld)
 	{
 		if (player.IsDoor()) {
-			player.eGraphicState = Player::AnimationState::DOOR_IN;
-			player.setForceAnimation(true);
-			player.setPlayerIsAttacking(true);
-			player.setGraphicCounter(0);  
-			player.setGraphicTimer(0.0f);
 			player.openDoor();
 		}
 		else {
@@ -54,6 +49,7 @@ void PlayerMovement::Update(float fElapsedTime)
 	{
 		player.eGraphicState = Player::AnimationState::ATTACK;
 		player.setPlayerIsAttacking(true);
+		player.setForceAnimation(true);
 		player.setGraphicCounter(0);  // Reset counter to start the attack animation from frame 0
 		player.setGraphicTimer(0.0f); // Reset timer for consistent animation speed
 	}
