@@ -47,6 +47,15 @@ void Player::Update(float fElapsedTime) {
 			if (!c->isCollected()) {
 				c->collect();
 				lvl.removeDecoration(c);
+				earn();
+			}
+		}
+
+		else if (Heart* h = dynamic_cast<Heart*>(ps)) {
+			if (!h->isCollected()) {
+				h->collect();
+				lvl.removeDecoration(h);
+				heal();
 			}
 		}
 	}
@@ -156,4 +165,16 @@ void Player::handleContinousAnimation() {
 	else if (currentAnimation.iNumFrames == 1) {
 		setGraphicCounter(0);
 	}
+}
+
+void Player::hit() {
+	lvl.getHUD()->decrLife();
+}
+
+void Player::heal() {
+	lvl.getHUD()->incrLife();
+}
+
+void Player::earn() {
+	lvl.getHUD()->incScore(1);
 }

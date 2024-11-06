@@ -54,6 +54,16 @@ void PlayerMovement::Update(float fElapsedTime)
 
 	if (pge.GetKey(olc::Key::Q).bPressed)
 	{
-		// lets quit
+		player.hit();
+	}
+	
+	if (pge.GetKey(olc::Key::R).bPressed)
+	{
+		player.heal();
+	}
+
+	if (pge.GetKey(olc::Key::T).bPressed)
+	{
+		player.earn();
 	}
 }

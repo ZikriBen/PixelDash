@@ -2,11 +2,12 @@
 #define LEVEL_H
 #include <string>
 #include <unordered_map>
-#include <unordered_set>
 #include "olcPixelGameEngine.h"
+#include <unordered_set>
 #include "PixelSprite.h"
 #include "Box.h"
 #include "Coin.h"
+#include "Heart.h"
 #include "HUD.h"
 
 #pragma once
@@ -28,7 +29,6 @@ private:
 	olc::Sprite* spriteDoor = nullptr;
 	PixelSprite* sDoorOpen = nullptr;
 	std::unordered_map<wchar_t, std::vector<std::pair<PixelSprite*, std::pair<float, float>>>> pixelSprites;
-	
 	HUD* hud;
 
 
@@ -48,6 +48,7 @@ public:
 	void openDoor();
 	PixelSprite* checkCollisionWithDecorations(const Rect& playerHitbox);
 	void removeDecoration(PixelSprite* decoration);
+	HUD* getHUD() { return hud; }
 };
 #endif // LEVEL_H
 

@@ -47,7 +47,7 @@ void Level::Init()
 	sDecoration += L"................................................................";
 	sDecoration += L".....OOOO.......................................................";
 	sDecoration += L"................................................................";
-	sDecoration += L".......................................OOOO.....................";
+	sDecoration += L"....................H............HH....OOOO.....................";
 	sDecoration += L"...........................D...........OOOO.....................";
 	sDecoration += L"...................................B............................";
 	sDecoration += L"................................................................";
@@ -79,6 +79,15 @@ void Level::Init()
 				c->setLoop(true);
 				pixelSprites[cDecorID].emplace_back(
 					c,
+					std::make_pair(x, y)
+				);
+			}
+			else if (cDecorID == 'H') {
+				Heart* h = new Heart(pge, "assets/BigHeart.png", 0, 0, 7, 0.1, 18, 14, 2, 0, 0, 8);
+				h->setAnimation(true);
+				h->setLoop(true);
+				pixelSprites[cDecorID].emplace_back(
+					h,
 					std::make_pair(x, y)
 				);
 			}

@@ -31,6 +31,13 @@ public:
 	float getOffsetPosY() { return fPosOffsetY; };
 	void setOffsetPosX(float offsetX) { fPosOffsetX = offsetX; };
 	void setOffsetPosY(float offsetY) { fPosOffsetY = offsetY; };
+
+	float getSprOffsetX() { return fOffsetX; };
+	float getSprOffsetY() { return fOffsetY; };
+
+	void setSprOffsetX(float offsetX) { fOffsetX = offsetX; };
+	void setSprOffsetY(float offsetY) { fOffsetY = offsetY; };
+
 	Rect getRect();
 
 private:

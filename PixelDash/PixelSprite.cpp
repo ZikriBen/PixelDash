@@ -62,7 +62,7 @@ void PixelSprite::Update(float fElapsedTime)
 void PixelSprite::Draw()
 {
 	pge.SetPixelMode(olc::Pixel::MASK);
-    pge.DrawRect(fPosX + fPosOffsetX, fPosY + fPosOffsetY, fWidth, fHeight);
+    //pge.DrawRect(fPosX + fPosOffsetX, fPosY + fPosOffsetY, fWidth, fHeight);
     pge.DrawPartialSprite(
 		fPosX + fPosOffsetX,
 		fPosY + fPosOffsetY,

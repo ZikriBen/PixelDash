@@ -49,6 +49,9 @@ public:
 	void attack();
 	Rect GetAttackHitbox();
 	Rect getPlayerRect();
+	void hit();
+	void heal();
+	void earn();
 
 	enum { RIGHT = 0, LEFT = 1} eFacingDirection;
 	
