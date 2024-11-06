@@ -1,6 +1,5 @@
 #include "Level.h"
-#include "Box.h"
-#include "Coin.h"
+
 
 Level::Level(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int tileWidth, int tileHeight) : 
 	pge(pge), 
@@ -11,13 +10,14 @@ Level::Level(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int til
 {}
 
 
-void Level::Build()
+void Level::Init()
 {
 	moveAbleTiles = { L'.', L'o', L'}', L'{', L'-', L',', L'v', L't', L'/', L'e', L'u', L'z' };
 	spriteTiles = new olc::Sprite("assets/Terrain32x32.png");
 	spriteDoor = new olc::Sprite("assets/IdleDoor.png");
-	liveBar = new olc::Sprite("assets/LiveBar.png");
-	smallHeart = new olc::Sprite("assets/SmallHeart.png"); 
+	
+	hud = new HUD(pge);
+	hud->init();
 
 	sLevel += L"................................................................";
 	sLevel += L"................................................................";
@@ -136,6 +136,8 @@ void Level::Update(float fElapsedTime)
 			}
 		}
 	}
+	hud->Update(fElapsedTime);
+	
 }
 
 void Level::Draw(int nVisibleTilesX, int nVisibleTilesY, float fOffsetX, float fOffsetY, float fTileOffsetX, float fTileOffsetY)
@@ -174,16 +176,7 @@ void Level::Draw(int nVisibleTilesX, int nVisibleTilesY, float fOffsetX, float f
 			}
 		}
 	}
-	DrawHUD();
-}
-
-void Level::DrawHUD() {
-	pge.SetPixelMode(olc::Pixel::MASK);
-	pge.DrawSprite(0, 1, liveBar, 1, 0);
-	pge.DrawPartialSprite(11, 11, smallHeart, 0, 0, 18, 14, 1, 0);
-	pge.DrawPartialSprite(22, 11, smallHeart, 0, 0, 18, 14, 1, 0);
-	pge.DrawPartialSprite(33, 11, smallHeart, 0, 0, 18, 14, 1, 0);
-	pge.SetPixelMode(olc::Pixel::NORMAL);
+	hud->Draw();
 }
 
 bool Level::isMoveable(int x, int y)

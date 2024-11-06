@@ -48,7 +48,7 @@ public:
 		lb = std::make_unique<Level>(*this, nLevelWidth, nLevelHeight, nTileWidth, nTileHeight);
 		player = std::make_unique<Player>(*this, *lb);
 		pm = std::make_unique<PlayerMovement>(*this, *player);
-		lb->Build();
+		lb->Init();
 
 		return true;
 	}

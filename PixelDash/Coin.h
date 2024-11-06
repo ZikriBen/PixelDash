@@ -3,6 +3,7 @@
 
 #include "PixelSprite.h"
 
+
 class Coin : public PixelSprite {
 public:
     // Constructor for Box class, inheriting from PixelSprite constructor

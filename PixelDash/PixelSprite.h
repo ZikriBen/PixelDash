@@ -2,9 +2,7 @@
 #define PIXEL_SPRITE_H
 
 #include "olcPixelGameEngine.h"
-#include "Level.h"
-
-struct Rect;
+#include "Rect.h"
 
 #pragma once
 class PixelSprite 
