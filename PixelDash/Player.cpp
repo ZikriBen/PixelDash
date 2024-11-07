@@ -12,7 +12,7 @@ Player::Player(olc::PixelGameEngine& pge, Level& lvl) : pge(pge), lvl(lvl), eLif
 
 	fPlayerVelX = 0.0f;
 	fPlayerVelY = 0.0f;
-	eGraphicState = AnimationState::IDLE;
+	eGraphicState = AnimationState::HIT;
 	bPlayerOnGround = false;
 	bIsAttacking = false;
 	bForceAnimation = false;
@@ -25,7 +25,8 @@ Player::Player(olc::PixelGameEngine& pge, Level& lvl) : pge(pge), lvl(lvl), eLif
 		{AnimationState::JUMP, {1, 37, 28, 0.1f, 4, 41, 174, 16}},
 		{AnimationState::ATTACK, {3, 59, 58, 0.1f, -11, 12, 232, 0}},
 		{AnimationState::DOOR_IN,  {8, 39, 42, 0.1f, -11, 41, 290, 0}},
-		{AnimationState::DOOR_OUT,  {8, 41, 42, 0.1f, -11, 35, 348, 0}}
+		{AnimationState::DOOR_OUT,  {8, 41, 42, 0.1f, -11, 35, 348, 0}},
+		{AnimationState::HIT,  {2, 37, 42, 0.1f, -11, 41, 406, 0}}
 	};
 
 	fAttackOffsetCorrection = animations[AnimationState::ATTACK].frameWidth - fWidth;
@@ -168,6 +169,11 @@ void Player::handleContinousAnimation() {
 }
 
 void Player::hit() {
+	eGraphicState = AnimationState::HIT;
+	setPlayerIsAttacking(true);
+	setForceAnimation(true);
+	setGraphicCounter(0);  // Reset counter to start the attack animation from frame 0
+	setGraphicTimer(0.0f); // Reset timer for consistent animation speed
 	lvl.getHUD()->decrLife();
 }
 
