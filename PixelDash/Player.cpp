@@ -12,7 +12,7 @@ Player::Player(olc::PixelGameEngine& pge, Level& lvl) : pge(pge), lvl(lvl), eLif
 
 	fPlayerVelX = 0.0f;
 	fPlayerVelY = 0.0f;
-	eGraphicState = AnimationState::HIT;
+	eGraphicState = AnimationState::IDLE;
 	bPlayerOnGround = false;
 	bIsAttacking = false;
 	bForceAnimation = false;
@@ -150,7 +150,6 @@ void Player::handleForceAnimation() {
 						b->hit(totalTime);
 					}
 				}
-				
 				bIsAttacking = false;
 			}
 		}
@@ -166,6 +165,8 @@ void Player::handleContinousAnimation() {
 	else if (currentAnimation.iNumFrames == 1) {
 		setGraphicCounter(0);
 	}
+	
+	eGraphicState = (std::abs(getVelX()) >= 0.5f) ? AnimationState::RUN : AnimationState::IDLE;
 }
 
 void Player::hit() {

@@ -49,10 +49,11 @@ void Level::Init()
 	sDecoration += L"................................................................";
 	sDecoration += L"....................H............HH....OOOO.....................";
 	sDecoration += L"...........................D...........OOOO.....................";
-	sDecoration += L"...................................B............................";
+	sDecoration += L".......................E...........B............................";
 	sDecoration += L"................................................................";
 	sDecoration += L"................................................................";
 
+	
 	// create decoration array
 	for (int x = 0; x < nLevelWidth; ++x)
 	{
@@ -88,6 +89,15 @@ void Level::Init()
 				h->setLoop(true);
 				pixelSprites[cDecorID].emplace_back(
 					h,
+					std::make_pair(x, y)
+				);
+			}
+			else if (cDecorID == 'E') {
+				Enemy* e = new Enemy(pge, "assets/Pig.png", 0, 0, 10, 0.1, 34, 28, 2, 0, 0, 8);
+				e->setAnimation(true);
+				e->setLoop(true);
+				pixelSprites[cDecorID].emplace_back(
+					e,
 					std::make_pair(x, y)
 				);
 			}
@@ -146,6 +156,7 @@ void Level::Update(float fElapsedTime)
 		}
 	}
 	hud->Update(fElapsedTime);
+	//enemy->Update(fElapsedTime);
 	
 }
 
@@ -186,6 +197,7 @@ void Level::Draw(int nVisibleTilesX, int nVisibleTilesY, float fOffsetX, float f
 		}
 	}
 	hud->Draw();
+	//enemy->Draw();
 }
 
 bool Level::isMoveable(int x, int y)

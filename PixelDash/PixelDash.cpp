@@ -55,15 +55,10 @@ public:
 
 	bool OnUserUpdate(float fElapsedTime) override
 	{
-
 		pm->Update(fElapsedTime);
 
 		// Gravity
 		player->setVelY(player->getVelY() + 20.0f * fElapsedTime);
-
-		float fNewPlayerPosX = player->getPosX() + player->getVelX() * fElapsedTime;
-		float fNewPlayerPosY = player->getPosY() + player->getVelY() * fElapsedTime;
-
 
 		// Drag
 		if (player->getPlayerOnGround())
@@ -86,6 +81,8 @@ public:
 		if (player->getVelY() < -100.0f)
 			player->setVelY(-100.0f);
 
+		float fNewPlayerPosX = player->getPosX() + player->getVelX() * fElapsedTime;
+		float fNewPlayerPosY = player->getPosY() + player->getVelY() * fElapsedTime;
 
 		if (player->getVelX() <= 0) // Moving Left
 		{
@@ -120,25 +117,6 @@ public:
 				fNewPlayerPosY = (int)fNewPlayerPosY;
 				player->setVelY(0.0f);
 				player->setPlayerOnGround(true);
-			}
-		}
-
-		if (!player->getForceAnimation()) {
-			if (!player->getPlayerOnGround()) {
-				if (player->getVelY() < -0.5f) {
-					player->eGraphicState = Player::AnimationState::JUMP;
-				}
-				else if (player->getVelY() > 0.5f) {
-					player->eGraphicState = Player::AnimationState::FALL;
-				}
-			}
-			else {
-				if (std::abs(player->getVelX()) >= 0.5f) {
-					player->eGraphicState = Player::AnimationState::RUN;
-				}
-				else {
-					player->eGraphicState = Player::AnimationState::IDLE;
-				}
 			}
 		}
 
