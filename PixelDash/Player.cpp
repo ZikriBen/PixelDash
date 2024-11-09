@@ -42,12 +42,14 @@ void Player::Update(float fElapsedTime) {
 	if (eFacingDirection == LEFT) {
 		nOffsetCorrection = currentAnimation.frameWidth - fWidth;
 	}
+	
+	Level& lb = Level::getInstance();
 
-	if (PixelSprite* ps = lvl.checkCollisionWithDecorations(getPlayerRect())) {
+	if (PixelSprite* ps = lb.checkCollisionWithDecorations(getPlayerRect())) {
 		if (Coin* c = dynamic_cast<Coin*>(ps)) {
 			if (!c->isCollected()) {
 				c->collect();
-				lvl.removeDecoration(c);
+				lb.removeDecoration(c);
 				earn();
 			}
 		}
@@ -55,7 +57,7 @@ void Player::Update(float fElapsedTime) {
 		else if (Heart* h = dynamic_cast<Heart*>(ps)) {
 			if (!h->isCollected()) {
 				h->collect();
-				lvl.removeDecoration(h);
+				lb.removeDecoration(h);
 				heal();
 			}
 		}
@@ -90,7 +92,7 @@ void Player::Draw() {
 }
 
 bool Player::IsDoor() {
-	return lvl.isDoor(fPlayerPosX, fPlayerPosY);
+	return Level::getInstance().isDoor(fPlayerPosX, fPlayerPosY);
 }
 
 void Player::openDoor()
@@ -99,7 +101,7 @@ void Player::openDoor()
 	bForceAnimation = true;
 	iGraphicCounter = 0;
 	fGraphicTimer = 0.0f;
-	lvl.openDoor();
+	Level::getInstance().openDoor();
 }
 
 Rect Player::getPlayerRect() {
@@ -145,7 +147,7 @@ void Player::handleForceAnimation() {
 			bForceAnimation = false;
 
 			if (bIsAttacking) {
-				if (PixelSprite* ps = lvl.checkCollisionWithDecorations(GetAttackHitbox())) {
+				if (PixelSprite* ps = Level::getInstance().checkCollisionWithDecorations(GetAttackHitbox())) {
 					if (Box* b = dynamic_cast<Box*>(ps)) {
 						b->hit(totalTime);
 					}
@@ -175,13 +177,13 @@ void Player::hit() {
 	setForceAnimation(true);
 	setGraphicCounter(0);  // Reset counter to start the attack animation from frame 0
 	setGraphicTimer(0.0f); // Reset timer for consistent animation speed
-	lvl.getHUD()->decrLife();
+	Level::getInstance().getHUD()->decrLife();
 }
 
 void Player::heal() {
-	lvl.getHUD()->incrLife();
+	Level::getInstance().getHUD()->incrLife();
 }
 
 void Player::earn() {
-	lvl.getHUD()->incScore(1);
+	Level::getInstance().getHUD()->incScore(1);
 }

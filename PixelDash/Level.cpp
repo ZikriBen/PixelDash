@@ -1,134 +1,147 @@
 #include "Level.h"
 
+Level* Level::instance = nullptr;
 
-Level::Level(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int tileWidth, int tileHeight) : 
-	pge(pge), 
-	nTileWidth(tileWidth), 
-	nTileHeight(tileHeight),
-	nLevelWidth(levelWidth), 
-	nLevelHeight(levelHeight) 
-{}
-
-
-void Level::Init()
+Level::Level(int levelWidth, int levelHeight, int tileWidth, int tileHeight)
+	: nLevelWidth(levelWidth), nLevelHeight(levelHeight), nTileWidth(tileWidth), nTileHeight(tileHeight)
 {
-	moveAbleTiles = { L'.', L'o', L'}', L'{', L'-', L',', L'v', L't', L'/', L'e', L'u', L'z' };
-	spriteTiles = new olc::Sprite("assets/Terrain32x32.png");
-	spriteDoor = new olc::Sprite("assets/IdleDoor.png");
-	
-	hud = new HUD(pge);
-	hud->init();
+	// Empty constructor body; initialization happens in Init
+}
 
-	sLevel += L"................................................................";
-	sLevel += L"................................................................";
-	sLevel += L"........<______________________________________________________>";
-	sLevel += L"........]/----------------------------------------------------u[";
-	sLevel += L"........]}oooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
-	sLevel += L"........]}oooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
-	sLevel += L"<_______i}oooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
-	sLevel += L"]/-------eoooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
-	sLevel += L"]}oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
-	sLevel += L"]}oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
-	sLevel += L"]v,,,,,,,toooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
-	sLevel += L"l#######y}oooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
-	sLevel += L"........]v,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,z[";
-	sLevel += L"........l######################################################r";
-	sLevel += L"................................................................";
-	sLevel += L"................................................................";
-
-	sDecoration += L"................................................................";
-	sDecoration += L"................................................................";
-	sDecoration += L"................................................................";
-	sDecoration += L"................................................................";
-	sDecoration += L"................................................................";
-	sDecoration += L"................................................................";
-	sDecoration += L"................................................................";
-	sDecoration += L"................................................................";
-	sDecoration += L"................................................................";
-	sDecoration += L".....OOOO.......................................................";
-	sDecoration += L"................................................................";
-	sDecoration += L"....................H............HH....OOOO.....................";
-	sDecoration += L"...........................D...........OOOO.....................";
-	sDecoration += L".......................E...........B............................";
-	sDecoration += L"................................................................";
-	sDecoration += L"................................................................";
-
-	
-	// create decoration array
-	for (int x = 0; x < nLevelWidth; ++x)
+void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int tileWidth, int tileHeight)
+{
+	if (!instance)
 	{
-		for (int y = 0; y < nLevelHeight; ++y)
+		instance = new Level(levelWidth, levelHeight, tileWidth, tileHeight);
+		instance->pge = &pge;  // Store the game engine reference
+		instance->moveAbleTiles = { L'.', L'o', L'}', L'{', L'-', L',', L'v', L't', L'/', L'e', L'u', L'z' };
+		instance->spriteTiles = new olc::Sprite("assets/Terrain32x32.png");
+		instance->spriteDoor = new olc::Sprite("assets/IdleDoor.png");
+
+		instance->hud = new HUD(pge);
+		instance->hud->init();
+
+		instance->sLevel += L"................................................................";
+		instance->sLevel += L"................................................................";
+		instance->sLevel += L"........<______________________________________________________>";
+		instance->sLevel += L"........]/----------------------------------------------------u[";
+		instance->sLevel += L"........]}oooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
+		instance->sLevel += L"........]}oooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
+		instance->sLevel += L"<_______i}oooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
+		instance->sLevel += L"]/-------eoooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
+		instance->sLevel += L"]}oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
+		instance->sLevel += L"]}oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
+		instance->sLevel += L"]v,,,,,,,toooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
+		instance->sLevel += L"l#######y}oooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
+		instance->sLevel += L"........]v,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,z[";
+		instance->sLevel += L"........l######################################################r";
+		instance->sLevel += L"................................................................";
+		instance->sLevel += L"................................................................";
+
+		instance->sDecoration += L"................................................................";
+		instance->sDecoration += L"................................................................";
+		instance->sDecoration += L"................................................................";
+		instance->sDecoration += L"................................................................";
+		instance->sDecoration += L"................................................................";
+		instance->sDecoration += L"................................................................";
+		instance->sDecoration += L"................................................................";
+		instance->sDecoration += L"................................................................";
+		instance->sDecoration += L"................................................................";
+		instance->sDecoration += L".....OOOO.......................................................";
+		instance->sDecoration += L"................................................................";
+		instance->sDecoration += L"....................H............HH....OOOO.....................";
+		instance->sDecoration += L"...........................D...........OOOO.....................";
+		instance->sDecoration += L".......................E...........B............................";
+		instance->sDecoration += L"................................................................";
+		instance->sDecoration += L"................................................................";
+
+		//enemy = new Enemy(pge);
+
+		// create decoration array
+		for (int x = 0; x < instance->nLevelWidth; ++x)
 		{
-			wchar_t cDecorID = sDecoration[y * nLevelWidth + x];
-			if (cDecorID == 'D') {
-				sDoorOpen = new PixelSprite(pge, "assets/DoorOpening.png", 4, 0.2, 46, 56, 0, 0);
-				pixelSprites[cDecorID].emplace_back(
-					sDoorOpen,
-					std::make_pair(x, y)
-				);
-			}
-			else if (cDecorID == 'B') {
-				pixelSprites[cDecorID].emplace_back(
-					new Box(pge, "assets/Box.png", 0, 0, 1, 0.2, 22, 16, 0, 0, 0, 8),
-					std::make_pair(x, y)
-				);
-				
-			}
-			else if (cDecorID == 'O') {
-				Coin* c = new Coin(pge, "assets/BigDiamond.png", 0, 0, 9, 0.1, 18, 14, 2, 0, 0, 8);
-				c->setAnimation(true);
-				c->setLoop(true);
-				pixelSprites[cDecorID].emplace_back(
-					c,
-					std::make_pair(x, y)
-				);
-			}
-			else if (cDecorID == 'H') {
-				Heart* h = new Heart(pge, "assets/BigHeart.png", 0, 0, 7, 0.1, 18, 14, 2, 0, 0, 8);
-				h->setAnimation(true);
-				h->setLoop(true);
-				pixelSprites[cDecorID].emplace_back(
-					h,
-					std::make_pair(x, y)
-				);
-			}
-			else if (cDecorID == 'E') {
-				Enemy* e = new Enemy(pge, "assets/Pig.png", 0, 0, 10, 0.1, 34, 28, 2, 0, 0, 8);
-				e->setAnimation(true);
-				e->setLoop(true);
-				pixelSprites[cDecorID].emplace_back(
-					e,
-					std::make_pair(x, y)
-				);
+			for (int y = 0; y < instance->nLevelHeight; ++y)
+			{
+				wchar_t cDecorID = instance->sDecoration[y * instance->nLevelWidth + x];
+				if (cDecorID == 'D') {
+					instance->sDoorOpen = new PixelSprite(pge, "assets/DoorOpening.png", 4, 0.2, 46, 56, 0, 0);
+					instance->pixelSprites[cDecorID].emplace_back(
+						instance->sDoorOpen,
+						std::make_pair(x, y)
+					);
+				}
+				else if (cDecorID == 'B') {
+					instance->pixelSprites[cDecorID].emplace_back(
+						new Box(pge, "assets/Box.png", 0, 0, 1, 0.2, 22, 16, 0, 0, 0, 8),
+						std::make_pair(x, y)
+					);
+
+				}
+				else if (cDecorID == 'O') {
+					Coin* c = new Coin(pge, "assets/BigDiamond.png", 0, 0, 9, 0.1, 18, 14, 2, 0, 0, 8);
+					c->setAnimation(true);
+					c->setLoop(true);
+					instance->pixelSprites[cDecorID].emplace_back(
+						c,
+						std::make_pair(x, y)
+					);
+				}
+				else if (cDecorID == 'H') {
+					Heart* h = new Heart(pge, "assets/BigHeart.png", 0, 0, 7, 0.1, 18, 14, 2, 0, 0, 8);
+					h->setAnimation(true);
+					h->setLoop(true);
+					instance->pixelSprites[cDecorID].emplace_back(
+						h,
+						std::make_pair(x, y)
+					);
+				}
+				/*else if (cDecorID == 'E') {
+					Enemy* e = new Enemy(pge, "assets/Pig.png", 0, 0, 10, 0.1, 34, 28, 2, 0, 0, 8);
+					e->setAnimation(true);
+					e->setLoop(true);
+					pixelSprites[cDecorID].emplace_back(
+						e,
+						std::make_pair(x, y)
+					);
+				}*/
 			}
 		}
-	}
 
-	tileOffsets = {
-			{L'.', {64, 64}},
-			{L'#', {64, 32}},
-			{L']', {96, 64}},
-			{L'[', {32, 64}},
-			{L'y', {96, 32}},
-			{L't', {256, 224}},
-			{L'e', {256, 256}},
-			{L'i', {96, 96}},
-			{L'}', {32, 256}},
-			{L'{', {96, 256}},
-			{L'-', {64, 224}},
-			{L',', {64, 288}},
-			{L'/', {32, 224}},
-			{L'u', {96, 224}},
-			{L'v', {32, 288}},
-			{L'z', {96, 288}},
-			{L'l', {224, 64}},
-			{L'r', {256, 64}},
-			{L'<', {224, 32}},
-			{L'>', {256, 32}},
-			{L'_', {64, 96}},
-			{L'P', {0, 0}},
-			{L'o', {64, 256}}
-	};
+		instance->tileOffsets = {
+				{L'.', {64, 64}},
+				{L'#', {64, 32}},
+				{L']', {96, 64}},
+				{L'[', {32, 64}},
+				{L'y', {96, 32}},
+				{L't', {256, 224}},
+				{L'e', {256, 256}},
+				{L'i', {96, 96}},
+				{L'}', {32, 256}},
+				{L'{', {96, 256}},
+				{L'-', {64, 224}},
+				{L',', {64, 288}},
+				{L'/', {32, 224}},
+				{L'u', {96, 224}},
+				{L'v', {32, 288}},
+				{L'z', {96, 288}},
+				{L'l', {224, 64}},
+				{L'r', {256, 64}},
+				{L'<', {224, 32}},
+				{L'>', {256, 32}},
+				{L'_', {64, 96}},
+				{L'P', {0, 0}},
+				{L'o', {64, 256}}
+		};
+	}
+}
+
+Level& Level::getInstance()
+{
+	if (!instance)
+	{
+		throw std::runtime_error("Level::Init must be called before getInstance!");
+	}
+	return *instance;
 }
 
 wchar_t Level::GetTile(int x, int y)
@@ -157,7 +170,6 @@ void Level::Update(float fElapsedTime)
 	}
 	hud->Update(fElapsedTime);
 	//enemy->Update(fElapsedTime);
-	
 }
 
 void Level::Draw(int nVisibleTilesX, int nVisibleTilesY, float fOffsetX, float fOffsetY, float fTileOffsetX, float fTileOffsetY)
@@ -172,7 +184,7 @@ void Level::Draw(int nVisibleTilesX, int nVisibleTilesY, float fOffsetX, float f
 
 			int sx = tileOffsets[sTileID].first;
 			int sy = tileOffsets[sTileID].second;
-			pge.DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, sx, sy, nTileWidth, nTileHeight, 1, 0);
+			pge->DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, sx, sy, nTileWidth, nTileHeight, 1, 0);
 		}
 	}
 

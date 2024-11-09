@@ -10,8 +10,8 @@
 #include "Heart.h"
 #include "HUD.h"
 
-#pragma once
 
+#pragma once
 class Level
 {
 
@@ -24,17 +24,25 @@ private:
 	std::wstring sDecoration;
 	std::unordered_set<wchar_t> moveAbleTiles;
 	std::unordered_map<wchar_t, std::pair<int, int>> tileOffsets;
-	olc::PixelGameEngine& pge;
 	olc::Sprite* spriteTiles = nullptr;
 	olc::Sprite* spriteDoor = nullptr;
 	PixelSprite* sDoorOpen = nullptr;
 	std::unordered_map<wchar_t, std::vector<std::pair<PixelSprite*, std::pair<float, float>>>> pixelSprites;
-	HUD* hud;
+	HUD* hud = nullptr;
+	//Enemy *enemy = nullptr;
+	static Level* instance;          // Singleton instance
+	olc::PixelGameEngine* pge = nullptr; // Pointer to the game engine
+	Level(int levelWidth, int levelHeight, int tileWidth, int tileHeight);
 
 
 public:
-	Level(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int tileWidth, int tileHeight);
-	//Level(olc::PixelGameEngine& pge, olc::Sprite* spriteTiles, int nLevelWidth, int nLevelHeight, int tileWidth, int tileHeight, std::wstring level, std::wstring decoration, std::unordered_map<wchar_t, std::pair<int, int>> tileOffsets);
+	static Level& getInstance();  // To retrieve instance after Init
+	static void Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int tileWidth, int tileHeight);
+
+	// Delete copy and assignment operators to enforce singleton
+	Level(const Level&) = delete;
+	Level& operator=(const Level&) = delete;
+
 	void Init();
 	void Update(float fElapsedTime);
 	wchar_t GetTile(int x, int y);
