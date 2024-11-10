@@ -43,10 +43,9 @@ public:
 		nVisibleTilesX = ScreenWidth() / nTileWidth;
 		nVisibleTilesY = ScreenHeight() / nTileHeight;
 
-		//lb = std::make_unique<Level>(*this, nLevelWidth, nLevelHeight, nTileWidth, nTileHeight);
 		Level::Init(*this, nLevelWidth, nLevelHeight, nTileWidth, nTileHeight);
 		Level& lb = Level::getInstance();
-		//lb.Init(*this, nLevelWidth, nLevelHeight, nTileWidth, nTileHeight);
+
 		player = std::make_unique<Player>(*this, lb);
 		pm = std::make_unique<PlayerMovement>(*this, *player);
 

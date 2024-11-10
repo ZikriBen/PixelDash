@@ -177,13 +177,13 @@ void Player::hit() {
 	setForceAnimation(true);
 	setGraphicCounter(0);  // Reset counter to start the attack animation from frame 0
 	setGraphicTimer(0.0f); // Reset timer for consistent animation speed
-	Level::getInstance().getHUD()->decrLife();
+	HUD::getInstance().decrLife();
 }
 
 void Player::heal() {
-	Level::getInstance().getHUD()->incrLife();
+	HUD::getInstance().incrLife();
 }
 
 void Player::earn() {
-	Level::getInstance().getHUD()->incScore(1);
+	HUD::getInstance().incScore(1);
 }

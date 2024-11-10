@@ -9,9 +9,9 @@
 class HUD
 {
 public:
-	HUD(olc::PixelGameEngine& pge) : pge(pge) {};
+	static HUD& getInstance();
+	static void init(olc::PixelGameEngine& pge);
 	virtual ~HUD();
-	void init();
 	void Draw();
 	void Update(float);
 	void decrLife() { m_nLife = std::max(m_nLife - 1, 0); };
@@ -20,15 +20,18 @@ public:
 	void resetScore() { m_nScore = 0; };
 
 private:
+	HUD();
 	int m_nTotalLife = 3;
 	int m_nLife = 3;
 	int m_nScore = 0;
-	olc::PixelGameEngine& pge;
+	//olc::PixelGameEngine& pge;
 	PixelSprite* liveBar = nullptr;
 	PixelSprite* smallDiamond = nullptr;
 	PixelSprite* numberOne = nullptr;
 	PixelSprite* numberTwo = nullptr;
 	std::vector <PixelSprite*> lifeHearts;
+	static HUD* instance;
+	olc::PixelGameEngine* pge = nullptr; // Pointer to the game engine
 };
 
 #endif // HUD_H

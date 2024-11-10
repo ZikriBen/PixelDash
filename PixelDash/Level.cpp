@@ -18,8 +18,7 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 		instance->spriteTiles = new olc::Sprite("assets/Terrain32x32.png");
 		instance->spriteDoor = new olc::Sprite("assets/IdleDoor.png");
 
-		instance->hud = new HUD(pge);
-		instance->hud->init();
+		HUD::init(pge);
 
 		instance->sLevel += L"................................................................";
 		instance->sLevel += L"................................................................";
@@ -168,7 +167,7 @@ void Level::Update(float fElapsedTime)
 			}
 		}
 	}
-	hud->Update(fElapsedTime);
+	HUD::getInstance().Update(fElapsedTime);
 	//enemy->Update(fElapsedTime);
 }
 
@@ -208,7 +207,7 @@ void Level::Draw(int nVisibleTilesX, int nVisibleTilesY, float fOffsetX, float f
 			}
 		}
 	}
-	hud->Draw();
+	HUD::getInstance().Draw();
 	//enemy->Draw();
 }
 

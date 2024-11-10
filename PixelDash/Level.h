@@ -28,7 +28,6 @@ private:
 	olc::Sprite* spriteDoor = nullptr;
 	PixelSprite* sDoorOpen = nullptr;
 	std::unordered_map<wchar_t, std::vector<std::pair<PixelSprite*, std::pair<float, float>>>> pixelSprites;
-	HUD* hud = nullptr;
 	//Enemy *enemy = nullptr;
 	static Level* instance;          // Singleton instance
 	olc::PixelGameEngine* pge = nullptr; // Pointer to the game engine
@@ -56,7 +55,6 @@ public:
 	void openDoor();
 	PixelSprite* checkCollisionWithDecorations(const Rect& playerHitbox);
 	void removeDecoration(PixelSprite* decoration);
-	HUD* getHUD() { return hud; }
 };
 #endif // LEVEL_H
 
