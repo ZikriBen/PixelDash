@@ -9,9 +9,12 @@
 #include "Coin.h"
 #include "Heart.h"
 #include "HUD.h"
-
+#include "Enemy.h"
 
 #pragma once
+
+class Enemy;
+
 class Level
 {
 
@@ -20,6 +23,8 @@ private:
 	int nLevelHeight;
 	int nTileWidth;
 	int nTileHeight;
+	float fOffsetX;
+	float fOffsetY;
 	std::wstring sLevel;
 	std::wstring sDecoration;
 	std::unordered_set<wchar_t> moveAbleTiles;
@@ -32,6 +37,7 @@ private:
 	static Level* instance;          // Singleton instance
 	olc::PixelGameEngine* pge = nullptr; // Pointer to the game engine
 	Level(int levelWidth, int levelHeight, int tileWidth, int tileHeight);
+	Enemy *enemy;
 
 
 public:
@@ -55,6 +61,11 @@ public:
 	void openDoor();
 	PixelSprite* checkCollisionWithDecorations(const Rect& playerHitbox);
 	void removeDecoration(PixelSprite* decoration);
+	float getOffsetX() { return fOffsetX; };
+	float getOffsetY() { return fOffsetY; };
+
+	float setOffsetX(float offsetX) { fOffsetX = offsetX; };
+	float setOffsetY(float offsetY) { fOffsetY = offsetY; };
 };
 #endif // LEVEL_H
 

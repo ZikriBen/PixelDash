@@ -19,6 +19,8 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 		instance->spriteDoor = new olc::Sprite("assets/IdleDoor.png");
 
 		HUD::init(pge);
+		
+		
 
 		instance->sLevel += L"................................................................";
 		instance->sLevel += L"................................................................";
@@ -54,7 +56,6 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 		instance->sDecoration += L"................................................................";
 		instance->sDecoration += L"................................................................";
 
-		//enemy = new Enemy(pge);
 
 		// create decoration array
 		for (int x = 0; x < instance->nLevelWidth; ++x)
@@ -94,15 +95,12 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 						std::make_pair(x, y)
 					);
 				}
-				/*else if (cDecorID == 'E') {
-					Enemy* e = new Enemy(pge, "assets/Pig.png", 0, 0, 10, 0.1, 34, 28, 2, 0, 0, 8);
-					e->setAnimation(true);
-					e->setLoop(true);
-					pixelSprites[cDecorID].emplace_back(
-						e,
-						std::make_pair(x, y)
-					);
-				}*/
+				else if (cDecorID == 'E') {
+					//Enemy* e = new Enemy(pge, "assets/Pig.png", 0, 0, 10, 0.1, 34, 28, 2, 0, 0, 8);
+					instance->enemy = new Enemy(pge, "assets/Pig.png", x, y, 10, 0.1, 34, 28, 2, 0, 0, 0);
+					instance->enemy->setAnimation(true);
+					instance->enemy->setLoop(true);
+				}
 			}
 		}
 
@@ -168,7 +166,7 @@ void Level::Update(float fElapsedTime)
 		}
 	}
 	HUD::getInstance().Update(fElapsedTime);
-	//enemy->Update(fElapsedTime);
+	enemy->Update(fElapsedTime);
 }
 
 void Level::Draw(int nVisibleTilesX, int nVisibleTilesY, float fOffsetX, float fOffsetY, float fTileOffsetX, float fTileOffsetY)
@@ -208,7 +206,13 @@ void Level::Draw(int nVisibleTilesX, int nVisibleTilesY, float fOffsetX, float f
 		}
 	}
 	HUD::getInstance().Draw();
-	//enemy->Draw();
+	int screenX = (enemy->getHomeX() - startX) * nTileWidth - fTileOffsetX;
+	int screenY = (enemy->getHomeY() - startY) * nTileHeight - fTileOffsetY - 27;
+	enemy->setPosX(screenX);
+	enemy->setPosY(screenY);
+	enemy->Draw();
+	//std::cout << "Enemy Pos: (" << screenX << ", " << screenY << ") Offset: (" << fOffsetX << ", " << fOffsetY << ")" << std::endl;
+
 }
 
 bool Level::isMoveable(int x, int y)
