@@ -148,7 +148,6 @@ public:
 		player->Update(fElapsedTime);
 		player->setOffsets(fOffsetX, fOffsetY);
 		player->Draw();
-
 		return true;
 	}
 };

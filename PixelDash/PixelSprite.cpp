@@ -15,6 +15,7 @@ PixelSprite::PixelSprite(olc::PixelGameEngine& pge, std::string sprPath, int num
     fCurrentHealth = 0.0f;
     fPosX = 0.0f;
     fPosY = 0.0f;
+    eFacingDirection = PixelSprite::RIGHT;
 }
 
 PixelSprite::PixelSprite(olc::PixelGameEngine& pge, std::string sprPath, float posx, float posy, int numFrames, float frameDuration, int width, int height, int ox, int oy, float offsetPosX, float offsetPosY)
@@ -29,6 +30,7 @@ PixelSprite::PixelSprite(olc::PixelGameEngine& pge, std::string sprPath, float p
     bIsLoop = false;
     bSoundOn = true;
     fCurrentHealth = 0.0f;
+    eFacingDirection = PixelSprite::RIGHT;
 }
 
 PixelSprite::~PixelSprite()
@@ -72,7 +74,7 @@ void PixelSprite::Draw()
 		fWidth,
 		fHeight,
         iScale,
-        0);
+        eFacingDirection);
 	pge.SetPixelMode(olc::Pixel::NORMAL);
 }
 

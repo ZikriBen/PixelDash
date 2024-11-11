@@ -38,10 +38,15 @@ public:
 	void setSprOffsetX(float offsetX) { fOffsetX = offsetX; };
 	void setSprOffsetY(float offsetY) { fOffsetY = offsetY; };
 
+	void setNumFrames(int n) { iNumFrames = n; };
+
 	Rect getRect();
 
-private:
+protected:
 	olc::PixelGameEngine& pge;
+	enum { RIGHT = 0, LEFT = 1 } eFacingDirection;
+
+private:
 	olc::Sprite* spr;
 	int iNumFrames;
 	float fFrameDuration;
