@@ -32,7 +32,6 @@ public:
     }
 
 private:
-    int value = 400;
     bool collected = false;
 };
 

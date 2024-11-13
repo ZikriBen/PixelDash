@@ -16,6 +16,13 @@ PixelSprite::PixelSprite(olc::PixelGameEngine& pge, std::string sprPath, int num
     fPosX = 0.0f;
     fPosY = 0.0f;
     eFacingDirection = PixelSprite::RIGHT;
+    eGraphicState = AnimationState::IDLE;
+
+    animations = {
+        {AnimationState::IDLE, {iNumFrames, (int)fWidth, (int)fHeight, fFrameDuration, (int)fOffsetX, (int)fOffsetY, (int)fPosOffsetX, (int)fPosOffsetY}},
+    };
+
+    currentAnimation = animations[eGraphicState];
 }
 
 PixelSprite::PixelSprite(olc::PixelGameEngine& pge, std::string sprPath, float posx, float posy, int numFrames, float frameDuration, int width, int height, int ox, int oy, float offsetPosX, float offsetPosY)
@@ -31,6 +38,13 @@ PixelSprite::PixelSprite(olc::PixelGameEngine& pge, std::string sprPath, float p
     bSoundOn = true;
     fCurrentHealth = 0.0f;
     eFacingDirection = PixelSprite::RIGHT;
+    eGraphicState = AnimationState::IDLE;
+    
+    animations = {
+        {AnimationState::IDLE, {numFrames, width, height, fFrameDuration, (int)offsetPosY, (int)ox, 0, (int)oy}},
+    };
+
+    currentAnimation = animations[eGraphicState];
 }
 
 PixelSprite::~PixelSprite()
@@ -45,17 +59,16 @@ void PixelSprite::Update(float fElapsedTime)
  
     if (bIsAnimate) {
 
-        if (fGraphicTimer > fFrameDuration) {
-            fGraphicTimer = 0;
+        if (fGraphicTimer > currentAnimation.frameDuration) {
             iGraphicCounter++;
-            iGraphicCounter %= iNumFrames + 1;
+            iGraphicCounter %= currentAnimation.iNumFrames + 1;
             
             if (!bIsLoop) {
-                if (iGraphicCounter >= iNumFrames) {
-                    fGraphicTimer = 0;
+                if (iGraphicCounter >= currentAnimation.iNumFrames) {
                     bIsAnimate = false;
                 }
             }
+            fGraphicTimer = 0;
         }
     }
     
@@ -65,7 +78,7 @@ void PixelSprite::Draw()
 {
 	pge.SetPixelMode(olc::Pixel::MASK);
     //pge.DrawRect(fPosX + fPosOffsetX, fPosY + fPosOffsetY, fWidth, fHeight);
-    pge.DrawPartialSprite(
+    /*pge.DrawPartialSprite(
 		fPosX + fPosOffsetX,
 		fPosY + fPosOffsetY,
 		spr,
@@ -73,6 +86,17 @@ void PixelSprite::Draw()
 		fOffsetY,
 		fWidth,
 		fHeight,
+        iScale,
+        eFacingDirection);*/
+
+    pge.DrawPartialSprite(
+        fPosX + fPosOffsetX,
+        fPosY + fPosOffsetY,
+        spr,
+        currentAnimation.iSprOffsetX + (iGraphicCounter * currentAnimation.frameWidth),
+        currentAnimation.iSprOffsetY,
+        currentAnimation.frameWidth,
+        currentAnimation.frameHeight,
         iScale,
         eFacingDirection);
 	pge.SetPixelMode(olc::Pixel::NORMAL);

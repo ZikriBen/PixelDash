@@ -211,8 +211,6 @@ void Level::Draw(int nVisibleTilesX, int nVisibleTilesY, float fOffsetX, float f
 	enemy->setPosX(screenX);
 	enemy->setPosY(screenY);
 	enemy->Draw();
-	//std::cout << "Enemy Pos: (" << screenX << ", " << screenY << ") Offset: (" << fOffsetX << ", " << fOffsetY << ")" << std::endl;
-
 }
 
 bool Level::isMoveable(int x, int y)

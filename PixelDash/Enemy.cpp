@@ -6,7 +6,21 @@ Enemy::Enemy(olc::PixelGameEngine& pge, const std::string& sprPath,
     int width, int height, int ox, int oy,
     float offsetPosX, float offsetPosY)
     : PixelSprite(pge, sprPath, posX, posY, numFrames, frameDuration, width, height, ox, oy, offsetPosX, offsetPosY),
-    speed(2.5f), health(3), bIsAttacking(false), bIsPatrolling(true), patrolRange(5.0f), pivotX(posX), homeX(posX), homeY(posY) {}
+    speed(2.5f), health(3), bIsAttacking(false), bIsPatrolling(true), patrolRange(5.0f), pivotX(posX), homeX(posX), homeY(posY) {
+
+    animations = {
+        {AnimationState::IDLE, {11, 34, 28, 0.1, 2, 0, 0, 0}},
+        {AnimationState::RUN, {5, 34, 28, 0.1, 2, 0, 0, 28}},
+        {AnimationState::JUMP, {1, 34, 28, 0.1, 2, 0, 0, 56}},
+        {AnimationState::FALL, {1, 34, 28, 0.1, 2, 0, 0, 84}},
+        {AnimationState::ATTACK, {4, 34, 28, 0.1, 2, 0, 0, 112}},
+        {AnimationState::HIT, {1, 34, 28, 0.1, 2, 0, 0, 140}},
+        {AnimationState::DEAD, {3, 34, 28, 0.1, 2, 0, 0, 168}}
+    };
+
+    eGraphicState = AnimationState::DEAD;
+    currentAnimation = animations[eGraphicState];
+}
 
 void Enemy::Update(float fElapsedTime) {
     // Patrol behavior: move back and forth within patrol range
@@ -29,11 +43,7 @@ void Enemy::Update(float fElapsedTime) {
 }
 
 void Enemy::Draw() {
-    setSprOffsetY(28);
-    setNumFrames(5);
     PixelSprite::Draw();
-    // Debug: Draw enemy's hitbox
-    
     pge.DrawRect(getRect().x, getRect().y, getRect().width, getRect().height, olc::RED);
 }
 

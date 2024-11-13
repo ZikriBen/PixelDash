@@ -27,16 +27,18 @@ public:
 	void setAnimation(bool animate) { bIsAnimate = animate; };
 	void setLoop(bool loop) { bIsLoop = loop; };
 	void setScale(int scale) { iScale = scale; };
+	
 	float getOffsetPosX() { return fPosOffsetX; };
 	float getOffsetPosY() { return fPosOffsetY; };
+	
 	void setOffsetPosX(float offsetX) { fPosOffsetX = offsetX; };
 	void setOffsetPosY(float offsetY) { fPosOffsetY = offsetY; };
 
 	float getSprOffsetX() { return fOffsetX; };
 	float getSprOffsetY() { return fOffsetY; };
 
-	void setSprOffsetX(float offsetX) { fOffsetX = offsetX; };
-	void setSprOffsetY(float offsetY) { fOffsetY = offsetY; };
+	void setSprOffsetX(float offsetX) { currentAnimation.iSprOffsetX = offsetX; };
+	void setSprOffsetY(float offsetY) { currentAnimation.iSprOffsetY = offsetY; };
 
 	void setNumFrames(int n) { iNumFrames = n; };
 
@@ -45,6 +47,22 @@ public:
 protected:
 	olc::PixelGameEngine& pge;
 	enum { RIGHT = 0, LEFT = 1 } eFacingDirection;
+	enum class AnimationState { IDLE, RUN, JUMP, FALL, ATTACK, HIT, DEAD };
+	struct Animation {
+		int iNumFrames;    // Number of frames in the animation
+		int frameWidth;    // Width of each frame
+		int frameHeight;   // Height of each frame
+		float frameDuration; // Duration of each frame (for timing)
+		int iOffsetPosY;
+		int iSprOffsetX;
+		int iSpecialOffsetY;
+		int iSprOffsetY;
+	};
+
+	std::unordered_map<AnimationState, Animation> animations;
+	Animation currentAnimation;
+	AnimationState eGraphicState; // Current animation state
+	void setGraphicState(AnimationState state) { eGraphicState = state; };
 
 private:
 	olc::Sprite* spr;
