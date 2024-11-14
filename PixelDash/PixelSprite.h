@@ -13,6 +13,7 @@ public:
 	virtual ~PixelSprite();
 	virtual void Update(float);
 	virtual void Draw();
+	void DrawRect();
 	float getWidth() { return fWidth; };
 	float getHeight() { return fHeight; };
 	void setPosX(float newPos) { fPosX = newPos; };
@@ -62,7 +63,8 @@ protected:
 	std::unordered_map<AnimationState, Animation> animations;
 	Animation currentAnimation;
 	AnimationState eGraphicState; // Current animation state
-	void setGraphicState(AnimationState state) { eGraphicState = state; };
+	void setGraphicState(AnimationState state);
+	void resetGraphicState(AnimationState state);
 
 private:
 	olc::Sprite* spr;

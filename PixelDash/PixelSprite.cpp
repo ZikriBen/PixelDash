@@ -77,18 +77,6 @@ void PixelSprite::Update(float fElapsedTime)
 void PixelSprite::Draw()
 {
 	pge.SetPixelMode(olc::Pixel::MASK);
-    //pge.DrawRect(fPosX + fPosOffsetX, fPosY + fPosOffsetY, fWidth, fHeight);
-    /*pge.DrawPartialSprite(
-		fPosX + fPosOffsetX,
-		fPosY + fPosOffsetY,
-		spr,
-		fOffsetX + (iGraphicCounter * fWidth),
-		fOffsetY,
-		fWidth,
-		fHeight,
-        iScale,
-        eFacingDirection);*/
-
     pge.DrawPartialSprite(
         fPosX + fPosOffsetX,
         fPosY + fPosOffsetY,
@@ -102,6 +90,26 @@ void PixelSprite::Draw()
 	pge.SetPixelMode(olc::Pixel::NORMAL);
 }
 
+void PixelSprite::DrawRect() {
+    pge.SetPixelMode(olc::Pixel::MASK);
+    pge.DrawRect(getRect().x, getRect().y, getRect().width, getRect().height, olc::WHITE);
+    pge.SetPixelMode(olc::Pixel::NORMAL);
+}
+
 Rect PixelSprite::getRect() {
     return Rect(getPosX(), getPosY(), getWidth(), getHeight());
+}
+
+void PixelSprite::setGraphicState(AnimationState state)
+{
+    eGraphicState = state;  
+    currentAnimation = animations[eGraphicState];
+}
+
+void PixelSprite::resetGraphicState(AnimationState state)
+{
+    eGraphicState = state;
+    currentAnimation = animations[eGraphicState];
+    setGraphicCounter(0);
+    setGraphicTimer(0.0f);
 }

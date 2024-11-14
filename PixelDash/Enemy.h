@@ -19,6 +19,7 @@ public:
     bool isAlive() const;
     float getHomeX() { return homeX; };
     float getHomeY() { return homeY; };
+    void hit(float currentTime);
 
 private:
     float speed;          // Enemy movement speed
@@ -29,6 +30,8 @@ private:
     float homeX;          
     float homeY;
     float pivotX;
+    float lastHitTime = -1.0;      // Tracks the last time this box was hit
+    const float cooldownTime = 0.05f;  // Cooldown duration in seconds, adjust as needed
 };
 
 #endif // ENEMY_H

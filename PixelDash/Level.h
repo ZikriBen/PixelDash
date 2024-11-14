@@ -60,6 +60,7 @@ public:
 	bool isDoor(float x, float y);
 	void openDoor();
 	PixelSprite* checkCollisionWithDecorations(const Rect& playerHitbox);
+	PixelSprite* checkCollisionWithEnemies(const Rect& playerRect);
 	void removeDecoration(PixelSprite* decoration);
 	float getOffsetX() { return fOffsetX; };
 	float getOffsetY() { return fOffsetY; };

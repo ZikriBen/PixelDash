@@ -17,15 +17,26 @@ Enemy::Enemy(olc::PixelGameEngine& pge, const std::string& sprPath,
         {AnimationState::HIT, {1, 34, 28, 0.1, 2, 0, 0, 140}},
         {AnimationState::DEAD, {3, 34, 28, 0.1, 2, 0, 0, 168}}
     };
-
-    eGraphicState = AnimationState::DEAD;
-    currentAnimation = animations[eGraphicState];
+    
+    setGraphicState(AnimationState::RUN);
 }
 
 void Enemy::Update(float fElapsedTime) {
     // Patrol behavior: move back and forth within patrol range
+    if (eGraphicState == AnimationState::DEAD) {
+        bIsPatrolling = false;
+        setLoop(false);
+    }
+
+    else if (eGraphicState == AnimationState::HIT) {
+        // Wait until HIT animation finishes before returning to RUN
+        if (getGraphicCounter() >= currentAnimation.iNumFrames) {
+            setGraphicState(AnimationState::RUN);
+        }
+    }
     
-    if (bIsPatrolling) {
+    else if (bIsPatrolling) {
+        setGraphicState(AnimationState::RUN);
         if (getHomeX() > pivotX + patrolRange) {
             speed = -std::abs(speed);
             eFacingDirection = PixelSprite::RIGHT;
@@ -44,13 +55,27 @@ void Enemy::Update(float fElapsedTime) {
 
 void Enemy::Draw() {
     PixelSprite::Draw();
-    pge.DrawRect(getRect().x, getRect().y, getRect().width, getRect().height, olc::RED);
+    DrawRect();
+}
+
+void Enemy::hit(float currentTime) {
+    // Only respond to hit if the cooldown has passed
+    if (!isAlive()) {
+        return;
+    }
+    if (currentTime - lastHitTime >= cooldownTime) {
+        lastHitTime = currentTime;  // Update the last hit time
+        std::cout << "Enemy hit!" << std::endl;
+        takeDamage(1);
+    }
 }
 
 void Enemy::takeDamage(int damage) {
     health -= damage;
-    if (health <= 0) {
-        bIsPatrolling = false; // Stop patrolling when dead
+    resetGraphicState(AnimationState::HIT);
+
+    if (!isAlive()) {
+        resetGraphicState(AnimationState::DEAD);
     }
 }
 

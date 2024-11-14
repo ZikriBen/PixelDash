@@ -152,6 +152,11 @@ void Player::handleForceAnimation() {
 						b->hit(totalTime);
 					}
 				}
+				if (PixelSprite* ps = Level::getInstance().checkCollisionWithEnemies(GetAttackHitbox())) {
+					if (Enemy *e = dynamic_cast<Enemy*>(ps)) {
+						e->hit(totalTime);
+					}
+				}
 				bIsAttacking = false;
 			}
 		}

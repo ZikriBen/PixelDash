@@ -263,6 +263,14 @@ PixelSprite*Level::checkCollisionWithDecorations(const Rect& playerRect) {
 	return nullptr;
 }
 
+PixelSprite* Level::checkCollisionWithEnemies(const Rect& playerRect) {
+	Rect hitbox = enemy->getRect();
+	if (playerRect.intersects(hitbox)) {
+		return enemy;
+	}
+	return nullptr;
+}
+
 void Level::removeDecoration(PixelSprite* decoration) {
 	for (auto& entry : pixelSprites) {
 		auto& vec = entry.second;
