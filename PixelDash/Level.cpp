@@ -14,7 +14,7 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 	{
 		instance = new Level(levelWidth, levelHeight, tileWidth, tileHeight);
 		instance->pge = &pge;  // Store the game engine reference
-		instance->moveAbleTiles = { L'.', L'o', L'}', L'{', L'-', L',', L'v', L't', L'/', L'e', L'u', L'z' };
+		instance->moveAbleTiles = { L'.', L'o', L'}', L'{', L'-', L',', L'v', L't', L'/', L'e', L'u', L'z', L' '};
 		instance->spriteTiles = new olc::Sprite("assets/Terrain32x32.png");
 		instance->spriteDoor = new olc::Sprite("assets/IdleDoor.png");
 

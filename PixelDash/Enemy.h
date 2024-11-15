@@ -20,6 +20,13 @@ public:
     float getHomeX() { return homeX; };
     float getHomeY() { return homeY; };
     void hit(float currentTime);
+    void patrol(float fElapsedTime);
+    void setVelX(float newVel) { fEnemyVelX = newVel; };
+    void setVelY(float newVel) { fEnemyVelY = newVel; };
+    float getVelX() { return fEnemyVelX; };
+    float getVelY() { return fEnemyVelY; };
+    bool getEnemyOnGround() { return bEnemyOnGround; }
+    void setEnemyOnGround(bool newBool) { bEnemyOnGround = newBool; }
 
 private:
     float speed;          // Enemy movement speed
@@ -32,6 +39,9 @@ private:
     float pivotX;
     float lastHitTime = -1.0;      // Tracks the last time this box was hit
     const float cooldownTime = 0.05f;  // Cooldown duration in seconds, adjust as needed
+    float fEnemyVelX;
+    float fEnemyVelY;
+    bool bEnemyOnGround;
 };
 
 #endif // ENEMY_H

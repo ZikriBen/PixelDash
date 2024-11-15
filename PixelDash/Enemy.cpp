@@ -17,11 +17,13 @@ Enemy::Enemy(olc::PixelGameEngine& pge, const std::string& sprPath,
         {AnimationState::HIT, {1, 34, 28, 0.1, 2, 0, 0, 140}},
         {AnimationState::DEAD, {3, 34, 28, 0.1, 2, 0, 0, 168}}
     };
-    
+    setVelX(speed);
     setGraphicState(AnimationState::RUN);
+    eFacingDirection = PixelSprite::LEFT;
 }
 
 void Enemy::Update(float fElapsedTime) {
+
     // Patrol behavior: move back and forth within patrol range
     if (eGraphicState == AnimationState::DEAD) {
         bIsPatrolling = false;
@@ -36,17 +38,7 @@ void Enemy::Update(float fElapsedTime) {
     }
     
     else if (bIsPatrolling) {
-        setGraphicState(AnimationState::RUN);
-        if (getHomeX() > pivotX + patrolRange) {
-            speed = -std::abs(speed);
-            eFacingDirection = PixelSprite::RIGHT;
-        }
-        else if (getHomeX() < pivotX - patrolRange) {
-            speed = std::abs(speed);
-            eFacingDirection = PixelSprite::LEFT;
-        }
-
-        homeX = getHomeX() + speed * fElapsedTime;
+        patrol(fElapsedTime);
     }
 
     // Update sprite animation and state
@@ -81,4 +73,31 @@ void Enemy::takeDamage(int damage) {
 
 bool Enemy::isAlive() const {
     return health > 0;
+}
+
+void Enemy::patrol(float fElapsedTime) {
+    Level& lb = Level::getInstance();
+    setGraphicState(AnimationState::RUN);
+
+    // Check if we hit patrol boundaries or a wall
+    bool hitRightBoundary = getHomeX() >= pivotX + patrolRange ||
+        !lb.isMoveable(getHomeX() + 2.0f, getHomeY());
+
+    bool hitLeftBoundary = getHomeX() <= pivotX - patrolRange ||
+        !lb.isMoveable(getHomeX() - 1.0f, getHomeY());
+
+    // Switch direction if necessary
+    if (hitRightBoundary) {
+        setVelX(-std::abs(speed)); // Move left
+        eFacingDirection = PixelSprite::RIGHT;
+    }
+    else if (hitLeftBoundary) {
+        setVelX(std::abs(speed));  // Move right
+        eFacingDirection = PixelSprite::LEFT;
+    }
+
+    // Update position
+    homeX += getVelX() * fElapsedTime;
+
+    setPosX(homeX);  // Apply the updated position
 }
