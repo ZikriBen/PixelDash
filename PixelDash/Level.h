@@ -7,6 +7,7 @@
 #include "PixelSprite.h"
 #include "Box.h"
 #include "Coin.h"
+#include "Window.h"
 #include "Heart.h"
 #include "HUD.h"
 #include "Enemy.h"

@@ -47,12 +47,12 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 		instance->sDecoration += L"................................................................";
 		instance->sDecoration += L"................................................................";
 		instance->sDecoration += L"................................................................";
-		instance->sDecoration += L"................................................................";
+		instance->sDecoration += L"...W............................................................";
 		instance->sDecoration += L".....OOOO.......................................................";
 		instance->sDecoration += L"................................................................";
 		instance->sDecoration += L"....................H............HH....OOOO.....................";
-		instance->sDecoration += L"..............E............D...........OOOO.....................";
-		instance->sDecoration += L"...................................B............................";
+		instance->sDecoration += L"...........................D...........OOOO.....................";
+		instance->sDecoration += L"..............E....................B............................";
 		instance->sDecoration += L"................................................................";
 		instance->sDecoration += L"................................................................";
 
@@ -96,10 +96,15 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 					);
 				}
 				else if (cDecorID == 'E') {
-					//Enemy* e = new Enemy(pge, "assets/Pig.png", 0, 0, 10, 0.1, 34, 28, 2, 0, 0, 8);
 					instance->enemy = new Enemy(pge, "assets/Pig.png", x, y, 10, 0.1, 34, 28, 2, 0, 0, 0);
 					instance->enemy->setAnimation(true);
 					instance->enemy->setLoop(true);
+				}
+				else if (cDecorID == 'W') {
+					instance->pixelSprites[cDecorID].emplace_back(
+						new Window(pge, WindowType::ONE),
+						std::make_pair(x, y)
+					);
 				}
 			}
 		}
