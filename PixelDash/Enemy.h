@@ -42,6 +42,7 @@ private:
     float fEnemyVelX;
     float fEnemyVelY;
     bool bEnemyOnGround;
+    float baseVelX;
 };
 
 #endif // ENEMY_H

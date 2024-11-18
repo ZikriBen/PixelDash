@@ -17,7 +17,8 @@ Enemy::Enemy(olc::PixelGameEngine& pge, const std::string& sprPath,
         {AnimationState::HIT, {1, 34, 28, 0.1, 2, 0, 0, 140}},
         {AnimationState::DEAD, {3, 34, 28, 0.1, 2, 0, 0, 168}}
     };
-    setVelX(speed);
+    baseVelX = speed;
+    setVelX(baseVelX);
     setGraphicState(AnimationState::RUN);
     eFacingDirection = PixelSprite::LEFT;
 }
@@ -31,9 +32,12 @@ void Enemy::Update(float fElapsedTime) {
     }
 
     else if (eGraphicState == AnimationState::HIT) {
+        float currVelX = getVelX();
+        setVelX(0.0f);
         // Wait until HIT animation finishes before returning to RUN
         if (getGraphicCounter() >= currentAnimation.iNumFrames) {
             setGraphicState(AnimationState::RUN);
+            setVelX(baseVelX * (eFacingDirection ? 1 : -1));
         }
     }
     
@@ -47,7 +51,7 @@ void Enemy::Update(float fElapsedTime) {
 
 void Enemy::Draw() {
     PixelSprite::Draw();
-    DrawRect();
+    //DrawRect();
 }
 
 void Enemy::hit(float currentTime) {

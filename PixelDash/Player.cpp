@@ -87,8 +87,8 @@ void Player::Draw() {
 	);
 	pge.SetPixelMode(olc::Pixel::NORMAL);
 	
-	pge.DrawRect(getPlayerRect().x, getPlayerRect().y, currentAnimation.frameWidth, currentAnimation.frameHeight);
-	pge.DrawRect(GetAttackHitbox().x, GetAttackHitbox().y, hitBoxWidth, hitBoxHeight, olc::RED);
+	//pge.DrawRect(getPlayerRect().x, getPlayerRect().y, currentAnimation.frameWidth, currentAnimation.frameHeight);
+	//pge.DrawRect(GetAttackHitbox().x, GetAttackHitbox().y, hitBoxWidth, hitBoxHeight, olc::RED);
 }
 
 bool Player::IsDoor() {
