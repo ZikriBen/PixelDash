@@ -47,11 +47,11 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 		instance->sDecoration += L"................................................................";
 		instance->sDecoration += L"................................................................";
 		instance->sDecoration += L"................................................................";
-		instance->sDecoration += L"...W............................................................";
+		instance->sDecoration += L"...W....P.P.....................................................";
 		instance->sDecoration += L".....OOOO.......................................................";
 		instance->sDecoration += L"................................................................";
 		instance->sDecoration += L"....................H............HH....OOOO.....................";
-		instance->sDecoration += L"...........................D...........OOOO.....................";
+		instance->sDecoration += L".................P.........D...........OOOO.....................";
 		instance->sDecoration += L"..............E....................B............................";
 		instance->sDecoration += L"................................................................";
 		instance->sDecoration += L"................................................................";
@@ -103,6 +103,12 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 				else if (cDecorID == 'W') {
 					instance->pixelSprites[cDecorID].emplace_back(
 						new Window(pge, WindowType::ONE),
+						std::make_pair(x, y)
+					);
+				}
+				else if (cDecorID == 'P') {
+					instance->pixelSprites[cDecorID].emplace_back(
+						new Platform(pge, PlatformType::ONE),
 						std::make_pair(x, y)
 					);
 				}
@@ -218,9 +224,47 @@ void Level::Draw(int nVisibleTilesX, int nVisibleTilesY, float fOffsetX, float f
 	enemy->Draw();
 }
 
+bool Level::isMoveable(int x, int y, float velY) {
+	// Ensure coordinates are within the level bounds
+	if (x < 0 || x >= nLevelWidth || y < 0 || y >= nLevelHeight)
+		return false;  // Outside the level bounds, not moveable
+
+	// Get the tile from the main level data
+	wchar_t levelTile = GetTile(x, y);
+
+	// Check if the tile is a solid terrain
+	bool isLevelTileBlocked = (moveAbleTiles.count(levelTile) == 0);
+
+	// Platform behavior
+	if (isPlatform(x, y)) {
+		if (velY > 0) {
+			// Falling: allow standing on the platform
+			return true;
+		}
+		else {
+			std::cout << "into platform" << std::endl;
+			// Jumping: allow passing through
+			return false;
+		}
+	}
+
+	// Default moveable check
+	return isLevelTileBlocked;
+}
+
 bool Level::isMoveable(int x, int y)
 {
-	return moveAbleTiles.count(GetTile(x, y)) == 0;
+	// Ensure coordinates are within the level bounds
+	if (x < 0 || x >= nLevelWidth || y < 0 || y >= nLevelHeight)
+		return false;  // Outside the level bounds, not moveable
+
+	// Check if the tile in `sLevel` is moveable
+	wchar_t levelTile = GetTile(x, y);  // Tile from the main level data (sLevel)
+	bool isLevelTileBlocked = (moveAbleTiles.count(levelTile) == 0);
+
+
+	// Return true only if neither level nor decoration blocks movement
+	return (isLevelTileBlocked );
 }
 
 bool Level::isDoor(float x, float y) {
@@ -285,4 +329,14 @@ void Level::removeDecoration(PixelSprite* decoration) {
 			}), vec.end());
 	}
 	delete decoration;  // Free memory if the decoration was dynamically allocated
+}
+
+bool Level::isPlatform(int x, int y)
+{
+	if (x >= 0 && x < nLevelWidth && y >= 0 && y < nLevelHeight)
+	{
+		wchar_t decorTile = sDecoration[(y) * nLevelWidth + x];
+		return (decorTile == 'P'); // 'P' represents a platform tile
+	}
+	return false;
 }

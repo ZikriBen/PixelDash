@@ -88,6 +88,7 @@ void PixelSprite::Draw()
         iScale,
         eFacingDirection);
 	pge.SetPixelMode(olc::Pixel::NORMAL);
+    //DrawRect();
 }
 
 void PixelSprite::DrawRect() {
@@ -97,7 +98,12 @@ void PixelSprite::DrawRect() {
 }
 
 Rect PixelSprite::getRect() {
-    return Rect(getPosX(), getPosY(), getWidth(), getHeight());
+    return Rect(
+        getPosX() + fPosOffsetX,  // Add positional offset for world coordinates
+        getPosY() + fPosOffsetY,
+        getWidth(),
+        getHeight()
+    );
 }
 
 void PixelSprite::setGraphicState(AnimationState state)
