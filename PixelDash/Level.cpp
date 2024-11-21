@@ -39,22 +39,22 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 		//instance->sLevel += L"................................................................";
 		//instance->sLevel += L"................................................................";
 
-		instance->sLevel += L".................<______>......<_______________________________>";
-		instance->sLevel += L".................]oooooo[......]oooooooooooooooooooooooooooooo{[";
-		instance->sLevel += L".................]oooooo[......]}ooooooooooooooooooooooooooooo{[";
-		instance->sLevel += L".................]oooooo[......]}ooooooooooooooooooooooooooooo{[";
-		instance->sLevel += L"......<__________ioooooo[......]}ooooooooooooooooooooooooooooo{[";
-		instance->sLevel += L"......]}ooooooooooooooooy______ioooooooooooooooooooooooooooxccc5";
-		instance->sLevel += L"......]}oooooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
-		instance->sLevel += L".<____4cccccc3cbooooooooooooooooooooooooooooooooooooor##pooooo{[";
-		instance->sLevel += L".]}oooooooooomooooooooooooooooooooooooooooooooooooooo[..]ooooo{[";
-		instance->sLevel += L".]}oooooooooomoooxc6###7cbooooooooooooooooooooooooooo[..]ooooo{[";
-		instance->sLevel += L".]}ooooooooookoooooy___ioooooooooooooooooooooooooooors..]ooooo{[";
-		instance->sLevel += L".]}oooooooooooooooooooooooooooooooooooooooooooooor##s...]ooooo{[";
-		instance->sLevel += L".]}ooooooooooooooooooooooooorpooooooooooooooooor#s......]ooooo{[";
-		instance->sLevel += L".]}ooooooooooooo2ccccccboor#slpoooooooooooooooo[........]ooooo{[";
-		instance->sLevel += L".]v,,,,,,,,,,,,,m,,,,,,,,z[...]v,,,,,,,r#####p,[........],,,,,z[";
-		instance->sLevel += L".l##############1#########s...l########s.....l#s........l######s";
+		instance->sLevel +=      L".................<______>......<_______________________________>";
+		instance->sLevel +=      L".................]}oooo{[......]/-----------------------------u[";
+		instance->sLevel +=      L".................]}oooo{[......]}ooooooooooooooooooooooooooooo{[";
+		instance->sLevel +=      L".................]}oooo{[......]}ooooooooooooooooooooooooooooo{[";
+		instance->sLevel +=      L"......<__________i}oooo{[......]}ooooooooooooooooooooooooooooo{[";
+		instance->sLevel +=      L"......]/----------ooooo{y______ioooooooooooooooooooooooooooxccc5";
+		instance->sLevel +=      L"......]v,,,,,,,,oooooooo--------oooooooooooooooooooooooooooooo{[";
+		instance->sLevel +=      L".<____4cccccc3cb}oooooooooooooooooooooooooooooooooooor##pooooo{[";
+		instance->sLevel +=      L".]/---------um/-o,,,,,,,,,ooooooooooooooooooooooooooo[..]ooooo{[";
+		instance->sLevel +=      L".]}ooooooooo{m}o{xc6###7cb}oooooooooooooooooooooooooo[..]ooooo{[";
+		instance->sLevel +=      L".]}ooooooooo{k}oo-uy___i/-oooooooooooooooooooooooooors..]ooooo{[";
+		instance->sLevel +=      L".]}oooooooooo-ooooo-----oooo,,ooooooooooooooooooor##s...]ooooo{[";
+		instance->sLevel +=      L".]}ooooooooooooo,,,,,,,,oo,zrpvoooooooooooooooor#s......]ooooo{[";
+		instance->sLevel +=      L".]}oooooooooooo{2ccccccb}{r#slp}ooooooooooooooo[........]ooooo{[";
+		instance->sLevel +=      L".]v,,,,,,,,,,,,zm,,,,,,,,z[...]v,,,,,,,r#####p,[........],,,,,z[";
+		instance->sLevel +=      L".l##############1#########s...l########s.....l#s........l######s";
 
 		instance->sDecoration += L"................................................................";
 		instance->sDecoration += L"................................................................";
@@ -70,8 +70,8 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 		instance->sDecoration += L".....R..............H............HH....OOOO.....................";
 		instance->sDecoration += L".................P.....................OOOO.....................";
 		instance->sDecoration += L"...................................B............................";
-		instance->sDecoration += L"..............E.................................................";
 		instance->sDecoration += L"................................................................";
+		instance->sDecoration += L"..........E.....................................................";
 
 
 		// create decoration array
