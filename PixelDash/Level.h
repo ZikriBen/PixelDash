@@ -8,6 +8,7 @@
 #include "Box.h"
 #include "Coin.h"
 #include "Window.h"
+#include "Platform.h"
 #include "Heart.h"
 #include "HUD.h"
 #include "Enemy.h"
@@ -57,6 +58,8 @@ public:
 
 	const std::unordered_set<wchar_t> getMoveable() { return moveAbleTiles; }
 	bool isMoveable(int x, int y);
+	bool isMoveable(int x, int y, float velY, Rect playerRect);
+	bool isMoveable(int x, int y, float velY);
 
 	bool isDoor(float x, float y);
 	void openDoor();
@@ -68,6 +71,7 @@ public:
 
 	float setOffsetX(float offsetX) { fOffsetX = offsetX; };
 	float setOffsetY(float offsetY) { fOffsetY = offsetY; };
+	bool isPlatform(int x, int y);
 };
 #endif // LEVEL_H
 

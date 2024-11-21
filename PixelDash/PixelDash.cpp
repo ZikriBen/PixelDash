@@ -105,16 +105,18 @@ public:
 
 		if (player->getVelY() <= 0) // Moving Up
 		{
-			if (lb.isMoveable(fNewPlayerPosX + 0.0f, fNewPlayerPosY) || lb.isMoveable(fNewPlayerPosX + 0.9f, fNewPlayerPosY))
+			if (lb.isMoveable(fNewPlayerPosX + 0.0f, fNewPlayerPosY, player->getVelY()) ||
+				lb.isMoveable(fNewPlayerPosX + 0.9f, fNewPlayerPosY, player->getVelY()))
 			{
-				fNewPlayerPosY = (int)fNewPlayerPosY + 1;
+				fNewPlayerPosY = (int)fNewPlayerPosY+1;
 				player->setVelY(0.0f);
 				player->setPlayerOnGround(false);
 			}
 		}
 		else // Moving Down
 		{
-			if (lb.isMoveable(fNewPlayerPosX + 0.0f, fNewPlayerPosY + 1.0f) || lb.isMoveable(fNewPlayerPosX + 0.9f, fNewPlayerPosY + 1.0f))
+			if (lb.isMoveable(fNewPlayerPosX + 0.0f, fNewPlayerPosY + 1.0f, player->getVelY()) ||
+				lb.isMoveable(fNewPlayerPosX + 0.9f, fNewPlayerPosY + 1.0f, player->getVelY()))
 			{
 				fNewPlayerPosY = (int)fNewPlayerPosY;
 				player->setVelY(0.0f);

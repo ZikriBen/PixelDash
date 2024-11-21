@@ -29,6 +29,7 @@
     <ClInclude Include="miniaudio.h" />
     <ClInclude Include="olcPGEX_MiniAudio.h" />
     <ClInclude Include="PixelSprite.h" />
+    <ClInclude Include="Platform.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerMovement.h" />
     <ClInclude Include="Rect.h" />
@@ -36,16 +37,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Box.cpp" />
-    <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="Heart.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="PixelDash.cpp" />
     <ClCompile Include="PixelSprite.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerMovement.cpp" />
-    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

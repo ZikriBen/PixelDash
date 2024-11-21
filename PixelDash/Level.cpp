@@ -22,38 +22,55 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 		
 		
 
-		instance->sLevel += L"................................................................";
-		instance->sLevel += L"................................................................";
-		instance->sLevel += L"........<______________________________________________________>";
-		instance->sLevel += L"........]/----------------------------------------------------u[";
-		instance->sLevel += L"........]}oooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
-		instance->sLevel += L"........]}oooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
-		instance->sLevel += L"<_______i}oooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
-		instance->sLevel += L"]/-------eoooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
-		instance->sLevel += L"]}oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
-		instance->sLevel += L"]}oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
-		instance->sLevel += L"]v,,,,,,,toooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
-		instance->sLevel += L"l#######y}oooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
-		instance->sLevel += L"........]v,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,z[";
-		instance->sLevel += L"........l######################################################r";
-		instance->sLevel += L"................................................................";
-		instance->sLevel += L"................................................................";
+		//instance->sLevel += L"................................................................";
+		//instance->sLevel += L"................................................................";
+		//instance->sLevel += L"........<______________________________________________________>";
+		//instance->sLevel += L"........]/----------------------------------------------------u[";
+		//instance->sLevel += L"........]}oooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
+		//instance->sLevel += L"........]}oooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
+		//instance->sLevel += L"<_______i}oooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
+		//instance->sLevel += L"]/-------eoooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
+		//instance->sLevel += L"]}oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
+		//instance->sLevel += L"]}oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
+		//instance->sLevel += L"]v,,,,,,,toooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
+		//instance->sLevel += L"l#######y}oooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
+		//instance->sLevel += L"........]v,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,z[";
+		//instance->sLevel += L"........l######################################################r";
+		//instance->sLevel += L"................................................................";
+		//instance->sLevel += L"................................................................";
+
+		instance->sLevel += L".................<______>......<_______________________________>";
+		instance->sLevel += L".................]oooooo[......]oooooooooooooooooooooooooooooo{[";
+		instance->sLevel += L".................]oooooo[......]}ooooooooooooooooooooooooooooo{[";
+		instance->sLevel += L".................]oooooo[......]}ooooooooooooooooooooooooooooo{[";
+		instance->sLevel += L"......<__________ioooooo[......]}ooooooooooooooooooooooooooooo{[";
+		instance->sLevel += L"......]}ooooooooooooooooy______ioooooooooooooooooooooooooooxccc5";
+		instance->sLevel += L"......]}oooooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
+		instance->sLevel += L".<____4cccccc3cbooooooooooooooooooooooooooooooooooooor##pooooo{[";
+		instance->sLevel += L".]}oooooooooomooooooooooooooooooooooooooooooooooooooo[..]ooooo{[";
+		instance->sLevel += L".]}oooooooooomoooxc6###7cbooooooooooooooooooooooooooo[..]ooooo{[";
+		instance->sLevel += L".]}ooooooooookoooooy___ioooooooooooooooooooooooooooors..]ooooo{[";
+		instance->sLevel += L".]}oooooooooooooooooooooooooooooooooooooooooooooor##s...]ooooo{[";
+		instance->sLevel += L".]}ooooooooooooooooooooooooorpooooooooooooooooor#s......]ooooo{[";
+		instance->sLevel += L".]}ooooooooooooo2ccccccboor#slpoooooooooooooooo[........]ooooo{[";
+		instance->sLevel += L".]v,,,,,,,,,,,,,m,,,,,,,,z[...]v,,,,,,,r#####p,[........],,,,,z[";
+		instance->sLevel += L".l##############1#########s...l########s.....l#s........l######s";
 
 		instance->sDecoration += L"................................................................";
 		instance->sDecoration += L"................................................................";
 		instance->sDecoration += L"................................................................";
 		instance->sDecoration += L"................................................................";
+		instance->sDecoration += L".............................................................D..";
 		instance->sDecoration += L"................................................................";
 		instance->sDecoration += L"................................................................";
-		instance->sDecoration += L"................................................................";
-		instance->sDecoration += L"................................................................";
-		instance->sDecoration += L"...W............................................................";
+		instance->sDecoration += L"...............................................P....P...........";
+		instance->sDecoration += L"....................................................P...........";
 		instance->sDecoration += L".....OOOO.......................................................";
 		instance->sDecoration += L"................................................................";
-		instance->sDecoration += L"....................H............HH....OOOO.....................";
-		instance->sDecoration += L"...........................D...........OOOO.....................";
-		instance->sDecoration += L"..............E....................B............................";
-		instance->sDecoration += L"................................................................";
+		instance->sDecoration += L".....R..............H............HH....OOOO.....................";
+		instance->sDecoration += L".................P.....................OOOO.....................";
+		instance->sDecoration += L"...................................B............................";
+		instance->sDecoration += L"..............E.................................................";
 		instance->sDecoration += L"................................................................";
 
 
@@ -106,33 +123,70 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 						std::make_pair(x, y)
 					);
 				}
+				else if (cDecorID == 'P') {
+					instance->pixelSprites[cDecorID].emplace_back(
+						new Platform(pge, PlatformType::ONE),
+						std::make_pair(x, y)
+					);
+				}
+				else if (cDecorID == 'R') {
+					instance->pixelSprites[cDecorID].emplace_back(
+						new Platform(pge, PlatformType::FOUR),
+						std::make_pair(x, y)
+					);
+				}
 			}
 		}
 
 		instance->tileOffsets = {
-				{L'.', {64, 64}},
-				{L'#', {64, 32}},
-				{L']', {96, 64}},
+				{L'r', {32, 32}},
 				{L'[', {32, 64}},
-				{L'y', {96, 32}},
+				{L'y', {32, 96}},
+				
+				{L'x', {32, 160}},
+				{L'c', {64, 160}},
+				{L'b', {96, 160}},
+
+				{L'n', {160, 32}},
+				{L'm', {160, 64}},
+				{L'k', {160, 96}},
+				
+				{L'/', {32, 224}},
+				{L'}', {32, 256}},
+				{L'v', {32, 288}},
+
+				{L'#', {64, 32}},
+				{L'.', {64, 64}},
+				{L'_', {64, 96}},
+				{L'-', {64, 224}},
+				{L'o', {64, 256}},
+				{L',', {64, 288}},
+
+				{L'p', {96, 32}},
+				{L']', {96, 64}},
+				{L'i', {96, 96}},
+				{L'u', {96, 224}},
+				{L'z', {96, 288}},
+				{L'{', {96, 256}},
+				
+				{L'<', {224, 32}},
+				{L'l', {224, 64}},
+
+				{L'>', {256, 32}},
+				{L's', {256, 64}},
 				{L't', {256, 224}},
 				{L'e', {256, 256}},
-				{L'i', {96, 96}},
-				{L'}', {32, 256}},
-				{L'{', {96, 256}},
-				{L'-', {64, 224}},
-				{L',', {64, 288}},
-				{L'/', {32, 224}},
-				{L'u', {96, 224}},
-				{L'v', {32, 288}},
-				{L'z', {96, 288}},
-				{L'l', {224, 64}},
-				{L'r', {256, 64}},
-				{L'<', {224, 32}},
-				{L'>', {256, 32}},
-				{L'_', {64, 96}},
+
+				{L'1', {352, 32}},
+				{L'2', {512, 128}},
+				{L'3', {416, 128}},
+				{L'4', {224, 160}},
+				{L'5', {320, 32}},
+				{L'6', {256, 128}},
+				{L'7', {224, 128}},
+
 				{L'P', {0, 0}},
-				{L'o', {64, 256}}
+				
 		};
 	}
 }
@@ -218,9 +272,47 @@ void Level::Draw(int nVisibleTilesX, int nVisibleTilesY, float fOffsetX, float f
 	enemy->Draw();
 }
 
+bool Level::isMoveable(int x, int y, float velY) {
+	// Ensure coordinates are within the level bounds
+	if (x < 0 || x >= nLevelWidth || y < 0 || y >= nLevelHeight)
+		return false;  // Outside the level bounds, not moveable
+
+	// Get the tile from the main level data
+	wchar_t levelTile = GetTile(x, y);
+
+	// Check if the tile is a solid terrain
+	bool isLevelTileBlocked = (moveAbleTiles.count(levelTile) == 0);
+
+	// Platform behavior
+	if (isPlatform(x, y)) {
+		if (velY > 0) {
+			// Falling: allow standing on the platform
+			return true;
+		}
+		else {
+			std::cout << "into platform" << std::endl;
+			// Jumping: allow passing through
+			return false;
+		}
+	}
+
+	// Default moveable check
+	return isLevelTileBlocked;
+}
+
 bool Level::isMoveable(int x, int y)
 {
-	return moveAbleTiles.count(GetTile(x, y)) == 0;
+	// Ensure coordinates are within the level bounds
+	if (x < 0 || x >= nLevelWidth || y < 0 || y >= nLevelHeight)
+		return false;  // Outside the level bounds, not moveable
+
+	// Check if the tile in `sLevel` is moveable
+	wchar_t levelTile = GetTile(x, y);  // Tile from the main level data (sLevel)
+	bool isLevelTileBlocked = (moveAbleTiles.count(levelTile) == 0);
+
+
+	// Return true only if neither level nor decoration blocks movement
+	return (isLevelTileBlocked );
 }
 
 bool Level::isDoor(float x, float y) {
@@ -285,4 +377,14 @@ void Level::removeDecoration(PixelSprite* decoration) {
 			}), vec.end());
 	}
 	delete decoration;  // Free memory if the decoration was dynamically allocated
+}
+
+bool Level::isPlatform(int x, int y)
+{
+	if (x >= 0 && x < nLevelWidth && y >= 0 && y < nLevelHeight)
+	{
+		wchar_t decorTile = sDecoration[(y) * nLevelWidth + x];
+		return (decorTile == 'P' || decorTile == 'R'); // 'P' represents a platform tile
+	}
+	return false;
 }
