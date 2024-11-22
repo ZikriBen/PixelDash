@@ -23,6 +23,7 @@
     <ClInclude Include="Coin.h" />
     <ClInclude Include="D:\Personal\PixelDash1\olcPixelGameEngine.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Flag.h" />
     <ClInclude Include="Heart.h" />
     <ClInclude Include="HUD.h" />
     <ClInclude Include="Level.h" />

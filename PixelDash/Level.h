@@ -9,6 +9,7 @@
 #include "Coin.h"
 #include "Window.h"
 #include "Platform.h"
+#include "Flag.h"
 #include "Heart.h"
 #include "HUD.h"
 #include "Enemy.h"

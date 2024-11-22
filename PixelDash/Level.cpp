@@ -65,10 +65,10 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 		instance->sDecoration += L"................................................................";
 		instance->sDecoration += L"...............................................P....P...........";
 		instance->sDecoration += L"....................................................P...........";
-		instance->sDecoration += L".....OOOO.......................................................";
+		instance->sDecoration += L"..F..OOOO...F.F.................................................";
 		instance->sDecoration += L"................................................................";
-		instance->sDecoration += L".....R..............H............HH....OOOO.....................";
-		instance->sDecoration += L".................P.....................OOOO.....................";
+		instance->sDecoration += L".....R.........R....H............HH....OOOO.....................";
+		instance->sDecoration += L".................R.....................OOOO.....................";
 		instance->sDecoration += L"...................................B............................";
 		instance->sDecoration += L"................................................................";
 		instance->sDecoration += L"..........E.....................................................";
@@ -125,13 +125,19 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 				}
 				else if (cDecorID == 'P') {
 					instance->pixelSprites[cDecorID].emplace_back(
-						new Platform(pge, PlatformType::ONE),
+						new Platform(pge, PlatformType::TWO),
 						std::make_pair(x, y)
 					);
 				}
 				else if (cDecorID == 'R') {
 					instance->pixelSprites[cDecorID].emplace_back(
 						new Platform(pge, PlatformType::FOUR),
+						std::make_pair(x, y)
+					);
+				}
+				else if (cDecorID == 'F') {
+					instance->pixelSprites[cDecorID].emplace_back(
+						new Flag(pge, FlagType::TWO),
 						std::make_pair(x, y)
 					);
 				}
