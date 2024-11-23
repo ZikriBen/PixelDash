@@ -14,14 +14,21 @@ enum class PlatformType {
 
 class Platform : public PixelSprite {
 public:
-    Platform(olc::PixelGameEngine& pge, PlatformType type)
+    Platform(olc::PixelGameEngine& pge, PlatformType type, float fposx = 0, float fposy = 0)
         : PixelSprite(pge, "assets/Decorations32x32.png", 0, 0, 1, 0.1, 32, 40, getOffsetX(type), getOffsetY(type), 0, 0)
     {
         setSprOffsetX(getOffsetX(type));
         setSprOffsetY(getOffsetY(type));
+        homeX = fposx;
+        homeY = fposy;
     }
 
+    float getHomeX() { return homeX; };
+    float getHomeY() { return homeY; };
+
 private:
+    float homeX;
+    float homeY;
     static int getOffsetX(PlatformType type) {
         switch (type) {
         case PlatformType::ONE:   return 64;

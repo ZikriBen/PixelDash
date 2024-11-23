@@ -59,7 +59,7 @@ public:
 
 		// Gravity
 		player->setVelY(player->getVelY() + 20.0f * fElapsedTime);
-
+		
 		// Drag
 		if (player->getPlayerOnGround())
 		{
@@ -67,6 +67,7 @@ public:
 			if (fabs(player->getVelX()) < 0.01f)
 				player->setVelX(0.0f);
 		}
+
 
 		// Clamp velocities
 		if (player->getVelX() > 10.0f)
@@ -103,27 +104,42 @@ public:
 			}
 		}
 
-		if (player->getVelY() <= 0) // Moving Up
+		if (player->getVelY() < 0) // Moving Up
 		{
-			if (lb.isMoveable(fNewPlayerPosX + 0.0f, fNewPlayerPosY, player->getVelY()) ||
-				lb.isMoveable(fNewPlayerPosX + 0.9f, fNewPlayerPosY, player->getVelY()))
+			player->setPlayerOnGround(false);
+			if (lb.isMoveable(fNewPlayerPosX + 0.0f, fNewPlayerPosY) ||
+				lb.isMoveable(fNewPlayerPosX + 0.9f, fNewPlayerPosY))
 			{
-				fNewPlayerPosY = (int)fNewPlayerPosY+1;
+				
+				fNewPlayerPosY = (int)fNewPlayerPosY + 1;
 				player->setVelY(0.0f);
-				player->setPlayerOnGround(false);
+				
 			}
 		}
-		else // Moving Down
+		else if (player->getVelY() > 0) // Moving Down
 		{
-			if (lb.isMoveable(fNewPlayerPosX + 0.0f, fNewPlayerPosY + 1.0f, player->getVelY()) ||
-				lb.isMoveable(fNewPlayerPosX + 0.9f, fNewPlayerPosY + 1.0f, player->getVelY()))
+			if (lb.isPlatform(fNewPlayerPosX + 0.0f, fNewPlayerPosY + 1.0f) || // Check one tile above
+				lb.isPlatform(fNewPlayerPosX + 0.9f, fNewPlayerPosY + 1.0f))
+			{
+				if (PixelSprite* ps = lb.checkCollisionWithDecorations(player->getPlayerRect()))
+					if (Platform* p = dynamic_cast<Platform*>(ps)) {
+
+						if ((fNewPlayerPosY) < p->getHomeY() - 0.5) {
+							fNewPlayerPosY = (int)fNewPlayerPosY;
+							player->setVelY(0.0f);
+							player->setPlayerOnGround(true);
+						}
+					}
+				
+			}
+			if (lb.isMoveable(fNewPlayerPosX + 0.0f, fNewPlayerPosY + 1.0f) ||
+				lb.isMoveable(fNewPlayerPosX + 0.9f, fNewPlayerPosY + 1.0f))
 			{
 				fNewPlayerPosY = (int)fNewPlayerPosY;
 				player->setVelY(0.0f);
 				player->setPlayerOnGround(true);
 			}
 		}
-
 		// Apply new position
 		player->setPosX(fNewPlayerPosX);
 		player->setPosY(fNewPlayerPosY);

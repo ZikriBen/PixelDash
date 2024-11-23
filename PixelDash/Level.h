@@ -58,8 +58,8 @@ public:
 	void Draw(int nVisibleTilesX, int nVisibleTilesY, float fOffsetX, float fOffsetY, float fTileOffsetX, float fTileOffsetY);
 
 	const std::unordered_set<wchar_t> getMoveable() { return moveAbleTiles; }
-	bool isMoveable(int x, int y);
 	bool isMoveable(int x, int y, float velY, Rect playerRect);
+	bool isMoveable(int x, int y, bool checkPlatformAsSolid = true);
 	bool isMoveable(int x, int y, float velY);
 
 	bool isDoor(float x, float y);

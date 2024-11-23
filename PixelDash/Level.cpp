@@ -65,13 +65,13 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 		instance->sDecoration += L"................................................................";
 		instance->sDecoration += L"...............................................P....P...........";
 		instance->sDecoration += L"....................................................P...........";
-		instance->sDecoration += L"..F..OOOO...F.F.................................................";
+		instance->sDecoration += L"..F...OOO...F.F.................................................";
+		instance->sDecoration += L"................R...............................................";
+		instance->sDecoration += L"....................H............HH....OOOO.....................";
+		instance->sDecoration += L"....R....R.......R.....................OOOO.....................";
+		instance->sDecoration += L"...........R.......................B............................";
 		instance->sDecoration += L"................................................................";
-		instance->sDecoration += L".....R.........R....H............HH....OOOO.....................";
-		instance->sDecoration += L".................R.....................OOOO.....................";
-		instance->sDecoration += L"...................................B............................";
-		instance->sDecoration += L"................................................................";
-		instance->sDecoration += L"..........E.....................................................";
+		instance->sDecoration += L"..........E.R...................................................";
 
 
 		// create decoration array
@@ -125,13 +125,13 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 				}
 				else if (cDecorID == 'P') {
 					instance->pixelSprites[cDecorID].emplace_back(
-						new Platform(pge, PlatformType::TWO),
+						new Platform(pge, PlatformType::TWO, x, y),
 						std::make_pair(x, y)
 					);
 				}
 				else if (cDecorID == 'R') {
 					instance->pixelSprites[cDecorID].emplace_back(
-						new Platform(pge, PlatformType::FOUR),
+						new Platform(pge, PlatformType::FOUR, x, y),
 						std::make_pair(x, y)
 					);
 				}
@@ -306,19 +306,12 @@ bool Level::isMoveable(int x, int y, float velY) {
 	return isLevelTileBlocked;
 }
 
-bool Level::isMoveable(int x, int y)
+bool Level::isMoveable(int x, int y, bool checkPlatformAsSolid)
 {
-	// Ensure coordinates are within the level bounds
-	if (x < 0 || x >= nLevelWidth || y < 0 || y >= nLevelHeight)
-		return false;  // Outside the level bounds, not moveable
-
-	// Check if the tile in `sLevel` is moveable
-	wchar_t levelTile = GetTile(x, y);  // Tile from the main level data (sLevel)
-	bool isLevelTileBlocked = (moveAbleTiles.count(levelTile) == 0);
-
-
-	// Return true only if neither level nor decoration blocks movement
-	return (isLevelTileBlocked );
+	wchar_t levelTile = GetTile(x, y); // Assuming `getTile` fetches the tile at (x, y)
+	if (levelTile == L'R' && !checkPlatformAsSolid)
+		return true; // Treat platform as moveable when coming from below
+	return moveAbleTiles.count(levelTile) == 0;
 }
 
 bool Level::isDoor(float x, float y) {
