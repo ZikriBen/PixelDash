@@ -9,7 +9,7 @@ void PlayerMovement::Update(float fElapsedTime)
 		return;
 	}
 
-	if (pge.GetKey(olc::Key::W).bHeld || pge.GetKey(olc::Key::UP).bHeld)
+	if (pge.GetKey(olc::Key::W).bPressed || pge.GetKey(olc::Key::UP).bPressed)
 	{
 		if (player.IsDoor()) {
 			player.openDoor();
