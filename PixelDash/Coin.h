@@ -12,7 +12,12 @@ public:
 
     // Overloaded constructor for position and offset
     Coin(olc::PixelGameEngine& pge, std::string sprPath, float posx, float posy, int numFrames, float frameDuration, int width, int height, int ox, int oy, float offsetPosX, float offsetPosY)
-        : PixelSprite(pge, sprPath, posx, posy, numFrames, frameDuration, width, height, ox, oy, offsetPosX, offsetPosY) {}
+        : PixelSprite(pge, sprPath, posx, posy, numFrames, frameDuration, width, height, ox, oy, offsetPosX, offsetPosY) {
+        int tileSize = 32;
+
+        setOffsetPosX((tileSize / 2) - (width / 2));
+        setOffsetPosY((tileSize) - (height / 2));
+    }
 
     void collect() { collected = true; }
 

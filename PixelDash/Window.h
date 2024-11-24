@@ -26,8 +26,8 @@ public:
         : PixelSprite(pge, "assets/Decorations32x32.png", 0, 0, 1, 0.1, 64, 64, (type == WindowType::ONE ? 64 : 128),96,0,0)
     {
         if (type == WindowType::ONE) {
-            setOffsetPosX(64);
-            setOffsetPosY(96);
+            setSprOffsetX(64);
+            setSprOffsetY(96);
         }
         else {
             setSprOffsetX(128);
