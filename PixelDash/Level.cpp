@@ -58,20 +58,20 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 
 		instance->sDecoration += L"................................................................";
 		instance->sDecoration += L"................................................................";
+		instance->sDecoration += L"...................ZC...........................................";
 		instance->sDecoration += L"................................................................";
+		instance->sDecoration += L"......................ZX.....................................D..";
 		instance->sDecoration += L"................................................................";
-		instance->sDecoration += L".............................................................D..";
+		instance->sDecoration += L"..................ZC............................................";
+		instance->sDecoration += L"...............................................V................";
+		instance->sDecoration += L"....................................................V...........";
+		instance->sDecoration += L"......OOO....................................................ZX.";
 		instance->sDecoration += L"................................................................";
+		instance->sDecoration += L".....V.........V.................HH....OOOO..............XC.....";
+		instance->sDecoration += L".......................................OOOO.....................";
+		instance->sDecoration += L".............................................................ZX.";
 		instance->sDecoration += L"................................................................";
-		instance->sDecoration += L"...............................................P....P...........";
-		instance->sDecoration += L"....................................................P...........";
-		instance->sDecoration += L"..F...OOO...F.F.................................................";
-		instance->sDecoration += L"................R...............................................";
-		instance->sDecoration += L"....................H............HH....OOOO.....................";
-		instance->sDecoration += L"....R....R.......R.....................OOOO.....................";
-		instance->sDecoration += L"...........R.......................B............................";
-		instance->sDecoration += L"................................................................";
-		instance->sDecoration += L"..........E.R...................................................";
+		instance->sDecoration += L"..........E.......H................B......................OOOOO.";
 
 
 		// create decoration array
@@ -123,13 +123,25 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 						std::make_pair(x, y)
 					);
 				}
-				else if (cDecorID == 'P') {
+				else if (cDecorID == 'Z') {
+					instance->pixelSprites[cDecorID].emplace_back(
+						new Platform(pge, PlatformType::ONE, x, y),
+						std::make_pair(x, y)
+					);
+				}
+				else if (cDecorID == 'X') {
 					instance->pixelSprites[cDecorID].emplace_back(
 						new Platform(pge, PlatformType::TWO, x, y),
 						std::make_pair(x, y)
 					);
 				}
-				else if (cDecorID == 'R') {
+				else if (cDecorID == 'C') {
+					instance->pixelSprites[cDecorID].emplace_back(
+						new Platform(pge, PlatformType::THREE, x, y),
+						std::make_pair(x, y)
+					);
+				}
+				else if (cDecorID == 'V') {
 					instance->pixelSprites[cDecorID].emplace_back(
 						new Platform(pge, PlatformType::FOUR, x, y),
 						std::make_pair(x, y)
@@ -260,7 +272,7 @@ void Level::Draw(int nVisibleTilesX, int nVisibleTilesY, float fOffsetX, float f
 
 			if (sprite) {
 				if (levelX >= startX && levelX < startX + nVisibleTilesX + 1 &&
-					levelY >= startY && levelY < startY + nVisibleTilesY) {
+					levelY >= startY && levelY < startY + nVisibleTilesY + 1) {
 					int screenX = (levelX - startX) * nTileWidth - fTileOffsetX;
 					int screenY = (levelY - startY) * nTileHeight - fTileOffsetY - 24;
 					sprite->setPosX(screenX);
@@ -383,7 +395,7 @@ bool Level::isPlatform(int x, int y)
 	if (x >= 0 && x < nLevelWidth && y >= 0 && y < nLevelHeight)
 	{
 		wchar_t decorTile = sDecoration[(y) * nLevelWidth + x];
-		return (decorTile == 'P' || decorTile == 'R'); // 'P' represents a platform tile
+		return (decorTile == 'Z' || decorTile == 'X' || decorTile == 'C' || decorTile == 'V');
 	}
 	return false;
 }
