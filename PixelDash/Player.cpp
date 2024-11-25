@@ -49,7 +49,7 @@ void Player::Update(float fElapsedTime) {
 		if (Coin* c = dynamic_cast<Coin*>(ps)) {
 			if (!c->isCollected()) {
 				c->collect();
-				lb.removeDecoration(c);
+				lb.removeDecoration('C', c);
 				earn();
 			}
 		}
@@ -57,7 +57,7 @@ void Player::Update(float fElapsedTime) {
 		else if (Heart* h = dynamic_cast<Heart*>(ps)) {
 			if (!h->isCollected()) {
 				h->collect();
-				lb.removeDecoration(h);
+				lb.removeDecoration('H', h);
 				heal();
 			}
 		}
@@ -87,8 +87,8 @@ void Player::Draw() {
 	);
 	pge.SetPixelMode(olc::Pixel::NORMAL);
 	
-	pge.DrawRect(getPlayerRect().x, getPlayerRect().y, currentAnimation.frameWidth, currentAnimation.frameHeight, olc::GREEN);
-	pge.DrawRect(GetAttackHitbox().x, GetAttackHitbox().y, hitBoxWidth, hitBoxHeight, olc::RED);
+	//pge.DrawRect(getPlayerRect().x, getPlayerRect().y, currentAnimation.frameWidth, currentAnimation.frameHeight, olc::GREEN);
+	//pge.DrawRect(GetAttackHitbox().x, GetAttackHitbox().y, hitBoxWidth, hitBoxHeight, olc::RED);
 }
 
 bool Player::IsDoor() {

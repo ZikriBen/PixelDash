@@ -58,15 +58,16 @@ public:
 	void Draw(int nVisibleTilesX, int nVisibleTilesY, float fOffsetX, float fOffsetY, float fTileOffsetX, float fTileOffsetY);
 
 	const std::unordered_set<wchar_t> getMoveable() { return moveAbleTiles; }
-	bool isMoveable(int x, int y, float velY, Rect playerRect);
-	bool isMoveable(int x, int y, bool checkPlatformAsSolid = true);
-	bool isMoveable(int x, int y, float velY);
+	
+	bool isMoveable(int x, int y);
+
 
 	bool isDoor(float x, float y);
 	void openDoor();
 	PixelSprite* checkCollisionWithDecorations(const Rect& playerHitbox);
 	PixelSprite* checkCollisionWithEnemies(const Rect& playerRect);
 	void removeDecoration(PixelSprite* decoration);
+	void removeDecoration(wchar_t c, PixelSprite* decoration);
 	float getOffsetX() { return fOffsetX; };
 	float getOffsetY() { return fOffsetY; };
 

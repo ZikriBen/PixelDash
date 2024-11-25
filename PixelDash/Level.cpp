@@ -57,9 +57,9 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 		instance->sLevel +=      L".l##############1#########s...l########s.....l#s........l######s";
 
 		instance->sDecoration += L"................................................................";
-		instance->sDecoration += L"...................O............................................";
-		instance->sDecoration += L"...................V..........................................F.";
 		instance->sDecoration += L"................................................................";
+		instance->sDecoration += L"..................FO..W.......................................F.";
+		instance->sDecoration += L"...................V............................................";
 		instance->sDecoration += L"......................ZX....................................D...";
 		instance->sDecoration += L"................................................................";
 		instance->sDecoration += L".......W.O.W.O.W..ZC............................................";
@@ -69,9 +69,9 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 		instance->sDecoration += L"................................................................";
 		instance->sDecoration += L".....O.OOOO....V.................HH....OOOO..............XC.....";
 		instance->sDecoration += L".....V.................................OOOO.....................";
-		instance->sDecoration += L".............................................................ZX.";
-		instance->sDecoration += L"................................................................";
-		instance->sDecoration += L"..........E.......H................B......................OOOOO.";
+		instance->sDecoration += L"..V..........................................................ZX.";
+		instance->sDecoration += L"..........................................................OOOOO.";
+		instance->sDecoration += L"..........E.......H................B............................";
 
 
 		// create decoration array
@@ -290,40 +290,9 @@ void Level::Draw(int nVisibleTilesX, int nVisibleTilesY, float fOffsetX, float f
 	enemy->Draw();
 }
 
-bool Level::isMoveable(int x, int y, float velY) {
-	// Ensure coordinates are within the level bounds
-	if (x < 0 || x >= nLevelWidth || y < 0 || y >= nLevelHeight)
-		return false;  // Outside the level bounds, not moveable
-
-	// Get the tile from the main level data
-	wchar_t levelTile = GetTile(x, y);
-
-	// Check if the tile is a solid terrain
-	bool isLevelTileBlocked = (moveAbleTiles.count(levelTile) == 0);
-
-	// Platform behavior
-	if (isPlatform(x, y)) {
-		if (velY > 0) {
-			// Falling: allow standing on the platform
-			return true;
-		}
-		else {
-			std::cout << "into platform" << std::endl;
-			// Jumping: allow passing through
-			return false;
-		}
-	}
-
-	// Default moveable check
-	return isLevelTileBlocked;
-}
-
-bool Level::isMoveable(int x, int y, bool checkPlatformAsSolid)
-{
-	wchar_t levelTile = GetTile(x, y); // Assuming `getTile` fetches the tile at (x, y)
-	if (levelTile == L'R' && !checkPlatformAsSolid)
-		return true; // Treat platform as moveable when coming from below
-	return moveAbleTiles.count(levelTile) == 0;
+bool Level::isMoveable(int x, int y)
+{	
+	return moveAbleTiles.count(GetTile(x, y)) == 0;
 }
 
 bool Level::isDoor(float x, float y) {
@@ -382,12 +351,21 @@ PixelSprite* Level::checkCollisionWithEnemies(const Rect& playerRect) {
 void Level::removeDecoration(PixelSprite* decoration) {
 	for (auto& entry : pixelSprites) {
 		auto& vec = entry.second;
+		removeDecoration(entry.first, decoration);
+	}
+	delete decoration;
+}
+
+void Level::removeDecoration(wchar_t key, PixelSprite* decoration) {
+	auto it = pixelSprites.find(key);
+	if (it != pixelSprites.end()) {
+		auto& vec = it->second;
 		vec.erase(std::remove_if(vec.begin(), vec.end(),
 			[decoration](const std::pair<PixelSprite*, std::pair<float, float>>& item) {
 				return item.first == decoration;
 			}), vec.end());
 	}
-	delete decoration;  // Free memory if the decoration was dynamically allocated
+	
 }
 
 bool Level::isPlatform(int x, int y)
