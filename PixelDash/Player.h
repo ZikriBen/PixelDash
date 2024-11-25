@@ -4,6 +4,7 @@
 #include "Level.h";
 #include "Box.h"
 #include "Coin.h"
+#include "TimedSprite.h"
 
 #pragma once
 class Player 
@@ -64,6 +65,7 @@ private:
 	olc::PixelGameEngine& pge;
 	Level& lvl;
 	olc::Sprite* spr;
+	TimedSprite* bubble;
 	bool bSoundOn;
 	float fWidth;
 	float fHeight;

@@ -2,6 +2,9 @@
 
 Player::Player(olc::PixelGameEngine& pge, Level& lvl) : pge(pge), lvl(lvl), eLifeState(Player::ALIVE), bSoundOn(true) {
 	spr = new olc::Sprite("assets/IdleRun.png");
+	bubble = new TimedSprite(pge, "assets/Hello30x16.png", 0, 0, 5, 0.15f, 30, 16, 0, 0, 0, 0, 5 * 0.15f);
+	bubble->setLoop(true);
+	bubble->setAnimation(true);
 	fWidth = 37.0f;
 	fHeight = 28.0f;
 	fGraphicTimer = 0.0f;
@@ -69,6 +72,9 @@ void Player::Update(float fElapsedTime) {
 	else {
 		handleContinousAnimation();
 	}
+	
+	if (bubble)
+		bubble->Update(fElapsedTime);
 }
 
 void Player::Draw() {
@@ -86,6 +92,12 @@ void Player::Draw() {
 		eFacingDirection
 	);
 	pge.SetPixelMode(olc::Pixel::NORMAL);
+
+	if (bubble) {
+		bubble->setPosX((((fPlayerPosX - fOffsetX) * 32) - nOffsetCorrection) + 35);
+		bubble->setPosY(((fPlayerPosY - fOffsetY) * 32) + currentAnimation.iOffsetPosY - 7);
+		bubble->Draw();
+	}
 	
 	//pge.DrawRect(getPlayerRect().x, getPlayerRect().y, currentAnimation.frameWidth, currentAnimation.frameHeight, olc::GREEN);
 	//pge.DrawRect(GetAttackHitbox().x, GetAttackHitbox().y, hitBoxWidth, hitBoxHeight, olc::RED);

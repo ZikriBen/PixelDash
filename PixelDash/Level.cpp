@@ -19,25 +19,7 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 		instance->spriteDoor = new olc::Sprite("assets/IdleDoor.png");
 
 		HUD::init(pge);
-		
-		
-
-		//instance->sLevel += L"................................................................";
-		//instance->sLevel += L"................................................................";
-		//instance->sLevel += L"........<______________________________________________________>";
-		//instance->sLevel += L"........]/----------------------------------------------------u[";
-		//instance->sLevel += L"........]}oooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
-		//instance->sLevel += L"........]}oooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
-		//instance->sLevel += L"<_______i}oooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
-		//instance->sLevel += L"]/-------eoooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
-		//instance->sLevel += L"]}oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
-		//instance->sLevel += L"]}oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
-		//instance->sLevel += L"]v,,,,,,,toooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
-		//instance->sLevel += L"l#######y}oooooooooooooooooooooooooooooooooooooooooooooooooooo{[";
-		//instance->sLevel += L"........]v,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,z[";
-		//instance->sLevel += L"........l######################################################r";
-		//instance->sLevel += L"................................................................";
-		//instance->sLevel += L"................................................................";
+	
 
 		instance->sLevel +=      L".................<______>......<_______________________________>";
 		instance->sLevel +=      L".................]/----u[......]/-----------------------------u[";
@@ -144,12 +126,6 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 				else if (cDecorID == 'V') {
 					instance->pixelSprites[cDecorID].emplace_back(
 						new Platform(pge, PlatformType::FOUR, x, y),
-						std::make_pair(x, y)
-					);
-				}
-				else if (cDecorID == 'F') {
-					instance->pixelSprites[cDecorID].emplace_back(
-						new Flag(pge, FlagType::TWO),
 						std::make_pair(x, y)
 					);
 				}
