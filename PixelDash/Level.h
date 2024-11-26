@@ -2,6 +2,8 @@
 #define LEVEL_H
 #include <string>
 #include <unordered_map>
+#include <queue>
+#include <algorithm> 
 #include "olcPixelGameEngine.h"
 #include <unordered_set>
 #include "PixelSprite.h"
@@ -13,6 +15,7 @@
 #include "Heart.h"
 #include "HUD.h"
 #include "Enemy.h"
+#include "TimedSprite.h"
 
 #pragma once
 
@@ -28,6 +31,7 @@ private:
 	int nTileHeight;
 	float fOffsetX;
 	float fOffsetY;
+	float fTotalTime = 0.0f;
 	std::wstring sLevel;
 	std::wstring sDecoration;
 	std::unordered_set<wchar_t> moveAbleTiles;
@@ -36,6 +40,8 @@ private:
 	olc::Sprite* spriteDoor = nullptr;
 	PixelSprite* sDoorOpen = nullptr;
 	std::unordered_map<wchar_t, std::vector<std::pair<PixelSprite*, std::pair<float, float>>>> pixelSprites;
+	std::priority_queue<TimedSprite*> spriteQueue;
+	std::list<TimedSprite*> activeSprites;;
 	//Enemy *enemy = nullptr;
 	static Level* instance;          // Singleton instance
 	olc::PixelGameEngine* pge = nullptr; // Pointer to the game engine
@@ -74,6 +80,9 @@ public:
 	float setOffsetX(float offsetX) { fOffsetX = offsetX; };
 	float setOffsetY(float offsetY) { fOffsetY = offsetY; };
 	bool isPlatform(int x, int y);
+	float getTotalTime() { return fTotalTime; };
+	void addTimedSprite(TimedSprite* ts);
+	void HandleTimedSprites(float fElapsedTime);
 };
 #endif // LEVEL_H
 

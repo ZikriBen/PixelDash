@@ -210,6 +210,8 @@ void Level::SetTile(int x, int y, wchar_t c)
 
 void Level::Update(float fElapsedTime)
 {
+	fTotalTime += fElapsedTime;
+
 	for (const auto& entry : pixelSprites) {
 		for (const auto& spritePos : entry.second) {
 			PixelSprite* sprite = spritePos.first;
@@ -220,6 +222,7 @@ void Level::Update(float fElapsedTime)
 	}
 	HUD::getInstance().Update(fElapsedTime);
 	enemy->Update(fElapsedTime);
+	HandleTimedSprites(fElapsedTime);
 }
 
 void Level::Draw(int nVisibleTilesX, int nVisibleTilesY, float fOffsetX, float fOffsetY, float fTileOffsetX, float fTileOffsetY)
@@ -264,6 +267,10 @@ void Level::Draw(int nVisibleTilesX, int nVisibleTilesY, float fOffsetX, float f
 	enemy->setPosX(screenX);
 	enemy->setPosY(screenY);
 	enemy->Draw();
+	
+	for (auto sprite : activeSprites) {
+		sprite->Draw();
+	}
 }
 
 bool Level::isMoveable(int x, int y)
@@ -352,4 +359,25 @@ bool Level::isPlatform(int x, int y)
 		return (decorTile == 'Z' || decorTile == 'X' || decorTile == 'C' || decorTile == 'V');
 	}
 	return false;
+}
+
+void Level::addTimedSprite(TimedSprite* sprite) {
+	spriteQueue.push(sprite);
+}
+
+void Level::HandleTimedSprites(float fElapsedTime) {
+
+	while (!spriteQueue.empty() && spriteQueue.top()->getStartTime() <= fTotalTime) {
+		activeSprites.push_back(spriteQueue.top());
+		spriteQueue.pop(); // Pop and process in one line
+	}
+
+	std::erase_if(activeSprites, [](TimedSprite* sprite) {
+		return !sprite->isActive();
+		});
+
+	// Update remaining active sprites
+	for (TimedSprite* sprite : activeSprites) {
+		sprite->Update(fElapsedTime);
+	}
 }
