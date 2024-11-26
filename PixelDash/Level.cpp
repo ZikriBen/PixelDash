@@ -49,7 +49,7 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 		instance->sDecoration += L"....................................................V...........";
 		instance->sDecoration += L"..FW..W..W..F.F..............................................ZX.";
 		instance->sDecoration += L"................................................................";
-		instance->sDecoration += L".....O.OOOO....V.................HH....OOOO..............XC.....";
+		instance->sDecoration += L".......OOOO....V.................HH....OOOO..............XC.....";
 		instance->sDecoration += L".....V.................................OOOO.....................";
 		instance->sDecoration += L"..V..........................................................ZX.";
 		instance->sDecoration += L"..........................................................OOOOO.";
