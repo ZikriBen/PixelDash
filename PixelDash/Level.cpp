@@ -324,9 +324,11 @@ PixelSprite*Level::checkCollisionWithDecorations(const Rect& playerRect) {
 }
 
 PixelSprite* Level::checkCollisionWithEnemies(const Rect& playerRect) {
-	Rect hitbox = enemy->getRect();
-	if (playerRect.intersects(hitbox)) {
-		return enemy;
+	if (enemy->isAlive()) {
+		Rect hitbox = enemy->getRect();
+		if (playerRect.intersects(hitbox)) {
+			return enemy;
+		}
 	}
 	return nullptr;
 }

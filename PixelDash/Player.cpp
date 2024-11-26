@@ -66,6 +66,10 @@ void Player::Update(float fElapsedTime) {
 		}
 	}
 
+	if (lvl.checkCollisionWithEnemies(getPlayerRect())) {
+		hit();
+	}
+
 	if (bForceAnimation) {
 		handleForceAnimation();
 	}
@@ -94,8 +98,8 @@ void Player::Draw() {
 		bubble->setPosX((((fPlayerPosX - fOffsetX) * 32) - nOffsetCorrection) + 35);
 		bubble->setPosY(((fPlayerPosY - fOffsetY) * 32) + currentAnimation.iOffsetPosY - 7);
 	}
-	//pge.DrawRect(getPlayerRect().x, getPlayerRect().y, currentAnimation.frameWidth, currentAnimation.frameHeight, olc::GREEN);
-	//pge.DrawRect(GetAttackHitbox().x, GetAttackHitbox().y, hitBoxWidth, hitBoxHeight, olc::RED);
+	pge.DrawRect(getPlayerRect().x, getPlayerRect().y, currentAnimation.frameWidth, currentAnimation.frameHeight, olc::GREEN);
+	pge.DrawRect(GetAttackHitbox().x, GetAttackHitbox().y, hitBoxWidth, hitBoxHeight, olc::RED);
 }
 
 bool Player::IsDoor() {
@@ -184,12 +188,17 @@ void Player::handleContinousAnimation() {
 }
 
 void Player::hit() {
-	eGraphicState = AnimationState::HIT;
-	setPlayerIsAttacking(true);
-	setForceAnimation(true);
-	setGraphicCounter(0);  // Reset counter to start the attack animation from frame 0
-	setGraphicTimer(0.0f); // Reset timer for consistent animation speed
-	HUD::getInstance().decrLife();
+	float currentTime = lvl.getTotalTime();
+	
+	if (currentTime - fLastHitTime >= fCooldownTime) {
+		fLastHitTime = currentTime;  // Update the last hit time
+		eGraphicState = AnimationState::HIT;
+		setForceAnimation(true);
+		setGraphicCounter(0);  // Reset counter to start the attack animation from frame 0
+		setGraphicTimer(0.0f); // Reset timer for consistent animation speed
+		HUD::getInstance().decrLife();
+	}
+	
 }
 
 void Player::heal() {

@@ -87,6 +87,8 @@ private:
 	float fOffsetY;
 	float totalTime = 0.0f;
 	int nScore = 0;
+	float fLastHitTime = 0.0f;
+	float fCooldownTime = 1.5f;
 	
 	void handleForceAnimation();
 	void handleContinousAnimation();
