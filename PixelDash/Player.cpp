@@ -98,8 +98,8 @@ void Player::Draw() {
 		bubble->setPosX((((fPlayerPosX - fOffsetX) * 32) - nOffsetCorrection) + 35);
 		bubble->setPosY(((fPlayerPosY - fOffsetY) * 32) + currentAnimation.iOffsetPosY - 7);
 	}
-	pge.DrawRect(getPlayerRect().x, getPlayerRect().y, currentAnimation.frameWidth, currentAnimation.frameHeight, olc::GREEN);
-	pge.DrawRect(GetAttackHitbox().x, GetAttackHitbox().y, hitBoxWidth, hitBoxHeight, olc::RED);
+	//pge.DrawRect(getPlayerRect().x, getPlayerRect().y, currentAnimation.frameWidth, currentAnimation.frameHeight, olc::GREEN);
+	//pge.DrawRect(GetAttackHitbox().x, GetAttackHitbox().y, hitBoxWidth, hitBoxHeight, olc::RED);
 }
 
 bool Player::IsDoor() {

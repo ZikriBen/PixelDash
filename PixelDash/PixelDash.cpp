@@ -58,7 +58,7 @@ public:
 		pm->Update(fElapsedTime);
 
 		// Gravity
-		player->setVelY(player->getVelY() + 20.0f * fElapsedTime);
+		player->setVelY(player->getVelY() + 18.5f * fElapsedTime);
 		
 		// Drag
 		if (player->getPlayerOnGround())
@@ -163,8 +163,8 @@ public:
 		
 		lb.Update(fElapsedTime);
 		lb.Draw(nVisibleTilesX, nVisibleTilesY, fOffsetX, fOffsetY, fTileOffsetX, fTileOffsetY);
-		player->Update(fElapsedTime);
 		player->setOffsets(fOffsetX, fOffsetY);
+		player->Update(fElapsedTime);
 		player->Draw();
 		return true;
 	}
