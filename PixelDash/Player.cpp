@@ -80,10 +80,12 @@ void Player::Update(float fElapsedTime) {
 
 void Player::Draw() {
 	pge.SetPixelMode(olc::Pixel::MASK);
+	float newPlayerPosX = ((fPlayerPosX - fOffsetX) * 32) - nOffsetCorrection;
+	float newPlayerPosY = ((fPlayerPosY - fOffsetY) * 32) + currentAnimation.iOffsetPosY;
 
 	pge.DrawPartialSprite(
-		((fPlayerPosX - fOffsetX) * 32) - nOffsetCorrection,
-		((fPlayerPosY - fOffsetY) * 32) + currentAnimation.iOffsetPosY,
+		newPlayerPosX,
+		newPlayerPosY,
 		spr,
 		((currentAnimation.iSprOffsetX + currentAnimation.frameWidth) * (float)(iGraphicCounter)), 
 		currentAnimation.iSpecialOffsetY + currentAnimation.iSprOffsetY,
@@ -95,8 +97,8 @@ void Player::Draw() {
 	pge.SetPixelMode(olc::Pixel::NORMAL);
 	
 	if (bubble) {
-		bubble->setPosX((((fPlayerPosX - fOffsetX) * 32) - nOffsetCorrection) + 35);
-		bubble->setPosY(((fPlayerPosY - fOffsetY) * 32) + currentAnimation.iOffsetPosY - 7);
+		bubble->setPosX(newPlayerPosX + 35);
+		bubble->setPosY(newPlayerPosY - 7);
 	}
 	//pge.DrawRect(getPlayerRect().x, getPlayerRect().y, currentAnimation.frameWidth, currentAnimation.frameHeight, olc::GREEN);
 	//pge.DrawRect(GetAttackHitbox().x, GetAttackHitbox().y, hitBoxWidth, hitBoxHeight, olc::RED);
