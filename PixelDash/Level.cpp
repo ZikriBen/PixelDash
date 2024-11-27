@@ -21,26 +21,26 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 		HUD::init(pge);
 	
 
-		instance->sLevel +=      L".................<______>......<_______________________________>";
-		instance->sLevel +=      L".................]/----u[......]/-----------------------------u[";
-		instance->sLevel +=      L".................]}oooo{[......]}ooooooooooooooooooooooooooooo{[";
-		instance->sLevel +=      L".................]}oooo{[......]}ooooooooooooooooooooooooooooo{[";
-		instance->sLevel +=      L"......<__________i}oooo{[......]}oooooooooooooooooooooooooo,,,z[";
-		instance->sLevel +=      L"......]/----------ooooo{y______i}ooooooooooooooooooooooooo{xccc5";
-		instance->sLevel +=      L"......]v,,,,,,,,oooooooo--------ooooooooooooooooooooo,,,,oo---u[";
-		instance->sLevel +=      L".<____4cccccc3cb}ooooooooooooooooooooooooooooooooooo{r##p}oooo{[";
-		instance->sLevel +=      L".]/---------um/-o,,,,,,,,,oooooooooooooooooooooooooo{[..]}oooo{[";
-		instance->sLevel +=      L".]}ooooooooo{m}o{xc6###7cb}oooooooooooooooooooooooooz[..]}oooo{[";
-		instance->sLevel +=      L".]}ooooooooo{k}oo-uy___i/-ooooooooooooooooooooooo,,zrs..]}oooo{[";
-		instance->sLevel +=      L".]}oooooooooo-ooooo-----oooo,,ooooooooooooooooo,zr##s...]}oooo{[";
-		instance->sLevel +=      L".]}ooooooooooooo,,,,,,,,oo,zrpvooooooooooooooo{r#s......]}oooo{[";
-		instance->sLevel +=      L".]}oooooooooooo{2ccccccb}{r#slp}ooooooo,,,,,,,{[........]}oooo{[";
-		instance->sLevel +=      L".]v,,,,,,,,,,,,zm,,,,,,,,z[...]v,,,,,,zr#####p,[........]v,,,,z[";
-		instance->sLevel +=      L".l##############1#########s...l########s.....l#s........l######s";
+		instance->sLevel += L".................<______>......<_______________________________>";
+		instance->sLevel += L".................]/----u[......]/-----------------------------u[";
+		instance->sLevel += L".................]}oooo{[......]}ooooooooooooooooooooooooooooo{[";
+		instance->sLevel += L".................]}oooo{[......]}ooooooooooooooooooooooooooooo{[";
+		instance->sLevel += L"......<__________i}oooo{[......]}oooooooooooooooooooooooooo,,,z[";
+		instance->sLevel += L"......]/----------ooooo{y______i}ooooooooooooooooooooooooo{xccc5";
+		instance->sLevel += L"......]v,,,,,,,,oooooooo--------ooooooooooooooooooooo,,,,oo---u[";
+		instance->sLevel += L".<____4cccccc3cb}ooooooooooooooooooooooooooooooooooo{r##p}oooo{[";
+		instance->sLevel += L".]/---------um/-o,,,,,,,,,oooooooooooooooooooooooooo{[..]}oooo{[";
+		instance->sLevel += L".]}ooooooooo{m}o{xc6###7cb}oooooooooooooooooooooooooz[..]}oooo{[";
+		instance->sLevel += L".]}ooooooooo{k}oo-uy___i/-ooooooooooooooooooooooo,,zrs..]}oooo{[";
+		instance->sLevel += L".]}oooooooooo-ooooo-----oooo,,ooooooooooooooooo,zr##s...]}oooo{[";
+		instance->sLevel += L".]}ooooooooooooo,,,,,,,,oo,zrpvooooooooooooooo{r#s......]}oooo{[";
+		instance->sLevel += L".]}oooooooooooo{2ccccccb}{r#slp}ooooooo,,,,,,,{[........]}oooo{[";
+		instance->sLevel += L".]v,,,,,,,,,,,,zm,,,,,,,,z[...]v,,,,,,zr#####p,[........]v,,,,z[";
+		instance->sLevel += L".l##############1#########s...l########s.....l#s........l######s";
 
 		instance->sDecoration += L"................................................................";
 		instance->sDecoration += L"................................................................";
-		instance->sDecoration += L"..................FO..W.......................................F.";
+		instance->sDecoration += L"...................O..........................................F.";
 		instance->sDecoration += L"...................V............................................";
 		instance->sDecoration += L"......................ZX....................................D...";
 		instance->sDecoration += L"................................................................";
@@ -75,6 +75,12 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 						std::make_pair(x, y)
 					);
 
+				}
+				else if (cDecorID == 'F') {
+					instance->pixelSprites[cDecorID].emplace_back(
+						new Flag(pge, FlagType::TWO),
+						std::make_pair(x, y)
+					);
 				}
 				else if (cDecorID == 'O') {
 					Coin* c = new Coin(pge, "assets/BigDiamond.png", 0, 0, 9, 0.1, 18, 14, 2, 0, 0, 8);
@@ -129,7 +135,7 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 						std::make_pair(x, y)
 					);
 				}
-				/*else if (cDecorID == 'Y') {
+				else if (cDecorID == 'Y') {
 					Cannon* c = new Cannon(pge, "assets/CannonShoot.png", 0, 0, 2, 0.1, 44, 28, 44, 0, 0, 0);
 					c->setAnimation(true);
 					c->setLoop(true);
@@ -137,7 +143,7 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 						c,
 						std::make_pair(x, y)
 					);
-				}*/
+				}
 			}
 		}
 
