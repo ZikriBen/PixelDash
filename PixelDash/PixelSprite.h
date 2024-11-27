@@ -42,7 +42,7 @@ public:
 	void setSprOffsetY(float offsetY) { currentAnimation.iSprOffsetY = offsetY; };
 
 	void setNumFrames(int n) { iNumFrames = n; };
-
+	void setSpr(olc::Sprite* newSpr) { spr = newSpr; };
 	Rect getRect();
 
 protected:

@@ -16,6 +16,7 @@
 #include "HUD.h"
 #include "Enemy.h"
 #include "TimedSprite.h"
+#include "Cannon.h"
 
 #pragma once
 
@@ -47,6 +48,7 @@ private:
 	olc::PixelGameEngine* pge = nullptr; // Pointer to the game engine
 	Level(int levelWidth, int levelHeight, int tileWidth, int tileHeight);
 	Enemy *enemy;
+	Cannon* cannon;
 
 
 public:

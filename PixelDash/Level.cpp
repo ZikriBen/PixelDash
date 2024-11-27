@@ -53,7 +53,7 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 		instance->sDecoration += L".....V.................................OOOO.....................";
 		instance->sDecoration += L"..V..........................................................ZX.";
 		instance->sDecoration += L"..........................................................OOOOO.";
-		instance->sDecoration += L"..........E.......H................B............................";
+		instance->sDecoration += L"..........E..Y....H................B............................";
 
 
 		// create decoration array
@@ -129,6 +129,15 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 						std::make_pair(x, y)
 					);
 				}
+				/*else if (cDecorID == 'Y') {
+					Cannon* c = new Cannon(pge, "assets/CannonShoot.png", 0, 0, 2, 0.1, 44, 28, 44, 0, 0, 0);
+					c->setAnimation(true);
+					c->setLoop(true);
+					instance->pixelSprites[cDecorID].emplace_back(
+						c,
+						std::make_pair(x, y)
+					);
+				}*/
 			}
 		}
 
