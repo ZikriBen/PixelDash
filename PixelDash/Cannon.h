@@ -13,6 +13,8 @@ private:
     bool isFacingLeft;        // Direction of the cannon
     float fTotalTime = 0.0f;
     bool bIsShooting = false;
+    float homeX;
+    float homeY;
 
 public:
     Cannon(olc::PixelGameEngine& pge, std::string sprPath, float posx, float posy, int numFrames, float frameDuration, int width, int height, int ox, int oy, float offsetPosX, float offsetPosY)
@@ -71,11 +73,15 @@ public:
             }), projectiles.end());
     }
 
-    void Draw() {
+    void Draw(float startX, float startY, float fTileOffsetX, float fTileOffsetY) {
+		int screenX = (getHomeX() - startX) * 32 - fTileOffsetX;
+	    int screenY = (getHomeY() - startY) * 32 - fTileOffsetY - 27;
+	    setPosX(screenX);
+	    setPosY(screenY);
         PixelSprite::Draw();
         pigSpr->Draw();
         for (auto& proj : projectiles) {
-            proj->Draw();
+            proj->Draw(startX, startY, fTileOffsetX, fTileOffsetY);
         }
     }
 
@@ -84,9 +90,25 @@ public:
         bIsShooting = true;
         setSpr(shootSpr);
         setGraphicState(AnimationState::ATTACK);
-        float initialVelX = eFacingDirection == PixelSprite::LEFT ? 250.0f : -250.0f;
-        float initialVelY = -80.0f; // Launch upward
-        projectiles.push_back(new Projectile(pge, getPosX(), getPosY(), initialVelX, initialVelY));
+        float initialVelX = eFacingDirection == PixelSprite::LEFT ? 12 : -12.0f;
+        float initialVelY = -3.0f; // Launch upward
+        projectiles.push_back(new Projectile(pge, getPosX(), getPosY(), initialVelX, initialVelY, homeX, homeY));
     }
+	
+    void setHomeX(float homex) {
+		homeX = homex;
+	}
 
+	void setHomeY(float homey) {
+		homeY = homey;
+	}
+
+	float getHomeX() {
+		return homeX;
+	}
+
+    float getHomeY() {
+        return homeY;
+	}
 };
+

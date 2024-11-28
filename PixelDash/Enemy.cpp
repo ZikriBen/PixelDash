@@ -49,7 +49,11 @@ void Enemy::Update(float fElapsedTime) {
     PixelSprite::Update(fElapsedTime);
 }
 
-void Enemy::Draw() {
+void Enemy::Draw(float startX, float startY, float fTileOffsetX, float fTileOffsetY) {
+	int screenX = (getHomeX() - startX) * 32 - fTileOffsetX;
+	int screenY = (getHomeY() - startY) * 32 - fTileOffsetY - 27;
+	setPosX(screenX);
+	setPosY(screenY);
     PixelSprite::Draw();
     //DrawRect();
 }

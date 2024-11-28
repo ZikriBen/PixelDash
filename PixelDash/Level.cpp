@@ -136,13 +136,11 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 					);
 				}
 				else if (cDecorID == 'Y') {
-					Cannon* c = new Cannon(pge, "assets/CannonShoot.png", 0, 0, 2, 0.1, 44, 28, 44, 0, 0, 0);
-					c->setAnimation(true);
-					c->setLoop(true);
-					instance->pixelSprites[cDecorID].emplace_back(
-						c,
-						std::make_pair(x, y)
-					);
+					instance->cannon = new Cannon(pge, "assets/CannonShoot.png", 0, 0, 2, 0.1, 44, 28, 44, 0, 0, 0);
+					instance->cannon->setAnimation(true);
+					instance->cannon->setLoop(true);
+					instance->cannon->setHomeX(x);
+					instance->cannon->setHomeY(y);
 				}
 			}
 		}
@@ -235,6 +233,7 @@ void Level::Update(float fElapsedTime)
 			}
 		}
 	}
+	instance->cannon->Update(fElapsedTime);
 	HUD::getInstance().Update(fElapsedTime);
 	enemy->Update(fElapsedTime);
 	HandleTimedSprites(fElapsedTime);
@@ -277,12 +276,10 @@ void Level::Draw(int nVisibleTilesX, int nVisibleTilesY, float fOffsetX, float f
 		}
 	}
 	HUD::getInstance().Draw();
-	int screenX = (enemy->getHomeX() - startX) * nTileWidth - fTileOffsetX;
-	int screenY = (enemy->getHomeY() - startY) * nTileHeight - fTileOffsetY - 27;
-	enemy->setPosX(screenX);
-	enemy->setPosY(screenY);
-	enemy->Draw();
-	
+
+	enemy->Draw(startX, startY, fTileOffsetX, fTileOffsetY);
+	cannon->Draw(startX, startY, fTileOffsetX, fTileOffsetY);
+
 	for (auto sprite : activeSprites) {
 		sprite->Draw();
 	}

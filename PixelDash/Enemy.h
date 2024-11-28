@@ -14,7 +14,7 @@ public:
 
     // Behavior methods
     void Update(float fElapsedTime) override;
-    void Draw() override;
+    void Draw(float startX, float startY, float fTileOffsetX, float fTileOffsetY);
     void takeDamage(int damage);
     bool isAlive() const;
     float getHomeX() { return homeX; };
