@@ -88,7 +88,7 @@ private:
 	float totalTime = 0.0f;
 	int nScore = 0;
 	float fLastHitTime = 0.0f;
-	float fCooldownTime = 1.5f;
+	float fCooldownTime = 0.75f;
 	
 	void handleForceAnimation();
 	void handleContinousAnimation();

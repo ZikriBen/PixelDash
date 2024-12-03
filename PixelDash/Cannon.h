@@ -110,5 +110,7 @@ public:
     float getHomeY() {
         return homeY;
 	}
+
+    std::vector<Projectile*> getProjectiles() { return projectiles; };
 };
 

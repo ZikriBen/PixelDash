@@ -345,6 +345,19 @@ PixelSprite* Level::checkCollisionWithEnemies(const Rect& playerRect) {
 	return nullptr;
 }
 
+PixelSprite* Level::checkCollisionWithProjectiles(const Rect& playerRect) {
+	auto projectiles = cannon->getProjectiles();
+
+	for (auto& proj : projectiles) {
+		Rect projRect = proj->getRect();
+		if (playerRect.intersects(projRect)) {
+			return proj;
+		}
+	}
+	return nullptr;
+}
+
+
 void Level::removeDecoration(PixelSprite* decoration) {
 	for (auto& entry : pixelSprites) {
 		auto& vec = entry.second;

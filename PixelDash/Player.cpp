@@ -69,6 +69,10 @@ void Player::Update(float fElapsedTime) {
 	if (lvl.checkCollisionWithEnemies(getPlayerRect())) {
 		hit();
 	}
+	
+	if (lvl.checkCollisionWithProjectiles(getPlayerRect())) {
+		hit();
+	}
 
 	if (bForceAnimation) {
 		handleForceAnimation();
