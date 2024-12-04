@@ -36,13 +36,6 @@ public:
         //if (getPosY() > 1000 || getPosX() < 0 || getPosX() > 1000) { // Example bounds
         //    active = false;
         //}
-
-        // Check collision with player
-        /*Rect projRect(posX, posY, frameWidth, frameHeight);
-        if (Level::getInstance().checkCollisionWithPlayer(projRect)) {
-            Level::getInstance().damagePlayer();
-            active = false;
-        }*/
     }
 
     void Draw(float startX, float startY, float fTileOffsetX, float fTileOffsetY) {

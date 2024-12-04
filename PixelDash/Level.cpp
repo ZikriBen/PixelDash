@@ -14,7 +14,7 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 	{
 		instance = new Level(levelWidth, levelHeight, tileWidth, tileHeight);
 		instance->pge = &pge;  // Store the game engine reference
-		instance->moveAbleTiles = { L'.', L'o', L'}', L'{', L'-', L',', L'v', L't', L'/', L'e', L'u', L'z', L' '};
+		instance->moveAbleTiles = { L'.', L'o', L'}', L'{', L'-', L',', L'v', L't', L'/', L'e', L'u', L'z', L' ',L'8', L'0', L'9', L'+', L'^', L'*'};
 		instance->spriteTiles = new olc::Sprite("assets/Terrain32x32.png");
 		instance->spriteDoor = new olc::Sprite("assets/IdleDoor.png");
 
@@ -25,17 +25,17 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 		instance->sLevel += L".................]/----u[......]/-----------------------------u[";
 		instance->sLevel += L".................]}oooo{[......]}ooooooooooooooooooooooooooooo{[";
 		instance->sLevel += L".................]}oooo{[......]}ooooooooooooooooooooooooooooo{[";
-		instance->sLevel += L"......<__________i}oooo{[......]}oooooooooooooooooooooooooo,,,z[";
-		instance->sLevel += L"......]/----------ooooo{y______i}ooooooooooooooooooooooooo{xccc5";
-		instance->sLevel += L"......]v,,,,,,,,oooooooo--------ooooooooooooooooooooo,,,,oo---u[";
+		instance->sLevel += L"......<__________i}oooo{[......]}ooooooooooooooooooooooooo8,,,z[";
+		instance->sLevel += L"......]/----------+oooo{y______i}ooooooooooooooooooooooooo{xccc5";
+		instance->sLevel += L"......]v,,,,,,,,0oooooo9--------+ooooooooooooooooooo8,,,,09---u[";
 		instance->sLevel += L".<____4cccccc3cb}ooooooooooooooooooooooooooooooooooo{r##p}oooo{[";
-		instance->sLevel += L".]/---------um/-o,,,,,,,,,oooooooooooooooooooooooooo{[..]}oooo{[";
-		instance->sLevel += L".]}ooooooooo{m}o{xc6###7cb}oooooooooooooooooooooooooz[..]}oooo{[";
-		instance->sLevel += L".]}ooooooooo{k}oo-uy___i/-ooooooooooooooooooooooo,,zrs..]}oooo{[";
-		instance->sLevel += L".]}oooooooooo-ooooo-----oooo,,ooooooooooooooooo,zr##s...]}oooo{[";
-		instance->sLevel += L".]}ooooooooooooo,,,,,,,,oo,zrpvooooooooooooooo{r#s......]}oooo{[";
-		instance->sLevel += L".]}oooooooooooo{2ccccccb}{r#slp}ooooooo,,,,,,,{[........]}oooo{[";
-		instance->sLevel += L".]v,,,,,,,,,,,,zm,,,,,,,,z[...]v,,,,,,zr#####p,[........]v,,,,z[";
+		instance->sLevel += L".]/---------um/-w,,,,,,,,,0ooooooooooooooooooooooooo{[..]}oooo{[";
+		instance->sLevel += L".]}ooooooooo{m}o{xc6###7cb}oooooooooooooooooooooooo8z[..]}oooo{[";
+		instance->sLevel += L".]}ooooooooo{k}o9-uy___i/-+ooooooooooooooooooooo8,,zrs..]}oooo{[";
+		instance->sLevel += L".]}ooooooooo9-+ooo9-----+oo8,,0ooooooooooooooo8,zr##s...]}oooo{[";
+		instance->sLevel += L".]}oooooooooooo8,,,,,,,,o8,zrpv0oooooooooooooo{r#s......]}oooo{[";
+		instance->sLevel += L".]}oooooooooooo{2ccccccb}{r#slp}oooooo8,,,,,,,^[........]}oooo{[";
+		instance->sLevel += L".]v,,,,,,,,,,,,zmjhhhhhhqz[...]v,,,,,,zr#####p*[........]v,,,,z[";
 		instance->sLevel += L".l##############1#########s...l########s.....l#s........l######s";
 
 		instance->sDecoration += L"................................................................";
@@ -157,6 +157,12 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 				{L'n', {160, 32}},
 				{L'm', {160, 64}},
 				{L'k', {160, 96}},
+				{L'j', {32, 352}},
+				{L'h', {64, 352}},
+				{L'q', {256, 352}},
+				{L'w', {544, 256}},
+				{L'*', {160, 288}},
+				{L'^', {352, 320}},
 				
 				{L'/', {32, 224}},
 				{L'}', {32, 256}},
@@ -191,6 +197,11 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 				{L'5', {320, 32}},
 				{L'6', {256, 128}},
 				{L'7', {224, 128}},
+				
+				{L'8', {224, 224}},
+				{L'9', {224, 256}},
+				{L'0', {256, 224}},
+				{L'+', {256, 256}},
 
 				{L'P', {0, 0}},
 				
@@ -344,6 +355,19 @@ PixelSprite* Level::checkCollisionWithEnemies(const Rect& playerRect) {
 	}
 	return nullptr;
 }
+
+PixelSprite* Level::checkCollisionWithProjectiles(const Rect& playerRect) {
+	auto projectiles = cannon->getProjectiles();
+
+	for (auto& proj : projectiles) {
+		Rect projRect = proj->getRect();
+		if (playerRect.intersects(projRect)) {
+			return proj;
+		}
+	}
+	return nullptr;
+}
+
 
 void Level::removeDecoration(PixelSprite* decoration) {
 	for (auto& entry : pixelSprites) {

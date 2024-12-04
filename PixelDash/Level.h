@@ -74,6 +74,7 @@ public:
 	void openDoor();
 	PixelSprite* checkCollisionWithDecorations(const Rect& playerHitbox);
 	PixelSprite* checkCollisionWithEnemies(const Rect& playerRect);
+	PixelSprite* checkCollisionWithProjectiles(const Rect& playerRect);
 	void removeDecoration(PixelSprite* decoration);
 	void removeDecoration(wchar_t c, PixelSprite* decoration);
 	float getOffsetX() { return fOffsetX; };
