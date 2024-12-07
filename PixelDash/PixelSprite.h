@@ -43,7 +43,7 @@ public:
 
 	void setNumFrames(int n) { iNumFrames = n; };
 	void setSpr(olc::Sprite* newSpr) { spr = newSpr; };
-	Rect getRect();
+	virtual Rect getRect();
 
 protected:
 	olc::PixelGameEngine& pge;
@@ -65,7 +65,7 @@ protected:
 	AnimationState eGraphicState; // Current animation state
 	void setGraphicState(AnimationState state);
 	void resetGraphicState(AnimationState state);
-
+	void setAnimations(std::unordered_map<AnimationState, Animation> oAnimations) { animations = oAnimations; };
 private:
 	olc::Sprite* spr;
 	int iNumFrames;
@@ -86,6 +86,7 @@ private:
 	float fGraphicTimer;
 	int iGraphicCounter;
 	bool bSoundOn;
+	friend class Cannon;
 };
 
 #endif // PIXEL_SPRITE_H

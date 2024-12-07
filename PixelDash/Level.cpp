@@ -14,7 +14,7 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 	{
 		instance = new Level(levelWidth, levelHeight, tileWidth, tileHeight);
 		instance->pge = &pge;  // Store the game engine reference
-		instance->moveAbleTiles = { L'.', L'o', L'}', L'{', L'-', L',', L'v', L't', L'/', L'e', L'u', L'z', L' ',L'8', L'0', L'9', L'+', L'^', L'*'};
+		instance->moveAbleTiles = { L'.', L'o', L'}', L'{', L'-', L',', L'v', L't', L'/', L'e', L'u', L'z', L' ',L'8', L'0', L'9', L'+', L'^', L'*', L'q', L'h', L'j', L'w'};
 		instance->spriteTiles = new olc::Sprite("assets/Terrain32x32.png");
 		instance->spriteDoor = new olc::Sprite("assets/IdleDoor.png");
 
@@ -53,7 +53,7 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 		instance->sDecoration += L".....V.................................OOOO.....................";
 		instance->sDecoration += L"..V..........................................................ZX.";
 		instance->sDecoration += L"..........................................................OOOOO.";
-		instance->sDecoration += L"..........E..Y....H................B............................";
+		instance->sDecoration += L".............Y....H.............E..B............................";
 
 
 		// create decoration array
@@ -347,6 +347,13 @@ PixelSprite*Level::checkCollisionWithDecorations(const Rect& playerRect) {
 }
 
 PixelSprite* Level::checkCollisionWithEnemies(const Rect& playerRect) {
+	if (cannon->isAlive()) {
+		Rect hitbox = cannon->getRect();
+		if (playerRect.intersects(hitbox)) {
+			return cannon;
+		}
+	}
+	
 	if (enemy->isAlive()) {
 		Rect hitbox = enemy->getRect();
 		if (playerRect.intersects(hitbox)) {

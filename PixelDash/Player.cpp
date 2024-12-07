@@ -173,6 +173,9 @@ void Player::handleForceAnimation() {
 					if (Enemy *e = dynamic_cast<Enemy*>(ps)) {
 						e->hit(lvl.getTotalTime());
 					}
+					if (Cannon* c = dynamic_cast<Cannon*>(ps)) {
+						c->hit(lvl.getTotalTime());
+					}
 				}
 				bIsAttacking = false;
 			}

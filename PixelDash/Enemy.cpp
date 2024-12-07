@@ -25,7 +25,6 @@ Enemy::Enemy(olc::PixelGameEngine& pge, const std::string& sprPath,
 
 void Enemy::Update(float fElapsedTime) {
 
-    // Patrol behavior: move back and forth within patrol range
     if (eGraphicState == AnimationState::DEAD) {
         bIsPatrolling = false;
         setLoop(false);
