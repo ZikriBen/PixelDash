@@ -20,10 +20,10 @@ public:
         : PixelSprite(pge, sprPath, posx, posy, numFrames, frameDuration, width, height, ox, oy, offsetPosX, offsetPosY) {}
 
     Window(olc::PixelGameEngine& pge)
-        : PixelSprite(pge, "assets/Decorations32x32.png", 0, 0, 1, 0.1, 64, 64, 64, 96, 0, 0) {}
+        : PixelSprite(pge, "assets/Decorations32x32.png", 0, 0, 1, 0.1f, 64, 64, 64, 96, 0, 0) {}
 
     Window(olc::PixelGameEngine& pge, WindowType type)
-        : PixelSprite(pge, "assets/Decorations32x32.png", 0, 0, 1, 0.1, 64, 64, (type == WindowType::ONE ? 64 : 128),96,0,0)
+        : PixelSprite(pge, "assets/Decorations32x32.png", 0, 0, 1, 0.1f, 64, 64, (type == WindowType::ONE ? 64 : 128), 96, 0, 0)
     {
         if (type == WindowType::ONE) {
             setSprOffsetX(64);

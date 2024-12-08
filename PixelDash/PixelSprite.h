@@ -23,7 +23,7 @@ public:
 	float getGraphicTimer() { return fGraphicTimer; }
 	void setGraphicTimer(float newTimer) { fGraphicTimer = newTimer; }
 	void incGraphicCounter() { iGraphicCounter++; }
-	void setGraphicCounter(float newCounter) { iGraphicCounter = newCounter; }
+	void setGraphicCounter(int newCounter) { iGraphicCounter = newCounter; }
 	int getGraphicCounter() { return iGraphicCounter; }
 	void setAnimation(bool animate) { bIsAnimate = animate; };
 	void setLoop(bool loop) { bIsLoop = loop; };
@@ -38,8 +38,8 @@ public:
 	float getSprOffsetX() { return fOffsetX; };
 	float getSprOffsetY() { return fOffsetY; };
 
-	void setSprOffsetX(float offsetX) { currentAnimation.iSprOffsetX = offsetX; };
-	void setSprOffsetY(float offsetY) { currentAnimation.iSprOffsetY = offsetY; };
+	void setSprOffsetX(float offsetX) { currentAnimation.iSprOffsetX = (int)offsetX; };
+	void setSprOffsetY(float offsetY) { currentAnimation.iSprOffsetY = (int)offsetY; };
 
 	void setNumFrames(int n) { iNumFrames = n; };
 	void setSpr(olc::Sprite* newSpr) { spr = newSpr; };

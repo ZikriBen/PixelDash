@@ -40,7 +40,7 @@ private:
 	olc::Sprite* spriteTiles = nullptr;
 	olc::Sprite* spriteDoor = nullptr;
 	PixelSprite* sDoorOpen = nullptr;
-	std::unordered_map<wchar_t, std::vector<std::pair<PixelSprite*, std::pair<float, float>>>> pixelSprites;
+	std::unordered_map<wchar_t, std::vector<std::pair<PixelSprite*, std::pair<int, int>>>> pixelSprites;
 	std::priority_queue<TimedSprite*> spriteQueue;
 	std::list<TimedSprite*> activeSprites;;
 	//Enemy *enemy = nullptr;
@@ -68,7 +68,7 @@ public:
 	const std::unordered_set<wchar_t> getMoveable() { return moveAbleTiles; }
 	
 	bool isMoveable(int x, int y);
-
+	bool isMoveable(float x, float y);
 
 	bool isDoor(float x, float y);
 	void openDoor();
@@ -83,6 +83,7 @@ public:
 	float setOffsetX(float offsetX) { fOffsetX = offsetX; };
 	float setOffsetY(float offsetY) { fOffsetY = offsetY; };
 	bool isPlatform(int x, int y);
+	bool isPlatform(float x, float y);
 	float getTotalTime() { return fTotalTime; };
 	void addTimedSprite(TimedSprite* ts);
 	void HandleTimedSprites(float fElapsedTime);

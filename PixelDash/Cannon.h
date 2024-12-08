@@ -40,8 +40,8 @@ public:
         pigSpr->setGraphicState(PixelSprite::AnimationState::IDLE);
 
         this->animations = {
-            {AnimationState::IDLE, {0, 44, 28, 0.1, 0, 0, 0, 0}},
-            {AnimationState::ATTACK, {2, 44, 28, 0.1, 44, 0, 0, 0}},
+            {AnimationState::IDLE, {0, 44, 28, 0.1f, 0, 0, 0, 0}},
+            {AnimationState::ATTACK, {2, 44, 28, 0.1f, 44, 0, 0, 0}},
         };
 
         setGraphicState(AnimationState::IDLE);
@@ -99,8 +99,8 @@ public:
     }
 
     void Draw(float startX, float startY, float fTileOffsetX, float fTileOffsetY) {
-		int screenX = (getHomeX() - startX) * 32 - fTileOffsetX;
-	    int screenY = (getHomeY() - startY) * 32 - fTileOffsetY - 27;
+		float screenX = (getHomeX() - startX) * 32 - fTileOffsetX;
+        float screenY = (getHomeY() - startY) * 32 - fTileOffsetY - 27;
 	    setPosX(screenX);
 	    setPosY(screenY);
         PixelSprite::Draw();

@@ -63,7 +63,7 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 			{
 				wchar_t cDecorID = instance->sDecoration[y * instance->nLevelWidth + x];
 				if (cDecorID == 'D') {
-					instance->sDoorOpen = new PixelSprite(pge, "assets/DoorOpening.png", 4, 0.2, 46, 56, 0, 0);
+					instance->sDoorOpen = new PixelSprite(pge, "assets/DoorOpening.png", 4, 0.2f, 46, 56, 0, 0);
 					instance->pixelSprites[cDecorID].emplace_back(
 						instance->sDoorOpen,
 						std::make_pair(x, y)
@@ -71,7 +71,7 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 				}
 				else if (cDecorID == 'B') {
 					instance->pixelSprites[cDecorID].emplace_back(
-						new Box(pge, "assets/Box.png", 0, 0, 1, 0.2, 22, 16, 0, 0, 0, 8),
+						new Box(pge, "assets/Box.png", 0.0f, 0.0f, 1, 0.2f, 22, 16, 0, 0, 0.0f, 8.0f),
 						std::make_pair(x, y)
 					);
 
@@ -83,7 +83,7 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 					);
 				}
 				else if (cDecorID == 'O') {
-					Coin* c = new Coin(pge, "assets/BigDiamond.png", 0, 0, 9, 0.1, 18, 14, 2, 0, 0, 8);
+					Coin* c = new Coin(pge, "assets/BigDiamond.png", 0.0f, 0.0f, 9, 0.1f, 18, 14, 2, 0, 0.0f, 8.0f);
 					c->setAnimation(true);
 					c->setLoop(true);
 					instance->pixelSprites[cDecorID].emplace_back(
@@ -92,7 +92,7 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 					);
 				}
 				else if (cDecorID == 'H') {
-					Heart* h = new Heart(pge, "assets/BigHeart.png", 0, 0, 7, 0.1, 18, 14, 2, 0, 0, 8);
+					Heart* h = new Heart(pge, "assets/BigHeart.png", 0.0f, 0.0f, 7, 0.1f, 18, 14, 2, 0, 0.0f, 8.0f);
 					h->setAnimation(true);
 					h->setLoop(true);
 					instance->pixelSprites[cDecorID].emplace_back(
@@ -101,7 +101,7 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 					);
 				}
 				else if (cDecorID == 'E') {
-					instance->enemy = new Enemy(pge, "assets/Pig.png", x, y, 10, 0.1, 34, 28, 2, 0, 0, 0);
+					instance->enemy = new Enemy(pge, "assets/Pig.png", (float)x, (float)y, 10, 0.1f, 34, 28, 2, 0, 0.0f, 0.0f);
 					instance->enemy->setAnimation(true);
 					instance->enemy->setLoop(true);
 				}
@@ -113,34 +113,34 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 				}
 				else if (cDecorID == 'Z') {
 					instance->pixelSprites[cDecorID].emplace_back(
-						new Platform(pge, PlatformType::ONE, x, y),
+						new Platform(pge, PlatformType::ONE, (float)x, (float)y),
 						std::make_pair(x, y)
 					);
 				}
 				else if (cDecorID == 'X') {
 					instance->pixelSprites[cDecorID].emplace_back(
-						new Platform(pge, PlatformType::TWO, x, y),
+						new Platform(pge, PlatformType::TWO, (float)x, (float)y),
 						std::make_pair(x, y)
 					);
 				}
 				else if (cDecorID == 'C') {
 					instance->pixelSprites[cDecorID].emplace_back(
-						new Platform(pge, PlatformType::THREE, x, y),
+						new Platform(pge, PlatformType::THREE, (float)x, (float)y),
 						std::make_pair(x, y)
 					);
 				}
 				else if (cDecorID == 'V') {
 					instance->pixelSprites[cDecorID].emplace_back(
-						new Platform(pge, PlatformType::FOUR, x, y),
+						new Platform(pge, PlatformType::FOUR, (float)x, (float)y),
 						std::make_pair(x, y)
 					);
 				}
 				else if (cDecorID == 'Y') {
-					instance->cannon = new Cannon(pge, "assets/CannonShoot.png", 0, 0, 2, 0.1, 44, 28, 44, 0, 0, 0);
+					instance->cannon = new Cannon(pge, "assets/CannonShoot.png", 0.0f, 0.0f, 2, 0.1f, 44, 28, 44, 0, 0.0f, 0.0f);
 					instance->cannon->setAnimation(true);
 					instance->cannon->setLoop(true);
-					instance->cannon->setHomeX(x);
-					instance->cannon->setHomeY(y);
+					instance->cannon->setHomeX((float)x);
+					instance->cannon->setHomeY((float)y);
 				}
 			}
 		}
@@ -262,7 +262,7 @@ void Level::Draw(int nVisibleTilesX, int nVisibleTilesY, float fOffsetX, float f
 
 			int sx = tileOffsets[sTileID].first;
 			int sy = tileOffsets[sTileID].second;
-			pge->DrawPartialSprite(x * nTileWidth - fTileOffsetX, y * nTileHeight - fTileOffsetY, spriteTiles, sx, sy, nTileWidth, nTileHeight, 1, 0);
+			pge->DrawPartialSprite((int32_t)(x * nTileWidth - fTileOffsetX), (int32_t)(y * nTileHeight - fTileOffsetY), spriteTiles, sx, sy, nTileWidth, nTileHeight, 1, 0);
 		}
 	}
 
@@ -277,8 +277,8 @@ void Level::Draw(int nVisibleTilesX, int nVisibleTilesY, float fOffsetX, float f
 			if (sprite) {
 				if (levelX >= startX && levelX < startX + nVisibleTilesX + 1 &&
 					levelY >= startY && levelY < startY + nVisibleTilesY + 1) {
-					int screenX = (levelX - startX) * nTileWidth - fTileOffsetX;
-					int screenY = (levelY - startY) * nTileHeight - fTileOffsetY - 24;
+					float screenX = (levelX - startX) * nTileWidth - fTileOffsetX;
+					float screenY = (levelY - startY) * nTileHeight - fTileOffsetY - 24;
 					sprite->setPosX(screenX);
 					sprite->setPosY(screenY);
 					sprite->Draw();
@@ -288,12 +288,17 @@ void Level::Draw(int nVisibleTilesX, int nVisibleTilesY, float fOffsetX, float f
 	}
 	HUD::getInstance().Draw();
 
-	enemy->Draw(startX, startY, fTileOffsetX, fTileOffsetY);
-	cannon->Draw(startX, startY, fTileOffsetX, fTileOffsetY);
+	enemy->Draw((float)startX, (float)startY, fTileOffsetX, fTileOffsetY);
+	cannon->Draw((float)startX, (float)startY, fTileOffsetX, fTileOffsetY);
 
 	for (auto sprite : activeSprites) {
 		sprite->Draw();
 	}
+}
+
+bool Level::isMoveable(float x, float y)
+{
+	return isMoveable((int)x, (int)y);
 }
 
 bool Level::isMoveable(int x, int y)
@@ -389,11 +394,16 @@ void Level::removeDecoration(wchar_t key, PixelSprite* decoration) {
 	if (it != pixelSprites.end()) {
 		auto& vec = it->second;
 		vec.erase(std::remove_if(vec.begin(), vec.end(),
-			[decoration](const std::pair<PixelSprite*, std::pair<float, float>>& item) {
+			[decoration](const std::pair<PixelSprite*, std::pair<int, int>>& item) {
 				return item.first == decoration;
 			}), vec.end());
 	}
 	
+}
+
+bool Level::isPlatform(float x, float y)
+{
+	return isPlatform((int) x, (int)y);
 }
 
 bool Level::isPlatform(int x, int y)

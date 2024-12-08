@@ -1,7 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include "olcPixelGameEngine.h"
-#include "Level.h";
+#include "Level.h"
 #include "Box.h"
 #include "Coin.h"
 #include "TimedSprite.h"
@@ -39,7 +39,7 @@ public:
 	float getGraphicTimer() { return fGraphicTimer; }
 	void setGraphicTimer(float newTimer) { fGraphicTimer = newTimer; }
 	void incGraphicCounter() { iGraphicCounter++; }
-	void setGraphicCounter(float newCounter) { iGraphicCounter = newCounter; }
+	void setGraphicCounter(float newCounter) { iGraphicCounter = (int)newCounter; }
 	int getGraphicCounter() { return iGraphicCounter; }
 	void setOffsets(float offsetX, float offsetY) { fOffsetX = offsetX; fOffsetY = offsetY; };
 	float getOffsetX() { return fOffsetX; }

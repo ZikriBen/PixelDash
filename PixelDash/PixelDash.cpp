@@ -91,7 +91,7 @@ public:
 		{
 			if (lb.isMoveable(fNewPlayerPosX + 0.0f, player->getPosY() + 0.0f) || lb.isMoveable(fNewPlayerPosX + 0.0f, player->getPosY() + 0.9f))
 			{
-				fNewPlayerPosX = (int)fNewPlayerPosX + 1;
+				fNewPlayerPosX = std::trunc(fNewPlayerPosX) + 1.0f;
 				player->setVelX(0.0f);
 			}
 		}
@@ -99,7 +99,7 @@ public:
 		{
 			if (lb.isMoveable(fNewPlayerPosX + 1.0f, player->getPosY() + 0.0f) || lb.isMoveable(fNewPlayerPosX + 1.0f, player->getPosY() + 0.9f))
 			{
-				fNewPlayerPosX = (int)fNewPlayerPosX;
+				fNewPlayerPosX = std::trunc(fNewPlayerPosX);
 				player->setVelX(0.0f);
 			}
 		}
@@ -111,7 +111,7 @@ public:
 				lb.isMoveable(fNewPlayerPosX + 0.9f, fNewPlayerPosY))
 			{
 				
-				fNewPlayerPosY = (int)fNewPlayerPosY + 1;
+				fNewPlayerPosY = std::trunc(fNewPlayerPosY) + 1.0f;
 				player->setVelY(0.0f);
 				
 			}
@@ -125,7 +125,7 @@ public:
 					if (Platform* p = dynamic_cast<Platform*>(ps)) {
 
 						if ((fNewPlayerPosY) < p->getHomeY() - 0.5) {
-							fNewPlayerPosY = (int)fNewPlayerPosY;
+							fNewPlayerPosY = std::trunc(fNewPlayerPosY);
 							player->setVelY(0.0f);
 							player->setPlayerOnGround(true);
 						}
@@ -135,7 +135,7 @@ public:
 			if (lb.isMoveable(fNewPlayerPosX + 0.0f, fNewPlayerPosY + 1.0f) ||
 				lb.isMoveable(fNewPlayerPosX + 0.9f, fNewPlayerPosY + 1.0f))
 			{
-				fNewPlayerPosY = (int)fNewPlayerPosY;
+				fNewPlayerPosY = std::trunc(fNewPlayerPosY);
 				player->setVelY(0.0f);
 				player->setPlayerOnGround(true);
 			}
@@ -154,8 +154,8 @@ public:
 		// Clamp camera to game boundaries
 		if (fOffsetX < 0) fOffsetX = 0;
 		if (fOffsetY < 0) fOffsetY = 0;
-		if (fOffsetX > nLevelWidth - nVisibleTilesX) fOffsetX = nLevelWidth - nVisibleTilesX;
-		if (fOffsetY > nLevelHeight - nVisibleTilesY) fOffsetY = nLevelHeight - nVisibleTilesY;
+		if (fOffsetX > nLevelWidth - nVisibleTilesX) fOffsetX = (float)(nLevelWidth - nVisibleTilesX);
+		if (fOffsetY > nLevelHeight - nVisibleTilesY) fOffsetY = (float)(nLevelHeight - nVisibleTilesY);
 
 		// Get tile offsets for smooth scrolling
 		float fTileOffsetX = (fOffsetX - (int)fOffsetX) * nTileWidth;

@@ -43,7 +43,7 @@ void Player::Update(float fElapsedTime) {
 	nOffsetCorrection = 0;
 
 	if (eFacingDirection == LEFT) {
-		nOffsetCorrection = currentAnimation.frameWidth - fWidth;
+		nOffsetCorrection = (int)(currentAnimation.frameWidth - fWidth);
 	}
 	
 	Level& lb = Level::getInstance();
@@ -88,10 +88,10 @@ void Player::Draw() {
 	float newPlayerPosY = ((fPlayerPosY - fOffsetY) * 32) + currentAnimation.iOffsetPosY;
 
 	pge.DrawPartialSprite(
-		newPlayerPosX,
-		newPlayerPosY,
+		(int32_t)newPlayerPosX,
+		(int32_t)newPlayerPosY,
 		spr,
-		((currentAnimation.iSprOffsetX + currentAnimation.frameWidth) * (float)(iGraphicCounter)), 
+		(int32_t)((currentAnimation.iSprOffsetX + currentAnimation.frameWidth) * (float)(iGraphicCounter)),
 		currentAnimation.iSpecialOffsetY + currentAnimation.iSprOffsetY,
 		currentAnimation.frameWidth,
 		currentAnimation.frameHeight,
@@ -123,10 +123,10 @@ void Player::openDoor()
 
 Rect Player::getPlayerRect() {
 	return Rect(
-		((fPlayerPosX - fOffsetX) * 32) - nOffsetCorrection,
-		((fPlayerPosY - fOffsetY) * 32) + currentAnimation.iOffsetPosY,
-		(float)currentAnimation.frameWidth,
-		(float)currentAnimation.frameHeight
+		(int)(((fPlayerPosX - fOffsetX) * 32) - nOffsetCorrection),
+		(int)(((fPlayerPosY - fOffsetY) * 32) + currentAnimation.iOffsetPosY),
+		currentAnimation.frameWidth,
+		currentAnimation.frameHeight
 	);
 }
 
@@ -143,11 +143,11 @@ Rect Player::GetAttackHitbox() {
 	float hitboxX = ((fPlayerPosX - fOffsetX) * 32) + fWidth;;
 
 	if (eFacingDirection == LEFT) {
-		nOffsetCorrection = currentAnimation.frameWidth - fWidth;
+		nOffsetCorrection = (int)(currentAnimation.frameWidth - fWidth);
 		hitboxX = ((fPlayerPosX - fOffsetX) * 32) - nOffsetCorrection;
 	}
 	
-	return Rect(hitboxX, (fPlayerPosY - fOffsetY) * 32, hitBoxWidth, hitBoxHeight);
+	return Rect((int)hitboxX, (int)((fPlayerPosY - fOffsetY) * 32), hitBoxWidth, hitBoxHeight);
 }
 
 void Player::handleForceAnimation() {
@@ -187,7 +187,7 @@ void Player::handleContinousAnimation() {
 	if (currentAnimation.iNumFrames > 1 && getGraphicTimer() > currentAnimation.frameDuration) {
 		setGraphicTimer(getGraphicTimer() - currentAnimation.frameDuration);
 		incGraphicCounter();
-		setGraphicCounter(getGraphicCounter() % currentAnimation.iNumFrames); // Wrap within valid frame range
+		setGraphicCounter((float)(getGraphicCounter() % currentAnimation.iNumFrames)); // Wrap within valid frame range
 	}
 	else if (currentAnimation.iNumFrames == 1) {
 		setGraphicCounter(0);

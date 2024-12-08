@@ -2,7 +2,7 @@
 #include "PixelSprite.h"
 
 PixelSprite::PixelSprite(olc::PixelGameEngine& pge, std::string sprPath, int numFrames, float frameDuration, int width, int height, int ox, int oy)
-    :pge(pge), iNumFrames(numFrames), fFrameDuration(frameDuration), fWidth(width), fHeight(height), fOffsetX(ox), fOffsetY(oy)
+    :pge(pge), iNumFrames(numFrames), fFrameDuration(frameDuration), fWidth((float)width), fHeight((float)height), fOffsetX((float)ox), fOffsetY((float)oy)
 {
     spr = new olc::Sprite(sprPath);
     iScale = 1;
@@ -26,7 +26,7 @@ PixelSprite::PixelSprite(olc::PixelGameEngine& pge, std::string sprPath, int num
 }
 
 PixelSprite::PixelSprite(olc::PixelGameEngine& pge, std::string sprPath, float posx, float posy, int numFrames, float frameDuration, int width, int height, int ox, int oy, float offsetPosX, float offsetPosY)
-    :pge(pge), fPosX(posx), fPosY(posy), iNumFrames(numFrames), fFrameDuration(frameDuration), fWidth(width), fHeight(height), fOffsetX(ox), fOffsetY(oy), fPosOffsetX(offsetPosX), fPosOffsetY(offsetPosY)
+    :pge(pge), fPosX(posx), fPosY(posy), iNumFrames(numFrames), fFrameDuration(frameDuration), fWidth((float)width), fHeight((float)height), fOffsetX((float)ox), fOffsetY((float)oy), fPosOffsetX(offsetPosX), fPosOffsetY(offsetPosY)
 {
     spr = new olc::Sprite(sprPath);
     iScale = 1;
@@ -78,8 +78,8 @@ void PixelSprite::Draw()
 {
 	pge.SetPixelMode(olc::Pixel::MASK);
     pge.DrawPartialSprite(
-        fPosX + fPosOffsetX,
-        fPosY + fPosOffsetY,
+        (int32_t)(fPosX + fPosOffsetX),
+        (int32_t)(fPosY + fPosOffsetY),
         spr,
         currentAnimation.iSprOffsetX + (iGraphicCounter * currentAnimation.frameWidth),
         currentAnimation.iSprOffsetY,
@@ -99,10 +99,10 @@ void PixelSprite::DrawRect() {
 
 Rect PixelSprite::getRect() {
     return Rect(
-        getPosX() + fPosOffsetX,  // Add positional offset for world coordinates
-        getPosY() + fPosOffsetY,
-        getWidth(),
-        getHeight()
+        (int)(getPosX() + fPosOffsetX),
+        (int)(getPosY() + fPosOffsetY),
+        (int)getWidth(),
+        (int)getHeight()
     );
 }
 

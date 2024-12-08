@@ -15,8 +15,8 @@ public:
         : PixelSprite(pge, sprPath, posx, posy, numFrames, frameDuration, width, height, ox, oy, offsetPosX, offsetPosY) {
         int tileSize = 32;
 
-        setOffsetPosX((tileSize / 2) - (width / 2));
-        setOffsetPosY((tileSize) - (height / 2));
+        setOffsetPosX((tileSize / 2.0f) - (width / 2.0f));
+        setOffsetPosY((tileSize) - (height / 2.0f));
     }
 
     void collect() { collected = true; }

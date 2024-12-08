@@ -20,10 +20,10 @@ public:
         : PixelSprite(pge, sprPath, posx, posy, numFrames, frameDuration, width, height, ox, oy, offsetPosX, offsetPosY) {}
 
     Flag(olc::PixelGameEngine& pge)
-        : PixelSprite(pge, "assets/Decorations32x32.png", 0, 0, 1, 0.1, 32, 96, 32, 32, 0, -8) {}
+        : PixelSprite(pge, "assets/Decorations32x32.png", 0, 0, 1, 0.1f, 32, 96, 32, 32, 0, -8) {}
 
     Flag(olc::PixelGameEngine& pge, FlagType type)
-        : PixelSprite(pge, "assets/Decorations32x32.png", 0, 0, 1, 0.1, 32, 96, 0, 0, 0, -8)
+        : PixelSprite(pge, "assets/Decorations32x32.png", 0, 0, 1, 0.1f, 32, 96, 0, 0, 0, -8)
     {
         if (type == FlagType::ONE) {
             setOffsetPosX(32);

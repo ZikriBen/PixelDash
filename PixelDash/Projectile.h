@@ -39,8 +39,8 @@ public:
     }
 
     void Draw(float startX, float startY, float fTileOffsetX, float fTileOffsetY) {
-		int screenX = (getHomeX() - startX) * 32 - fTileOffsetX;
-		int screenY = (getHomeY() - startY) * 32 - fTileOffsetY - 27;
+		float screenX = (getHomeX() - startX) * 32 - fTileOffsetX;
+		float screenY = (getHomeY() - startY) * 32 - fTileOffsetY - 27;
 		setPosX(screenX);
 		setPosY(screenY);
         if (active) {

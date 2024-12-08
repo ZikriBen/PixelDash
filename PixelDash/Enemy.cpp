@@ -9,13 +9,13 @@ Enemy::Enemy(olc::PixelGameEngine& pge, const std::string& sprPath,
     speed(2.5f), health(3), bIsAttacking(false), bIsPatrolling(true), patrolRange(5.0f), pivotX(posX), homeX(posX), homeY(posY) {
 
     animations = {
-        {AnimationState::IDLE, {11, 34, 28, 0.1, 2, 0, 0, 0}},
-        {AnimationState::RUN, {5, 34, 28, 0.1, 2, 0, 0, 28}},
-        {AnimationState::JUMP, {1, 34, 28, 0.1, 2, 0, 0, 56}},
-        {AnimationState::FALL, {1, 34, 28, 0.1, 2, 0, 0, 84}},
-        {AnimationState::ATTACK, {4, 34, 28, 0.1, 2, 0, 0, 112}},
-        {AnimationState::HIT, {1, 34, 28, 0.1, 2, 0, 0, 140}},
-        {AnimationState::DEAD, {3, 34, 28, 0.1, 2, 0, 0, 168}}
+        {AnimationState::IDLE, {11, 34, 28, 0.1f, 2, 0, 0, 0}},
+        {AnimationState::RUN, {5, 34, 28, 0.1f, 2, 0, 0, 28}},
+        {AnimationState::JUMP, {1, 34, 28, 0.1f, 2, 0, 0, 56}},
+        {AnimationState::FALL, {1, 34, 28, 0.1f, 2, 0, 0, 84}},
+        {AnimationState::ATTACK, {4, 34, 28, 0.1f, 2, 0, 0, 112}},
+        {AnimationState::HIT, {1, 34, 28, 0.1f, 2, 0, 0, 140}},
+        {AnimationState::DEAD, {3, 34, 28, 0.1f, 2, 0, 0, 168}}
     };
     baseVelX = speed;
     setVelX(baseVelX);
@@ -49,8 +49,8 @@ void Enemy::Update(float fElapsedTime) {
 }
 
 void Enemy::Draw(float startX, float startY, float fTileOffsetX, float fTileOffsetY) {
-	int screenX = (getHomeX() - startX) * 32 - fTileOffsetX;
-	int screenY = (getHomeY() - startY) * 32 - fTileOffsetY - 27;
+	float screenX = (getHomeX() - startX) * 32 - fTileOffsetX;
+	float screenY = (getHomeY() - startY) * 32 - fTileOffsetY - 27;
 	setPosX(screenX);
 	setPosY(screenY);
     PixelSprite::Draw();
@@ -88,10 +88,10 @@ void Enemy::patrol(float fElapsedTime) {
 
     // Check if we hit patrol boundaries or a wall
     bool hitRightBoundary = getHomeX() >= pivotX + patrolRange ||
-        !lb.isMoveable(getHomeX() + 2.0f, getHomeY());
+        !lb.isMoveable((int)(getHomeX() + 2.0f), (int)getHomeY());
 
     bool hitLeftBoundary = getHomeX() <= pivotX - patrolRange ||
-        !lb.isMoveable(getHomeX() - 1.0f, getHomeY());
+        !lb.isMoveable((int)(getHomeX() - 1.0f), (int)getHomeY());
 
     // Switch direction if necessary
     if (hitRightBoundary) {
