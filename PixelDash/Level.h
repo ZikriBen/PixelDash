@@ -1,12 +1,12 @@
 #ifndef LEVEL_H
 #define LEVEL_H
 #include <string>
-#include <unordered_map>
+
 #include <queue>
 #include <algorithm> 
 #include "olcPixelGameEngine.h"
 #include "GameConfig.h"
-#include <unordered_set>
+
 #include "PixelSprite.h"
 #include "Box.h"
 #include "Coin.h"
