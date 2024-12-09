@@ -12,7 +12,7 @@ Player::Player(olc::PixelGameEngine& pge, Level& lvl) : pge(pge), lvl(lvl), eLif
 	iGraphicCounter = 0;
 	
 	fPlayerPosX = 5;
-	fPlayerPosY = 8;
+	fPlayerPosY = 3;
 
 	fPlayerVelX = 0.0f;
 	fPlayerVelY = 0.0f;
