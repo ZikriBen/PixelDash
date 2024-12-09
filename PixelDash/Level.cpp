@@ -53,7 +53,7 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 		instance->sDecoration += L".....V.................................OOOO.....................";
 		instance->sDecoration += L"..V..........................................................ZX.";
 		instance->sDecoration += L"..........................................................OOOOO.";
-		instance->sDecoration += L".............Y....H.............E..B............................";
+		instance->sDecoration += L"............Y.....H.............E..B............................";
 
 
 		// create decoration array
@@ -275,7 +275,7 @@ void Level::Draw(int nVisibleTilesX, int nVisibleTilesY, float fOffsetX, float f
 			auto [levelX, levelY] = spritePos.second;
 
 			if (sprite) {
-				if (levelX >= startX && levelX < startX + nVisibleTilesX + 1 &&
+				if (levelX + 1 >= startX && levelX < startX + nVisibleTilesX + 1 &&
 					levelY >= startY && levelY < startY + nVisibleTilesY + 1) {
 					float screenX = (levelX - startX) * nTileWidth - fTileOffsetX;
 					float screenY = (levelY - startY) * nTileHeight - fTileOffsetY - 24;
