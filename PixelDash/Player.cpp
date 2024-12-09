@@ -84,8 +84,8 @@ void Player::Update(float fElapsedTime) {
 
 void Player::Draw() {
 	pge.SetPixelMode(olc::Pixel::MASK);
-	float newPlayerPosX = ((fPlayerPosX - fOffsetX) * 32) - nOffsetCorrection;
-	float newPlayerPosY = ((fPlayerPosY - fOffsetY) * 32) + currentAnimation.iOffsetPosY;
+	float newPlayerPosX = ((fPlayerPosX - fOffsetX) * TILE_WIDTH) - nOffsetCorrection;
+	float newPlayerPosY = ((fPlayerPosY - fOffsetY) * TILE_WIDTH) + currentAnimation.iOffsetPosY;
 
 	pge.DrawPartialSprite(
 		(int32_t)newPlayerPosX,
@@ -123,8 +123,8 @@ void Player::openDoor()
 
 Rect Player::getPlayerRect() {
 	return Rect(
-		(int)(((fPlayerPosX - fOffsetX) * 32) - nOffsetCorrection),
-		(int)(((fPlayerPosY - fOffsetY) * 32) + currentAnimation.iOffsetPosY),
+		(int)(((fPlayerPosX - fOffsetX) * TILE_WIDTH) - nOffsetCorrection),
+		(int)(((fPlayerPosY - fOffsetY) * TILE_WIDTH) + currentAnimation.iOffsetPosY),
 		currentAnimation.frameWidth,
 		currentAnimation.frameHeight
 	);
@@ -140,14 +140,14 @@ void Player::attack() {
 
 Rect Player::GetAttackHitbox() {
 	nOffsetCorrection = 0;
-	float hitboxX = ((fPlayerPosX - fOffsetX) * 32) + fWidth;;
+	float hitboxX = ((fPlayerPosX - fOffsetX) * TILE_WIDTH) + fWidth;;
 
 	if (eFacingDirection == LEFT) {
 		nOffsetCorrection = (int)(currentAnimation.frameWidth - fWidth);
-		hitboxX = ((fPlayerPosX - fOffsetX) * 32) - nOffsetCorrection;
+		hitboxX = ((fPlayerPosX - fOffsetX) * TILE_WIDTH) - nOffsetCorrection;
 	}
 	
-	return Rect((int)hitboxX, (int)((fPlayerPosY - fOffsetY) * 32), hitBoxWidth, hitBoxHeight);
+	return Rect((int)hitboxX, (int)((fPlayerPosY - fOffsetY) * TILE_WIDTH), hitBoxWidth, hitBoxHeight);
 }
 
 void Player::handleForceAnimation() {
@@ -198,7 +198,7 @@ void Player::handleContinousAnimation() {
 
 void Player::hit() {
 	float currentTime = lvl.getTotalTime();
-	
+	//std::cout << fPlayerPosY << std::endl;
 	if (currentTime - fLastHitTime >= fCooldownTime) {
 		fLastHitTime = currentTime;  // Update the last hit time
 		eGraphicState = AnimationState::HIT;

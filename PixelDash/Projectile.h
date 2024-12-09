@@ -1,7 +1,11 @@
 #include "PixelSprite.h"
 #include "Rect.h"
+#include "GameConfig.h"
 
 #pragma once
+
+
+
 class Projectile : public PixelSprite {
 private:
     float velX, velY;  // Velocity
@@ -13,7 +17,7 @@ private:
 public:
     Projectile(olc::PixelGameEngine& pge, float posX, float posY, float velX, float velY, float homex, float homey)
         : PixelSprite(pge, "assets/Projectile.png", posX, posY, 1, 0.1f, 44, 28, 0, 0, 0, 0),
-        velX(velX), velY(velY), gravity(8.0f), active(true) {
+        velX(velX), velY(velY), gravity(6.0f), active(true) {
         homeX = homex;
         homeY = homey;
     }
@@ -26,21 +30,23 @@ public:
 
 		homeX += velX * fElapsedTime;
 		homeY += velY * fElapsedTime;
-
-		setPosX(homeX);  // Apply the updated position
+        
+        // Apply the updated position
+		setPosX(homeX);  
         setPosY(homeY);  // Apply the updated position
         PixelSprite::Update(fElapsedTime);
        
+//        std::cout << homeY << std::endl;
 
         // Check if projectile goes out of bounds
-        //if (getPosY() > 1000 || getPosX() < 0 || getPosX() > 1000) { // Example bounds
-        //    active = false;
-        //}
+        /*if (homeY > LEVEL_HEIGHT || homeY < 0 || homeX > LEVEL_WIDTH || homeX < 0) {
+            active = false;
+        }*/
     }
 
     void Draw(float startX, float startY, float fTileOffsetX, float fTileOffsetY) {
-		float screenX = (getHomeX() - startX) * 32 - fTileOffsetX;
-		float screenY = (getHomeY() - startY) * 32 - fTileOffsetY - 27;
+		float screenX = (getHomeX() - startX) * TILE_WIDTH - fTileOffsetX;
+		float screenY = (getHomeY() - startY) * TILE_WIDTH - fTileOffsetY - 27;
 		setPosX(screenX);
 		setPosY(screenY);
         if (active) {

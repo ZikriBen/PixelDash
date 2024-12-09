@@ -1,6 +1,7 @@
 
 #define OLC_PGE_APPLICATION
 #include "olcPixelGameEngine.h"
+#include "GameConfig.h"
 #include "Player.h"
 #include "PlayerMovement.h"
 #include "Level.h"
@@ -20,10 +21,7 @@ public:
 private:
 	/*std::wstring sLevel;
 	std::wstring sDecoration;*/
-	int nLevelWidth;
-	int nLevelHeight;
-	int nTileWidth;
-	int nTileHeight;
+	
 	int nVisibleTilesX;
 	int nVisibleTilesY;
 
@@ -36,14 +34,10 @@ private:
 public:
 	bool OnUserCreate() override
 	{
-		nLevelWidth = 64;
-		nLevelHeight = 16;	
-		nTileWidth = 32;
-		nTileHeight = 32;
-		nVisibleTilesX = ScreenWidth() / nTileWidth;
-		nVisibleTilesY = ScreenHeight() / nTileHeight;
+		nVisibleTilesX = ScreenWidth() / TILE_WIDTH;
+		nVisibleTilesY = ScreenHeight() / TILE_HEIGHT;
 
-		Level::Init(*this, nLevelWidth, nLevelHeight, nTileWidth, nTileHeight);
+		Level::Init(*this);
 		Level& lb = Level::getInstance();
 
 		player = std::make_unique<Player>(*this, lb);
@@ -154,12 +148,12 @@ public:
 		// Clamp camera to game boundaries
 		if (fOffsetX < 0) fOffsetX = 0;
 		if (fOffsetY < 0) fOffsetY = 0;
-		if (fOffsetX > nLevelWidth - nVisibleTilesX) fOffsetX = (float)(nLevelWidth - nVisibleTilesX);
-		if (fOffsetY > nLevelHeight - nVisibleTilesY) fOffsetY = (float)(nLevelHeight - nVisibleTilesY);
+		if (fOffsetX > LEVEL_WIDTH - nVisibleTilesX) fOffsetX = (float)(LEVEL_WIDTH - nVisibleTilesX);
+		if (fOffsetY > LEVEL_HEIGHT - nVisibleTilesY) fOffsetY = (float)(LEVEL_HEIGHT - nVisibleTilesY);
 
 		// Get tile offsets for smooth scrolling
-		float fTileOffsetX = (fOffsetX - (int)fOffsetX) * nTileWidth;
-		float fTileOffsetY = (fOffsetY - (int)fOffsetY) * nTileHeight;
+		float fTileOffsetX = (fOffsetX - (int)fOffsetX) * TILE_WIDTH;
+		float fTileOffsetY = (fOffsetY - (int)fOffsetY) * TILE_HEIGHT;
 		
 		lb.Update(fElapsedTime);
 		lb.Draw(nVisibleTilesX, nVisibleTilesY, fOffsetX, fOffsetY, fTileOffsetX, fTileOffsetY);

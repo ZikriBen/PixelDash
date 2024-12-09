@@ -5,6 +5,7 @@
 #include <queue>
 #include <algorithm> 
 #include "olcPixelGameEngine.h"
+#include "GameConfig.h"
 #include <unordered_set>
 #include "PixelSprite.h"
 #include "Box.h"
@@ -26,10 +27,7 @@ class Level
 {
 
 private:
-	int nLevelWidth;
-	int nLevelHeight;
-	int nTileWidth;
-	int nTileHeight;
+	Level();
 	float fOffsetX;
 	float fOffsetY;
 	float fTotalTime = 0.0f;
@@ -46,14 +44,13 @@ private:
 	//Enemy *enemy = nullptr;
 	static Level* instance;          // Singleton instance
 	olc::PixelGameEngine* pge = nullptr; // Pointer to the game engine
-	Level(int levelWidth, int levelHeight, int tileWidth, int tileHeight);
 	Enemy *enemy;
 	Cannon* cannon;
 
 
 public:
 	static Level& getInstance();  // To retrieve instance after Init
-	static void Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int tileWidth, int tileHeight);
+	static void Init(olc::PixelGameEngine& pge);
 
 	// Delete copy and assignment operators to enforce singleton
 	Level(const Level&) = delete;

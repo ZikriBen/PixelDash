@@ -2,17 +2,16 @@
 
 Level* Level::instance = nullptr;
 
-Level::Level(int levelWidth, int levelHeight, int tileWidth, int tileHeight)
-	: nLevelWidth(levelWidth), nLevelHeight(levelHeight), nTileWidth(tileWidth), nTileHeight(tileHeight)
+Level::Level()
 {
 	// Empty constructor body; initialization happens in Init
 }
 
-void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int tileWidth, int tileHeight)
+void Level::Init(olc::PixelGameEngine& pge)
 {
 	if (!instance)
 	{
-		instance = new Level(levelWidth, levelHeight, tileWidth, tileHeight);
+		instance = new Level();
 		instance->pge = &pge;  // Store the game engine reference
 		instance->moveAbleTiles = { L'.', L'o', L'}', L'{', L'-', L',', L'v', L't', L'/', L'e', L'u', L'z', L' ',L'8', L'0', L'9', L'+', L'^', L'*', L'q', L'h', L'j', L'w'};
 		instance->spriteTiles = new olc::Sprite("assets/Terrain32x32.png");
@@ -57,11 +56,11 @@ void Level::Init(olc::PixelGameEngine& pge, int levelWidth, int levelHeight, int
 
 
 		// create decoration array
-		for (int x = 0; x < instance->nLevelWidth; ++x)
+		for (int x = 0; x < LEVEL_WIDTH; ++x)
 		{
-			for (int y = 0; y < instance->nLevelHeight; ++y)
+			for (int y = 0; y < LEVEL_HEIGHT; ++y)
 			{
-				wchar_t cDecorID = instance->sDecoration[y * instance->nLevelWidth + x];
+				wchar_t cDecorID = instance->sDecoration[y * LEVEL_WIDTH + x];
 				if (cDecorID == 'D') {
 					instance->sDoorOpen = new PixelSprite(pge, "assets/DoorOpening.png", 4, 0.2f, 46, 56, 0, 0);
 					instance->pixelSprites[cDecorID].emplace_back(
@@ -220,16 +219,16 @@ Level& Level::getInstance()
 
 wchar_t Level::GetTile(int x, int y)
 {
-	if (x >= 0 && x < nLevelWidth && y >= 0 && y < nLevelHeight)
-		return sLevel[y * nLevelWidth + x];
+	if (x >= 0 && x < LEVEL_WIDTH && y >= 0 && y < LEVEL_HEIGHT)
+		return sLevel[y * LEVEL_WIDTH + x];
 	else
 		return L' ';
 }
 
 void Level::SetTile(int x, int y, wchar_t c)
 {
-	if (x >= 0 && x < nLevelWidth && y >= 0 && y < nLevelHeight)
-		sLevel[y * nLevelWidth + x] = c;
+	if (x >= 0 && x < LEVEL_WIDTH && y >= 0 && y < LEVEL_HEIGHT)
+		sLevel[y * LEVEL_WIDTH + x] = c;
 }
 
 void Level::Update(float fElapsedTime)
@@ -262,7 +261,7 @@ void Level::Draw(int nVisibleTilesX, int nVisibleTilesY, float fOffsetX, float f
 
 			int sx = tileOffsets[sTileID].first;
 			int sy = tileOffsets[sTileID].second;
-			pge->DrawPartialSprite((int32_t)(x * nTileWidth - fTileOffsetX), (int32_t)(y * nTileHeight - fTileOffsetY), spriteTiles, sx, sy, nTileWidth, nTileHeight, 1, 0);
+			pge->DrawPartialSprite((int32_t)(x * TILE_WIDTH - fTileOffsetX), (int32_t)(y * TILE_HEIGHT - fTileOffsetY), spriteTiles, sx, sy, TILE_WIDTH, TILE_HEIGHT, 1, 0);
 		}
 	}
 
@@ -277,8 +276,8 @@ void Level::Draw(int nVisibleTilesX, int nVisibleTilesY, float fOffsetX, float f
 			if (sprite) {
 				if (levelX + 1 >= startX && levelX < startX + nVisibleTilesX + 1 &&
 					levelY >= startY && levelY < startY + nVisibleTilesY + 1) {
-					float screenX = (levelX - startX) * nTileWidth - fTileOffsetX;
-					float screenY = (levelY - startY) * nTileHeight - fTileOffsetY - 24;
+					float screenX = (levelX - startX) * TILE_WIDTH - fTileOffsetX;
+					float screenY = (levelY - startY) * TILE_HEIGHT - fTileOffsetY - 24;
 					sprite->setPosX(screenX);
 					sprite->setPosY(screenY);
 					sprite->Draw();
@@ -408,9 +407,9 @@ bool Level::isPlatform(float x, float y)
 
 bool Level::isPlatform(int x, int y)
 {
-	if (x >= 0 && x < nLevelWidth && y >= 0 && y < nLevelHeight)
+	if (x >= 0 && x < LEVEL_WIDTH && y >= 0 && y < LEVEL_HEIGHT)
 	{
-		wchar_t decorTile = sDecoration[(y) * nLevelWidth + x];
+		wchar_t decorTile = sDecoration[(y) *LEVEL_WIDTH + x];
 		return (decorTile == 'Z' || decorTile == 'X' || decorTile == 'C' || decorTile == 'V');
 	}
 	return false;
