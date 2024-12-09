@@ -35,18 +35,16 @@ public:
 		setPosX(homeX);  
         setPosY(homeY);  // Apply the updated position
         PixelSprite::Update(fElapsedTime);
-       
-//        std::cout << homeY << std::endl;
 
         // Check if projectile goes out of bounds
-        /*if (homeY > LEVEL_HEIGHT || homeY < 0 || homeX > LEVEL_WIDTH || homeX < 0) {
+        if (homeY > LEVEL_HEIGHT || homeY < 0 || homeX > LEVEL_WIDTH || homeX < 0) {
             active = false;
-        }*/
+        }
     }
 
     void Draw(float startX, float startY, float fTileOffsetX, float fTileOffsetY) {
 		float screenX = (getHomeX() - startX) * TILE_WIDTH - fTileOffsetX;
-		float screenY = (getHomeY() - startY) * TILE_WIDTH - fTileOffsetY - 27;
+		float screenY = (getHomeY() - startY) * TILE_HEIGHT - fTileOffsetY - 27;
 		setPosX(screenX);
 		setPosY(screenY);
         if (active) {

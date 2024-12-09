@@ -101,7 +101,7 @@ public:
 
     void Draw(float startX, float startY, float fTileOffsetX, float fTileOffsetY) {
 		float screenX = (getHomeX() - startX) * TILE_WIDTH - fTileOffsetX;
-        float screenY = (getHomeY() - startY) * TILE_WIDTH - fTileOffsetY - 27;
+        float screenY = (getHomeY() - startY) * TILE_HEIGHT - fTileOffsetY - 27;
 	    setPosX(screenX);
 	    setPosY(screenY);
         PixelSprite::Draw();
