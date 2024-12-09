@@ -8,43 +8,45 @@ private:
     olc::Sprite* shootSpr;
     PixelSprite* pigSpr;
     float shootCooldown;      // Time between shots
-    float lastShootTime;      // Last time a shot was fired
+    float lastShootTime = 0.0f;;      // Last time a shot was fired
     std::vector<Projectile*> projectiles; // Active projectiles
     bool isFacingLeft;        // Direction of the cannon
     float fTotalTime = 0.0f;
     bool bIsShooting = false;
     float homeX;
     float homeY;
-    int health;           // Health of the enemy
-    float lastHitTime = -1.0;      // Track
-    const float cooldownTime = 0.05f;  // Cooldown duration in seconds, adjust as needed
+    int health = 3;
+    float lastHitTime = -1.0;
+    const float cooldownTime = 0.05f;  
+    const float initialVelX = 6.0f;  
+    const float initialVelY = -4.0f;  
+
 
 public:
     Cannon(olc::PixelGameEngine& pge, std::string sprPath, float posx, float posy, int numFrames, float frameDuration, int width, int height, int ox, int oy, float offsetPosX, float offsetPosY)
-        : PixelSprite(pge, sprPath, posx, posy, numFrames, frameDuration, width, height, ox, oy, offsetPosX, offsetPosY),
-        shootCooldown(9*0.1f), lastShootTime(0.0f) {
-        eFacingDirection = PixelSprite::RIGHT;
+        : PixelSprite(pge, sprPath, posx, posy, numFrames, frameDuration, width, height, ox, oy, offsetPosX, offsetPosY) {
         shootSpr = new olc::Sprite("assets/CannonShoot.png");
         pigSpr = new PixelSprite(pge, "assets/PigLightingtheCannon.png", getPosX(), getPosY(), 7, 0.1f, 26, 18, 26, 0, 39, 7);
-        health = 3;
-        pigSpr->setLoop(true);
-        pigSpr->setAnimation(true);
-
+        
+        this->animations = {
+            {AnimationState::IDLE, {0, 44, 28, 0.1f, 0, 0, 0, 0}},
+            {AnimationState::ATTACK, {2, 44, 28, 0.1f, 44, 0, 0, 0}},
+        };
+        
         std::unordered_map<PixelSprite::AnimationState, PixelSprite::Animation> pigAnimations = {
             {PixelSprite::AnimationState::IDLE, {6, 26, 18, 0.1f, 0, 0, 0, 0}},
             {PixelSprite::AnimationState::HIT, {1, 34, 18, 0.1f, 2, 0, 0, 18}},
             {PixelSprite::AnimationState::DEAD, {3, 34, 18, 0.1f, 2, 0, 0, 36}}
         };
+        eFacingDirection = PixelSprite::RIGHT;
+        setGraphicState(AnimationState::IDLE);
 
         pigSpr->setAnimations(pigAnimations);
         pigSpr->setGraphicState(PixelSprite::AnimationState::IDLE);
+        pigSpr->setAnimation(true);
+        pigSpr->setLoop(true);
 
-        this->animations = {
-            {AnimationState::IDLE, {0, 44, 28, 0.1f, 0, 0, 0, 0}},
-            {AnimationState::ATTACK, {2, 44, 28, 0.1f, 44, 0, 0, 0}},
-        };
-
-        setGraphicState(AnimationState::IDLE);
+        shootCooldown = 9 * frameDuration;
     }
 
     void Update(float fElapsedTime) {
@@ -54,7 +56,6 @@ public:
         pigSpr->Update(fElapsedTime);
         fTotalTime += fElapsedTime;
         
-
         if (pigSpr->eGraphicState == AnimationState::DEAD) {
             pigSpr->setLoop(false);
         }
@@ -111,13 +112,10 @@ public:
     }
 
     void shootProjectile() {
-        // Create a new projectile with an initial velocity
         bIsShooting = true;
         setSpr(shootSpr);
         setGraphicState(AnimationState::ATTACK);
-        float initialVelX = eFacingDirection == PixelSprite::LEFT ? 12 : -12.0f;
-        float initialVelY = -3.0f; // Launch upward
-        projectiles.push_back(new Projectile(pge, getPosX(), getPosY(), initialVelX, initialVelY, homeX, homeY));
+        projectiles.push_back(new Projectile(pge, getPosX(), getPosY(), ((eFacingDirection == PixelSprite::LEFT) ? 6.0f : -6.0f), initialVelY, homeX, homeY));
     }
 	
     void setHomeX(float homex) {

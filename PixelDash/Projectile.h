@@ -13,7 +13,7 @@ private:
 public:
     Projectile(olc::PixelGameEngine& pge, float posX, float posY, float velX, float velY, float homex, float homey)
         : PixelSprite(pge, "assets/Projectile.png", posX, posY, 1, 0.1f, 44, 28, 0, 0, 0, 0),
-        velX(velX), velY(velY), gravity(6.0f), active(true) {
+        velX(velX), velY(velY), gravity(8.0f), active(true) {
         homeX = homex;
         homeY = homey;
     }

@@ -88,7 +88,7 @@ void PixelSprite::Draw()
         iScale,
         eFacingDirection);
 	pge.SetPixelMode(olc::Pixel::NORMAL);
-    DrawRect();
+    //DrawRect();
 }
 
 void PixelSprite::DrawRect() {
