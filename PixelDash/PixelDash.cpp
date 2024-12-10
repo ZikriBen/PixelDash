@@ -27,6 +27,7 @@ private:
 
 	float fCameraPosX = 0.0f;
 	float fCameraPosY = 0.0f;
+	bool test = true;
 	std::unique_ptr<Player> player;
 	std::unique_ptr<PlayerMovement> pm;	
 
@@ -52,8 +53,11 @@ public:
 		pm->Update(fElapsedTime);
 
 		// Gravity
-		player->setVelY(player->getVelY() + 18.5f * fElapsedTime);
-		
+		player->setVelY(player->getVelY() + 0.65f);
+		if (test) {
+			std::cout << "VELY: " << (18.5f * fElapsedTime) << std::endl;
+			test = false;
+		}
 		// Drag
 		if (player->getPlayerOnGround())
 		{
@@ -61,7 +65,6 @@ public:
 			if (fabs(player->getVelX()) < 0.01f)
 				player->setVelX(0.0f);
 		}
-
 
 		// Clamp velocities
 		if (player->getVelX() > 10.0f)
@@ -134,6 +137,11 @@ public:
 				player->setPlayerOnGround(true);
 			}
 		}
+		
+		if (fNewPlayerPosY > LEVEL_HEIGHT - 2) {
+			fNewPlayerPosY = LEVEL_HEIGHT - 2;
+		}
+		//std::cout << "POSY: " << fNewPlayerPosY << std::endl;
 		// Apply new position
 		player->setPosX(fNewPlayerPosX);
 		player->setPosY(fNewPlayerPosY);

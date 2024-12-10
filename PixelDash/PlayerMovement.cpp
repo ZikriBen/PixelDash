@@ -17,12 +17,11 @@ void PlayerMovement::Update(float fElapsedTime)
 		else {
 			if (player.getVelY() == 0)
 			{
-				player.setVelY(-9.5f);
+				player.setVelY(-12.5f);
 			}
 		}
 		
 	}
-
 
 	if (pge.GetKey(olc::Key::S).bHeld || pge.GetKey(olc::Key::DOWN).bHeld)
 	{
@@ -31,14 +30,14 @@ void PlayerMovement::Update(float fElapsedTime)
 
 	if (pge.GetKey(olc::Key::A).bHeld || pge.GetKey(olc::Key::LEFT).bHeld)
 	{
-		player.setVelX(player.getVelX() + (player.getPlayerOnGround() ? -20.0f : -15.0f) * fElapsedTime);
+		player.setVelX(player.getVelX() + -17.0f  * fElapsedTime);
 		player.eFacingDirection = Player::LEFT;
 	}
 
 
 	if (pge.GetKey(olc::Key::D).bHeld || pge.GetKey(olc::Key::RIGHT).bHeld)
 	{
-		player.setVelX(player.getVelX() + (player.getPlayerOnGround() ? 20.0f : 15.0f) * fElapsedTime);
+		player.setVelX(player.getVelX() +  17.0f * fElapsedTime);
 		player.eFacingDirection = Player::RIGHT;
 	}
 
