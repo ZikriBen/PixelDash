@@ -23,8 +23,8 @@ Player::Player(olc::PixelGameEngine& pge, Level& lvl) : pge(pge), lvl(lvl), eLif
 	
 	eFacingDirection = Player::RIGHT;
 	animations = {
-		{AnimationState::IDLE, {11, 37, 28, 0.1f, 4, 41, 0, 16}},
-		{AnimationState::RUN, {8, 37, 28, 0.1f, 4, 41, 58, 16}},
+		{AnimationState::IDLE, {10, 37, 28, 0.1f, 4, 41, 0, 16}},
+		{AnimationState::RUN, {7, 37, 28, 0.1f, 4, 41, 58, 16}},
 		{AnimationState::FALL, {1, 37, 28, 0.1f, 4, 41, 116, 16}},  
 		{AnimationState::JUMP, {1, 37, 28, 0.1f, 4, 41, 174, 16}},
 		{AnimationState::ATTACK, {3, 59, 58, 0.1f, -11, 12, 232, 0}},
