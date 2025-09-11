@@ -197,6 +197,9 @@ void Player::handleContinousAnimation() {
 }
 
 void Player::hit() {
+	if (bIsAttacking) {
+		return;
+	}
 	float currentTime = lvl.getTotalTime();
 	//std::cout << fPlayerPosY << std::endl;
 	if (currentTime - fLastHitTime >= fCooldownTime) {
