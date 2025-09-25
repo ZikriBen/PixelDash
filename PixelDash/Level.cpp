@@ -24,6 +24,7 @@ void Level::Init(olc::PixelGameEngine& pge)
 		instance->tileOffsets = TILE_OFFSETS;
 		instance->moveAbleTiles = MOVEABLE_TILES;
 
+		
 		// create decoration array
 		for (int x = 0; x < LEVEL_WIDTH; ++x)
 		{
@@ -31,7 +32,7 @@ void Level::Init(olc::PixelGameEngine& pge)
 			{
 				wchar_t cDecorID = instance->sDecoration[y * LEVEL_WIDTH + x];
 				if (cDecorID == 'D') {
-					instance->sDoorOpen = new PixelSprite(pge, "assets/DoorOpening.png", 4, 0.2f, 46, 56, 0, 0);
+					instance->sDoorOpen = new PixelSprite(pge, "assets/door.png", 4, 0.2f, 46, 56, 0, 0);
 					instance->pixelSprites[cDecorID].emplace_back(
 						instance->sDoorOpen,
 						std::make_pair(x, y)
@@ -333,12 +334,19 @@ void Level::HandleTimedSprites(float fElapsedTime) {
 		spriteQueue.pop(); // Pop and process in one line
 	}
 
-	std::erase_if(activeSprites, [](TimedSprite* sprite) {
-		return !sprite->isActive();
-		});
+	activeSprites.erase(
+		std::remove_if(activeSprites.begin(), activeSprites.end(),
+			[](TimedSprite* sprite) { return !sprite->isActive(); }),
+		activeSprites.end());
 
 	// Update remaining active sprites
 	for (TimedSprite* sprite : activeSprites) {
 		sprite->Update(fElapsedTime);
 	}
+}
+
+void Level::startSound() {
+	this->nMenuMusic_ID = this->miniAudio.LoadSound(this->souMenuMusic);
+	this->miniAudio.SetVolume(this->nMenuMusic_ID, 0.7f);
+	this->miniAudio.Play(this->nMenuMusic_ID, true);
 }

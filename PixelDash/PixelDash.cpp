@@ -1,4 +1,7 @@
 
+#define OLC_PGEX_MINIAUDIO
+#include "olcPGEX_MiniAudio.h"
+
 #define OLC_PGE_APPLICATION
 #include "olcPixelGameEngine.h"
 #include "GameConfig.h"
@@ -55,7 +58,7 @@ public:
 		pm->Update(fElapsedTime);
 
 		// Gravity
-		player->setVelY(player->getVelY() + 0.125f);
+		player->setVelY(player->getVelY() + 0.5f);
 		if (test) {
 			std::cout << "VELY: " << (18.5f * fElapsedTime) << std::endl;
 			test = false;
