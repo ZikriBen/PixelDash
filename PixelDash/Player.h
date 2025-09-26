@@ -35,7 +35,7 @@ public:
 
 	bool getForceAnimation() { return bForceAnimation; }
 	void setForceAnimation(bool newBool) { bForceAnimation = newBool;}
-
+	void startSound();
 	float getGraphicTimer() { return fGraphicTimer; }
 	void setGraphicTimer(float newTimer) { fGraphicTimer = newTimer; }
 	void incGraphicCounter() { iGraphicCounter++; }
@@ -53,7 +53,6 @@ public:
 	void hit();
 	void heal();
 	void earn();
-
 	enum { RIGHT = 0, LEFT = 1} eFacingDirection;
 	
 	enum class AnimationState { IDLE, RUN, JUMP, FALL, ATTACK, DOOR_IN, DOOR_OUT, HIT};

@@ -4,6 +4,7 @@
 
 #include <queue>
 #include <algorithm> 
+#include "olcPGEX_MiniAudio.h"
 #include "olcPixelGameEngine.h"
 #include "GameConfig.h"
 
@@ -47,6 +48,12 @@ private:
 	Enemy *enemy;
 	Cannon* cannon;
 
+public:
+
+	olc::MiniAudio miniAudio;		// We use miniAudio to play sounds throught out our game
+	int32_t nMenuMusic_ID = -1;     // Stores the ID of the menu musice so it can be played & looped easliy
+	std::string souMenuMusic = "./assets/sounds/retro-game-arcade-236133.mp3";
+	
 
 public:
 	static Level& getInstance();  // To retrieve instance after Init
@@ -61,7 +68,7 @@ public:
 	wchar_t GetTile(int x, int y);
 	void SetTile(int x, int y, wchar_t c);
 	void Draw(int nVisibleTilesX, int nVisibleTilesY, float fOffsetX, float fOffsetY, float fTileOffsetX, float fTileOffsetY);
-
+	void startSound();
 	const std::unordered_set<wchar_t> getMoveable() { return moveAbleTiles; }
 	
 	bool isMoveable(int x, int y);
@@ -77,8 +84,8 @@ public:
 	float getOffsetX() { return fOffsetX; };
 	float getOffsetY() { return fOffsetY; };
 
-	float setOffsetX(float offsetX) { fOffsetX = offsetX; };
-	float setOffsetY(float offsetY) { fOffsetY = offsetY; };
+	void setOffsetX(float offsetX) { fOffsetX = offsetX; };
+	void setOffsetY(float offsetY) { fOffsetY = offsetY; };
 	bool isPlatform(int x, int y);
 	bool isPlatform(float x, float y);
 	float getTotalTime() { return fTotalTime; };

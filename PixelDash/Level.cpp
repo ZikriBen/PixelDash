@@ -23,7 +23,7 @@ void Level::Init(olc::PixelGameEngine& pge)
 		instance->sDecoration = DECORATION_DATA;
 		instance->tileOffsets = TILE_OFFSETS;
 		instance->moveAbleTiles = MOVEABLE_TILES;
-
+		//instance->startSound();
 		
 		// create decoration array
 		for (int x = 0; x < LEVEL_WIDTH; ++x)

@@ -220,3 +220,7 @@ void Player::heal() {
 void Player::earn() {
 	HUD::getInstance().incScore(1);
 }
+
+void Player::startSound() {
+	Level::getInstance().startSound();
+}

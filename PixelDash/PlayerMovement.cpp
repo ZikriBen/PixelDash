@@ -9,6 +9,11 @@ void PlayerMovement::Update(float fElapsedTime)
 		return;
 	}
 
+	if (pge.GetKey(olc::Key::M).bPressed)
+	{
+		player.startSound();
+	}
+
 	if (pge.GetKey(olc::Key::W).bPressed || pge.GetKey(olc::Key::UP).bPressed)
 	{
 		if (player.IsDoor()) {
@@ -65,4 +70,5 @@ void PlayerMovement::Update(float fElapsedTime)
 	{
 		player.earn();
 	}
+
 }
