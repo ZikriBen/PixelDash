@@ -6,7 +6,7 @@ Enemy::Enemy(olc::PixelGameEngine& pge, const std::string& sprPath,
     int width, int height, int ox, int oy,
     float offsetPosX, float offsetPosY)
     : PixelSprite(pge, sprPath, posX, posY, numFrames, frameDuration, width, height, ox, oy, offsetPosX, offsetPosY),
-    speed(2.5f), health(999), bIsAttacking(false), bIsPatrolling(true), patrolRange(5.0f), pivotX(posX), homeX(posX), homeY(posY) {
+    speed(2.5f), health(3), bIsAttacking(false), bIsPatrolling(true), patrolRange(5.0f), pivotX(posX), homeX(posX), homeY(posY) {
 
     animations = {
         {AnimationState::IDLE, {11, 34, 28, 0.1f, 2, 0, 0, 0}},

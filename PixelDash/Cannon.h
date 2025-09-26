@@ -27,7 +27,10 @@ public:
         : PixelSprite(pge, sprPath, posx, posy, numFrames, frameDuration, width, height, ox, oy, offsetPosX, offsetPosY) {
         shootSpr = new olc::Sprite("assets/CannonShoot.png");
         pigSpr = new PixelSprite(pge, "assets/PigLightingtheCannon.png", getPosX(), getPosY(), 7, 0.1f, 26, 18, 26, 0, 39, 7);
-        
+        homeX = 0.0f;
+        homeY = 0.0f;
+        isFacingLeft = false;
+
         this->animations = {
             {AnimationState::IDLE, {0, 44, 28, 0.1f, 0, 0, 0, 0}},
             {AnimationState::ATTACK, {2, 44, 28, 0.1f, 44, 0, 0, 0}},
@@ -49,7 +52,7 @@ public:
         shootCooldown = 9 * frameDuration;
     }
 
-    void Update(float fElapsedTime) {
+    void Update(float fElapsedTime) override {
         PixelSprite::Update(fElapsedTime);
         pigSpr->setPosX(getPosX());
         pigSpr->setPosY(getPosY());
