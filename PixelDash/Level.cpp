@@ -16,6 +16,9 @@ void Level::Init(olc::PixelGameEngine& pge)
 		
 		instance->spriteTiles = new olc::Sprite("assets/Terrain32x32.png");
 		instance->spriteDoor = new olc::Sprite("assets/IdleDoor.png");
+		instance->nCoinMusic_ID = instance->miniAudio.LoadSound(instance->coinSound);
+		instance->nMenuMusic_ID = instance->miniAudio.LoadSound(instance->souMenuMusic);
+		
 
 		HUD::init(pge);
 
@@ -23,7 +26,7 @@ void Level::Init(olc::PixelGameEngine& pge)
 		instance->sDecoration = DECORATION_DATA;
 		instance->tileOffsets = TILE_OFFSETS;
 		instance->moveAbleTiles = MOVEABLE_TILES;
-		//instance->startSound();
+		instance->toggleMusic();
 		
 		// create decoration array
 		for (int x = 0; x < LEVEL_WIDTH; ++x)
@@ -345,8 +348,12 @@ void Level::HandleTimedSprites(float fElapsedTime) {
 	}
 }
 
-void Level::startSound() {
-	this->nMenuMusic_ID = this->miniAudio.LoadSound(this->souMenuMusic);
-	this->miniAudio.SetVolume(this->nMenuMusic_ID, 0.7f);
+void Level::toggleMusic() {
+	this->miniAudio.SetVolume(this->nMenuMusic_ID, 0.4f);
 	this->miniAudio.Play(this->nMenuMusic_ID, true);
+}
+
+void Level::playSound() {
+	this->miniAudio.SetVolume(this->nCoinMusic_ID, 0.7f);
+	this->miniAudio.Play(this->nCoinMusic_ID, true);
 }

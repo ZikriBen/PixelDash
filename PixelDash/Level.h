@@ -51,8 +51,10 @@ private:
 public:
 
 	olc::MiniAudio miniAudio;		// We use miniAudio to play sounds throught out our game
-	int32_t nMenuMusic_ID = -1;     // Stores the ID of the menu musice so it can be played & looped easliy
+	size_t nMenuMusic_ID = -1;     // Stores the ID of the menu musice so it can be played & looped easliy
+	size_t nCoinMusic_ID = -1;
 	std::string souMenuMusic = "./assets/sounds/retro-game-arcade-236133.mp3";
+	std::string coinSound = "./assets/sounds/coin.wav";
 	
 
 public:
@@ -68,7 +70,8 @@ public:
 	wchar_t GetTile(int x, int y);
 	void SetTile(int x, int y, wchar_t c);
 	void Draw(int nVisibleTilesX, int nVisibleTilesY, float fOffsetX, float fOffsetY, float fTileOffsetX, float fTileOffsetY);
-	void startSound();
+	void toggleMusic();
+	void playSound();
 	const std::unordered_set<wchar_t> getMoveable() { return moveAbleTiles; }
 	
 	bool isMoveable(int x, int y);

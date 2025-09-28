@@ -35,7 +35,6 @@ public:
 
 	bool getForceAnimation() { return bForceAnimation; }
 	void setForceAnimation(bool newBool) { bForceAnimation = newBool;}
-	void startSound();
 	float getGraphicTimer() { return fGraphicTimer; }
 	void setGraphicTimer(float newTimer) { fGraphicTimer = newTimer; }
 	void incGraphicCounter() { iGraphicCounter++; }

@@ -1,9 +1,12 @@
 
-#define OLC_PGEX_MINIAUDIO
-#include "olcPGEX_MiniAudio.h"
+
 
 #define OLC_PGE_APPLICATION
 #include "olcPixelGameEngine.h"
+
+#define OLC_PGEX_MINIAUDIO
+#include "olcPGEX_MiniAudio.h"
+
 #include "GameConfig.h"
 #include "Player.h"
 #include "PlayerMovement.h"
